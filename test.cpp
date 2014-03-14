@@ -413,3 +413,18 @@ SCENARIO("Matrix addition") {
 		}
 	}
 }
+
+SCENARIO("Display sodoku puzzle") {
+	GIVEN("A sodoku puzzle") {
+	sodoku puzzle;
+
+		WHEN("displaying the puzzle") {
+			puzzle.display();
+
+			THEN("does not blowup") {
+				// If we get here then things didn't blow up.
+				REQUIRE(true);
+			}
+		}
+	}
+}

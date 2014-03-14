@@ -9,3 +9,8 @@ sodoku::sodoku(void){
 sodoku::~sodoku(void){
 
 }
+
+// Throws out the current sodoku puzzle's contents.
+void sodoku::display(void){
+
+}

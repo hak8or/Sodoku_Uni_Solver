@@ -9,6 +9,9 @@ class sodoku
 
 		// DeConstructor for the Soduku object.
 		~sodoku(void);
+
+		// Throws out the current soduku puzzle's contents.
+		void display(void);
 	private:
 
 };
