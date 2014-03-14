@@ -21,6 +21,7 @@ chase.
 
 #include <iostream>
 #include "Square_Matrix.h"
+#include "Sodoku.h"
 
 // For the testing suite.
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
