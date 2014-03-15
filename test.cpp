@@ -463,8 +463,8 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		WHEN("acessing an cell") {
 			int cell_contents = puzzle.Get_Cell(0,1);
 
-			THEN("cell contents should be zero") {
-				REQUIRE(cell_contents == 0);
+			THEN("cell contents should be unset(-1)") {
+				REQUIRE(cell_contents == -1);
 			}
 		}
 
