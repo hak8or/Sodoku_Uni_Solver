@@ -99,6 +99,9 @@ bool sodoku::check_row_validity(const int& row){
 				return false;
 		}
 	}
+
+	// If we get here, it means that the row is valid.
+	return true;
 }
 
 // Checks if column is valid, meaning if there are multiples if a number.
@@ -120,4 +123,7 @@ bool sodoku::check_column_validity(const int& column){
 				return false;
 		}
 	}
+
+	// If we get here, it means that the column is valid.
+	return true;
 }
