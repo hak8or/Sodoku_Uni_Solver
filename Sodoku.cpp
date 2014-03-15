@@ -100,3 +100,24 @@ bool sodoku::check_row_validity(const int& row){
 		}
 	}
 }
+
+// Checks if column is valid, meaning if there are multiples if a number.
+// This goes through each element in the column and checks if that element exists 
+// elsewhere in the column.
+bool sodoku::check_column_validity(const int& column){
+	// Holds the column of int's
+	std::vector<int> column_contents = this->matrix.Get_Column(column);
+
+	// Go through each column.
+	for (int i = 0; i < column_contents.size(); ++i)
+	{
+		// Check if more than 1 of that int exists in the column.
+		for (int j = 0; j < column_contents.size(); ++j)
+		{
+			// If the number appears twice and it is not an unset cell and it is
+			// not checking itself, then that column is invalid.
+			if ((column_contents[i] == column_contents[j]) && (column_contents[i] != -1) && (i != j))
+				return false;
+		}
+	}
+}

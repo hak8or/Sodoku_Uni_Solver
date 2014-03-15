@@ -515,4 +515,32 @@ SCENARIO("Checking an incorrect sodoku") {
 			}
 		}
 	}
+
+	GIVEN("A sodoku puzzle with a bad column in it") {
+		sodoku puzzle;
+		puzzle.Set_Cell(0, 0, 5);
+		puzzle.Set_Cell(0, 2, 5);
+
+		WHEN("checking if there is a bad column") {
+			bool validity = puzzle.check_column_validity(0);
+
+			THEN("the return value should be false") {
+				REQUIRE(!validity);
+			}
+		}
+	}
+
+	GIVEN("A sodoku puzzle without a bad column in it") {
+		sodoku puzzle;
+		puzzle.Set_Cell(0, 0, 5);
+		puzzle.Set_Cell(1, 2, 5);
+
+		WHEN("checking if there is a bad column") {
+			bool validity = puzzle.check_column_validity(0);
+
+			THEN("the return value should be true") {
+				REQUIRE(validity);
+			}
+		}
+	}
 }

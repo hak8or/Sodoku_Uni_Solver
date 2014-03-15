@@ -29,6 +29,9 @@ class sodoku
 
 		// Checks if the row is valid, meaning if there are multiples if a number.
 		bool check_row_validity(const int& row);
+
+		// Checks if the column is valid, meaning if there are multiples if a number.
+		bool check_column_validity(const int& column);
 	private:
 		Square_Matrix matrix;
 };
