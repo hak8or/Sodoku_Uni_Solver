@@ -2,6 +2,13 @@
 #include "Square_Matrix.h"
 #include <iostream>
 
+// NOTE:
+// Because I do not wish to modify Square_Matrix from the previous assignment, 
+// some issues are dealt with in this project. For example, to deal with cells
+// existing but not yet written to, I fill the entire matrix with -1's and if a 
+// -1 is found it is considered to be not yet written to. I don't know how to
+// handle Get_Cell.
+
 // Gotta use a namespace or else all my couts will have to specify the namespace
 // each time.
 using namespace std;
@@ -9,6 +16,7 @@ using namespace std;
 // Constructor for the sodoku object.
 sodoku::sodoku(void){
 	this->matrix.Set_Size(9);
+	this->matrix.fill(-1);
 }
 
 // DeConstructor for the sodoku object.
