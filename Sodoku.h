@@ -1,6 +1,8 @@
 #ifndef Sodoku_H
 #define Sodoku_H
 
+#include "Square_Matrix.h"
+
 class sodoku
 {
 	public:
@@ -9,8 +11,11 @@ class sodoku
 
 		// DeConstructor for the Soduku object.
 		~sodoku(void);
-	private:
 
+		// Displays the size of the Sodoku puzzle
+		int Get_Size(void);
+	private:
+		Square_Matrix matrix;
 };
 
 #endif

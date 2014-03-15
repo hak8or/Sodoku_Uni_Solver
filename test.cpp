@@ -413,3 +413,20 @@ SCENARIO("Matrix addition") {
 		}
 	}
 }
+
+/*
+=============================================================================
+						Sodoku testing
+=============================================================================
+*/
+SCENARIO("Making a Sodoku puzzle") {
+	GIVEN("A clean slate") {
+		WHEN("Making a Sodoku puzzle object") {
+			sodoku puzzle;
+
+			THEN("The Sodoku puzzle should be 9 by 9 units big") {
+				REQUIRE(puzzle.Get_Size() == 9);
+			}
+		}
+	}
+}
