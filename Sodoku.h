@@ -32,6 +32,10 @@ class sodoku
 
 		// Checks if the column is valid, meaning if there are multiples if a number.
 		bool check_column_validity(const int& column);
+
+		// Checks if the entire Sodoku puzzle is correct, combines checking each row
+		// and column into just one function call.
+		bool check_sodoku_validity(void);
 	private:
 		Square_Matrix matrix;
 };

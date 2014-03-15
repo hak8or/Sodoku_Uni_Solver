@@ -127,3 +127,21 @@ bool sodoku::check_column_validity(const int& column){
 	// If we get here, it means that the column is valid.
 	return true;
 }
+
+// Checks if the entire Sodoku puzzle is correct, combines checking each row
+// and column into just one function call.
+bool sodoku::check_sodoku_validity(void){
+
+	// Since this is a square, we can check rows and columns in one for loop.
+	for (int i = 0; i < this->matrix.Get_Size(); ++i)
+	{
+		if ( this->check_row_validity(i) != true)
+			return false;
+
+		if ( this->check_column_validity(i) != true)
+			return false;
+	}
+
+	// If we get here, it means that the puzzle is valid.
+	return true;
+}
