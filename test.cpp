@@ -430,3 +430,17 @@ SCENARIO("Making a Sodoku puzzle") {
 		}
 	}
 }
+
+SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
+	GIVEN("A empty non partially filled sodoku puzzle") {
+		sodoku puzzle;
+
+		WHEN("acessing an cell") {
+			int cell_contents = puzzle.Get_Cell(0,1);
+
+			THEN("cell contents should be zero") {
+				REQUIRE(cell_contents == 0);
+			}
+		}
+	}
+}

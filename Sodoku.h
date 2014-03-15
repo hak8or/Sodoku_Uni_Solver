@@ -17,6 +17,10 @@ class sodoku
 
 		// Displays the size of the Sodoku puzzle
 		int Get_Size(void);
+
+		// Gets a cell from the puzzle using x and y coordinates.
+		// If out of bounds, returns a 0.
+		int Get_Cell(const int&, const int&);
 	private:
 		Square_Matrix matrix;
 };

@@ -46,3 +46,9 @@ void sodoku::display(void){
 		cout << "|" << endl;
 	}
 }
+
+// Returns the contents of the cell at the X and Y coordinates. If out of bounds,
+// returns a 0, of which the behavior is implemented in the Square_Matrix lib.
+int sodoku::Get_Cell(const int &x, const int &y){
+	return this->matrix.Get_Elem(x, y);
+}
