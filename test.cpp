@@ -442,5 +442,22 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 				REQUIRE(cell_contents == 0);
 			}
 		}
+
+		WHEN("writing to an out of bounds cell") {
+			bool successful_write = puzzle.Set_Cell(98, 99, 5);
+
+			THEN("the return value should be false") {
+				REQUIRE(!successful_write);
+			}
+		}
+
+		WHEN("writing to an in bounds cell") {
+			bool successful_write = puzzle.Set_Cell(0, 1, 5);
+
+			THEN("The cell contents should be changed") {
+				REQUIRE(successful_write);
+				REQUIRE(puzzle.Get_Cell(0,1) == 5);
+			}
+		}
 	}
 }

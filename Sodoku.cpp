@@ -52,3 +52,17 @@ void sodoku::display(void){
 int sodoku::Get_Cell(const int &x, const int &y){
 	return this->matrix.Get_Elem(x, y);
 }
+
+// Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
+bool sodoku::Set_Cell(const int& x, const int& y, const int& val){
+
+	// If the coordinates are out of bounds, return false.
+	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
+		return false;
+
+	// Sets the element. Val is first because previous assignment required it to be so.
+	this->matrix.Set_Elem(val, x, y);
+
+	// If we got here, then it was in bounds, so return a true.
+	return true;
+}
