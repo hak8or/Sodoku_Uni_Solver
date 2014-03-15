@@ -48,7 +48,12 @@ void sodoku::display(void){
 
 		// Displays the contents of each cell of the row with right hand padding.
 		for (int cell_count = 0; cell_count < this->matrix.Get_Size(); ++cell_count)
-			cout << row_contents[cell_count] << " ";
+		{
+			if (row_contents[cell_count] == -1)
+				cout << ". ";
+			else
+				cout << row_contents[cell_count] << " ";
+		}
 
 		// Shows that the row is done.
 		cout << "|" << endl;
