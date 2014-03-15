@@ -414,16 +414,18 @@ SCENARIO("Matrix addition") {
 	}
 }
 
-SCENARIO("Display sodoku puzzle") {
-	GIVEN("A sodoku puzzle") {
-	sodoku puzzle;
+/*
+=============================================================================
+						Sodoku testing
+=============================================================================
+*/
+SCENARIO("Making a Sodoku puzzle") {
+	GIVEN("A clean slate") {
+		WHEN("Making a Sodoku puzzle object") {
+			sodoku puzzle;
 
-		WHEN("displaying the puzzle") {
-			puzzle.display();
-
-			THEN("does not blowup") {
-				// If we get here then things didn't blow up.
-				REQUIRE(true);
+			THEN("The Sodoku puzzle should be 9 by 9 units big") {
+				REQUIRE(puzzle.Get_Size() == 9);
 			}
 		}
 	}
