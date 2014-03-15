@@ -486,3 +486,33 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		}
 	}
 }
+
+SCENARIO("Checking an incorrect sodoku") {
+	GIVEN("A sodoku puzzle with a bad row in it") {
+		sodoku puzzle;
+		puzzle.Set_Cell(0, 0, 5);
+		puzzle.Set_Cell(2, 0, 5);
+
+		WHEN("checking if there is a bad row") {
+			bool validity = puzzle.check_row_validity(0);
+
+			THEN("the return value should be false") {
+				REQUIRE(!validity);
+			}
+		}
+	}
+
+	GIVEN("A sodoku puzzle without a bad row in it") {
+		sodoku puzzle;
+		puzzle.Set_Cell(0, 0, 5);
+		puzzle.Set_Cell(2, 1, 5);
+
+		WHEN("checking if there is a bad row") {
+			bool validity = puzzle.check_row_validity(0);
+
+			THEN("the return value should be true") {
+				REQUIRE(validity);
+			}
+		}
+	}
+}

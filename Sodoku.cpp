@@ -79,3 +79,24 @@ bool sodoku::Set_Cell(const int& x, const int& y, const int& val){
 	// If we got here, then it was in bounds, so return a true.
 	return true;
 }
+
+// Checks if the row is valid, meaning if there are multiples if a number.
+// This goes through each element in the row and checks if that element exists 
+// elsewhere in the row.
+bool sodoku::check_row_validity(const int& row){
+	// Holds the row of int's
+	std::vector<int> row_contents = this->matrix.Get_Row(row);
+
+	// Go through each row.
+	for (int i = 0; i < row_contents.size(); ++i)
+	{
+		// Check if more than 1 of that int exists in the row.
+		for (int j = 0; j < row_contents.size(); ++j)
+		{
+			// If the number appears twice and it is not an unset cell and it is
+			// not checking itself, then that row is invalid.
+			if ((row_contents[i] == row_contents[j]) && (row_contents[i] != -1) && (i != j))
+				return false;
+		}
+	}
+}

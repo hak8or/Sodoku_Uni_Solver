@@ -26,6 +26,9 @@ class sodoku
 		bool Set_Cell(const int& x_coordinate, 
 					  const int& y_coordinate, 
 					  const int& new_value);
+
+		// Checks if the row is valid, meaning if there are multiples if a number.
+		bool check_row_validity(const int& row);
 	private:
 		Square_Matrix matrix;
 };
