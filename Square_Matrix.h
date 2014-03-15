@@ -46,6 +46,9 @@ class Square_Matrix
 		// Returns the selected column in the form of a vector.
 		std::vector<int> Get_Column(const int &num_column);
 
+		// Fills the entire matrix with this int.
+		void fill(const int &value);
+
 		// I am here just to see if all is working.
 		// Should return 2014.
 		int sanity_check(void);

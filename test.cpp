@@ -135,6 +135,31 @@ SCENARIO("Changing components of a matrix"){
 				REQUIRE(my_matrix.Get_Elem(5,5) == 0);
 		}
 
+		WHEN("filling it with a number"){
+			my_matrix.fill(5);
+
+			THEN("it should be filled with that number"){
+				bool is_filled = true;
+
+				// It seems catch can't handle testing functions, so
+				// this loop is here to check each element
+				for (int i = 0; i < my_matrix.Get_Size(); ++i){
+					if (!is_filled)
+						break;
+
+					for (int j = 0; j < my_matrix.Get_Size(); ++j){
+						if (!is_filled)
+							break;
+
+						if (my_matrix.Get_Elem(i, j) != 5)
+							is_filled = false;
+					}
+				}
+
+				REQUIRE(is_filled);
+			}
+		}
+
 		WHEN("resizing to 1x1"){
 		my_matrix.Set_Size(1);
 
