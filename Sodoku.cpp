@@ -23,7 +23,25 @@ sodoku::sodoku(void){
 	this->trying_to_fill = 0;
 
 	// Seed the random number generator using the time.
-	srand (time(NULL));
+	srand(time(NULL));
+
+	// Enable this to see how the puzzle gets solved step by step.
+	this->view_progress = 0;
+}
+
+// Overloaded constructor for the Soduku object with a configurable size. If a
+// negative size is given, the size will be set to 0.
+sodoku::sodoku(int size){
+	this->matrix.Set_Size(size);
+	this->matrix.fill(-1);
+	this->solve_status = false;
+	this->trying_to_fill = 0;
+
+	// Seed the random number generator using the time.
+	srand(time(NULL));
+
+	// Enable this to see how the puzzle gets solved step by step.
+	this->view_progress = 0;
 }
 
 // DeConstructor for the sodoku object.
@@ -142,10 +160,10 @@ bool sodoku::check_sodoku_validity(void){
 	// Since this is a square, we can check rows and columns in one for loop.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 	{
-		if ( this->check_row_validity(i) != true)
+		if ( this->check_row_validity(i) != true )
 			return false;
 
-		if ( this->check_column_validity(i) != true)
+		if ( this->check_column_validity(i) != true )
 			return false;
 	}
 
@@ -168,8 +186,8 @@ void sodoku::partial_fill(const float& percentage){
 
 	// We need to make sure there is at least one partially filled cell for
 	// really small puzzles.
-	if (this->trying_to_fill < 1) {this->trying_to_fill = 1;}
-	
+	if ( this->trying_to_fill < 1 ) { this->trying_to_fill = 1; }
+
 	// Keeps track of how many cells were filled.
 	int filled = 0;
 
@@ -178,9 +196,9 @@ void sodoku::partial_fill(const float& percentage){
 	while (filled != this->trying_to_fill)
 	{
 		// Make a random set of coordinates and a random int.
-		int var = rand() % ( this->matrix.Get_Size() );
-		int x_coordinate = rand() % ( this->matrix.Get_Size() );
-		int y_coordinate = rand() % ( this->matrix.Get_Size() );
+		int var = rand() % (this->matrix.Get_Size());
+		int x_coordinate = rand() % (this->matrix.Get_Size());
+		int y_coordinate = rand() % (this->matrix.Get_Size());
 
 		// If this coordinate has not been already set earlier, try to put a
 		// new value into it.
@@ -191,7 +209,7 @@ void sodoku::partial_fill(const float& percentage){
 
 			// Check if the changes are valid, if not then reverse the changes,
 			// if they are good then add them into the const_cells entry.
-			if (this->check_sodoku_validity())
+			if ( this->check_sodoku_validity() )
 			{
 				// Add the new coordinates to the list.
 				const_cells.push_back( coordinates() );
@@ -211,42 +229,162 @@ void sodoku::partial_fill(const float& percentage){
 
 // Solves the puzzle based on solve_status.
 bool sodoku::solve_puzzle(void){
+	// Set the working_cell to 0,0 when starting to solve the puzzle. Surprisingly,
+	// I didn't need to do this in visual studio since it started at 0,0 but in
+	// GCC it started at 4410251, 0 which is cool.
+	this->working_cell.x = 0;
+	this->working_cell.y = 0;
+
 	// Starts on the top left of the puzzle to the top right, then down a row 
 	// from left to right, and repeats to the end.
-	for (int row = 0; row < this->matrix.Get_Size(); ++row)
-		for (int column = 0; column < this->matrix.Get_Size(); ++column)
-		{
-			if ( this->can_set(column, row) ) // Can we modify the cell?
-			{
-				for (int i = 0; i < this->matrix.Get_Size(); i++)
-				{
-					if (this->increment_cell(column, row)) // Can we increment the cell?
-					{
-						if (this->check_sodoku_validity()) // Is the new cell valid?
-						{
-							// If the new cell is valid then break out of trying to
-							// increment the cell to a valid int.
-							break;
-						}
-					}
-					// If the cell was incremented all the way and still a no go,
-					// then change the cell back to default and go back a node.
-					else
-						this->decrement_cell(column, row);
-				}
+	while (this->next_cell()){
+		// Stick a display here to see how the matrix is solved step by step.
+		// this->display();
 
-			}
-			// Add in some form of a check to see if the puzzle is even solvable.
-			if (row == this->matrix.Get_Size() - 1 && 
-				column == this->matrix.Get_Size() - 1 &&
-				!this->is_complete())
-			{
-				return false;
-			}
+		// If try_to_fill fails, it means that all attempts to fill the current
+		// cell have failed, so go back a cell.
+		if (this->try_to_fill(this->working_cell.x, this->working_cell.y)){
+			// Increment the amount of steps it took so far to solve this puzzle.
+			amount_of_steps++;
 		}
+		else{
+			// If going back a a cell failed, then it means we can't go further
+			// back, so the puzzle is unsolvable.
 
-	// If we reached here, then the all cells have been successfully set!
+			// Thrown in here for debugging so output is easier to navigate.
+			// cout << "Backtracing now!\n";
+
+			// First we need to reset the current cell to the unset value though.
+			this->matrix.Set_Elem(-1, working_cell.x, working_cell.y);
+
+			// This is done twice because in the while loop here both checking
+			// and incrementing are done twice. If we only go back once, then
+			// after the while conditional both checks and increments we will
+			// be right back to the same cell. Chaining these together into
+			// one if statement for some reason does not work.
+			if (this->back_cell())
+			{
+				if(!this->back_cell())
+					 // Return false to show it was unable to be solved.
+					return false;
+			}
+			else 
+				return false;
+		}
+	}
+
+	// If we were able to get here, then it means the puzzle has been
+	// fully solved, so return true.
 	return true;
+}
+
+// Tries to fill the specified cell with valid data. Does not check if the
+// cell is already valid or not.
+bool sodoku::try_to_fill(const int& x, const int& y){
+	// Contents of the cell when originally hit this function 
+	// which will be used for resetting the variable back to its
+	// original state if we can't fill the cell.
+	int orig_contents = this->Get_Cell(x, y);
+
+	// While the cell is not at its maximum value and therefore
+	// not all possible values have been tried, keep trying higher values.
+	while (this->increment_cell(x, y))
+	{
+		// Used if the user wants to see how the puzzle gets changed over time.
+		if (this->view_progress)
+			this->display();
+
+		// Check the validity of the changes. 
+		if (check_sodoku_validity())
+			return true;
+		else
+			// If the changes were not valid, keep trying to increment the cell.
+			continue;
+	}
+
+	// If we got here, then the cell has been incremented all the way
+	// to its maximum value but none of the attempted values were correct.
+	// Reset the cell contents to what they were when we first tried to 
+	// fill the cell.
+	this->Set_Cell(x, y, orig_contents);
+
+	// Used if the user wants to see how the puzzle gets changed over time.
+	if (this->view_progress)
+			this->display();
+
+	// Return false to indicate that we can't fill this cell.
+	return false;
+}
+
+// Increments what the current cell we are trying to fill by changing working_cell
+// within the sodoku object to the next writable and valid one.
+// Starts on the top left of the puzzle to the top right, then down a row from
+// left to right, and repeats to the end.
+bool sodoku::next_cell(void)
+{
+	// If currently on the last element of a row, but not the last element
+	// of the puzzle, go to the next y and  x = 0
+	if (working_cell.x == this->matrix.Get_Size() - 1 &&
+		working_cell.y != this->matrix.Get_Size() - 1)
+	{
+		working_cell.x = 0; // Go to the first node of the row.
+		working_cell.y++; // Go to the next row.
+	}
+	// If currently on the last element of a row and in the last row, then
+	// the node is the last node in the puzzle. Return a false because there
+	// are no other nodes to go to.
+	else if (working_cell.x == this->matrix.Get_Size() - 1 &&
+			 working_cell.y == this->matrix.Get_Size() - 1)
+		return false;
+
+	// If the not last element in the puzzle or row, just increment the
+	// cell coordinates to one cell to the right.
+	else if (working_cell.x != this->matrix.Get_Size() - 1)
+		working_cell.x++;
+
+	// If the next cell is one of the const_cells, ones which we are not
+	// allowed to modify because they were filled using partial fill, then
+	// call next_cell again so we can skip over the const_cell.
+	if (can_set(working_cell.x, working_cell.y))
+		return true; // If we got here, the node coordinates were succesfully
+					 // incremented, so return a true.
+	else
+		this->next_cell(); // If the next cell was non writable, recursevly
+						   // call this function to skip the cell.
+}
+
+// Decrements what the current cell we are trying to fill by changing working_cell
+// within the sodoku object to the closest writable and valid one behind this one.
+bool sodoku::back_cell(void)
+{
+	// If currently on the last element of a row, but not the last element
+	// of the puzzle, go up one row and to the last column.
+	if (this->working_cell.x == 0 && this->working_cell.y != 0)
+	{
+		// Go to the last node of the above row..
+		this->working_cell.x = this->matrix.Get_Size() - 1; 
+		this->working_cell.y--; // Go to the next row.
+	}
+	// If currently on the first element of a row and in the first row, then
+	// the node is the first node in the puzzle. Return a false because there
+	// are no other nodes to go to.
+	else if (this->working_cell.x == 0 && this->working_cell.y == 0)
+		return false;
+
+	// If the not first element in the puzzle or row, just decrement the
+	// cell coordinates to one cell to the left.
+	else
+		this->working_cell.x--;
+
+	// If the next cell is one of the const_cells, ones which we are not
+	// allowed to modify because they were filled using partial fill, then
+	// call next_cell again so we can skip over the const_cell.
+	if (this->can_set(this->working_cell.x, this->working_cell.y))
+		return true; // If we got here, the node coordinates were succesfully
+					 // incremented, so return a true.
+	else
+		this->back_cell(); // If the next cell was non writable, recursevly
+						   // call this function to skip the cell.
 }
 
 // Increments the cell by one. This is quicker than having to get the cell
@@ -254,10 +392,9 @@ bool sodoku::solve_puzzle(void){
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
 bool sodoku::increment_cell(const int& column, const int& row){
-	if ( row < this->matrix.Get_Size() && // Is the row out of bounds?
-		 column < this->matrix.Get_Size() && // Is the column out of bounds?
-		 this->can_set(column, row) && // Is the cell writable?
-		 this->Get_Cell(column, row) < this->matrix.Get_Size()) // Is the new
+	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
+		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
+		(this->Get_Cell(column, row) < this->matrix.Get_Size() - 1)) // Is the new
 		// value out of bounds?
 	{
 		// Holds the contents of the cell.
@@ -272,9 +409,22 @@ bool sodoku::increment_cell(const int& column, const int& row){
 		// We were able to save the new cell contents, so all went well!
 		return true;
 	}
+	else
+	{
+		// If we got here, then something went wrong, so return a false.
+		return false;
+	}
 
-	// If we got here, then something went wrong, so return a false.
-	else {return false;}
+}
+
+void sodoku::set_const_cell(int value, int x, int y){
+	this->matrix.Set_Elem(value, x, y);
+
+	// Add the new coordinates to the list.
+	coordinates const_cell;
+	const_cell.x = x;
+	const_cell.y = y;
+	const_cells.push_back( const_cell );
 }
 
 // Decrements the cell by one. This is quicker than having to get the cell
@@ -282,10 +432,10 @@ bool sodoku::increment_cell(const int& column, const int& row){
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
 bool sodoku::decrement_cell(const int& column, const int& row){
-	if ( row < this->matrix.Get_Size() && // Is the row out of bounds?
-		 column < this->matrix.Get_Size() && // Is the column out of bounds?
-		 this->can_set(column, row) && // Is the cell writable?
-		 this->Get_Cell(column, row) <= 0) // Is the new already too small?
+	if (row < this->matrix.Get_Size() && // Is the row out of bounds?
+		column < this->matrix.Get_Size() && // Is the column out of bounds?
+		this->can_set(column, row) && // Is the cell writable?
+		this->Get_Cell(column, row) > -1) // Is the new already too small?
 	{
 		// Holds the contents of the cell.
 		int cell_contents = this->Get_Cell(column, row);
@@ -300,7 +450,8 @@ bool sodoku::decrement_cell(const int& column, const int& row){
 		return true;
 	}
 	// If we got here, then something went wrong, so return a false.
-	else {return false;}
+	else
+		return false;
 }
 
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
@@ -345,9 +496,9 @@ bool sodoku::can_set(int x_coordinate, int y_coordinate){
 	for (int i = 0; i < this->const_cells.size(); ++i)
 		if ((this->const_cells[i].x == x_coordinate) &&
 			(this->const_cells[i].y == y_coordinate))
-	{
-		return false;
-	}
+		{
+			return false;
+		}
 
 	return true;
 }

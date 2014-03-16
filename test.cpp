@@ -661,17 +661,96 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 }
 
-SCENARIO("Try to complete the puzzle!") {
-	GIVEN("A partially filled puzzle") {
-		sodoku puzzle;
-		puzzle.partial_fill(0.15);
+// Partial fill is not tested because I don't have a good idea on how to test it.
+
+SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
+	GIVEN("a sodoku with manually set consts") {
+		sodoku puzzle(3);
+
+		// 1 2 .
+		// . 1 .
+		// . . .
+		puzzle.set_const_cell(1, 0, 0);
+		puzzle.set_const_cell(2, 1, 0);
+		puzzle.set_const_cell(1, 1, 1);
 
 		WHEN("trying to auto solve it.") {
-			puzzle.display();
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
-				puzzle.display();
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
+SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
+	GIVEN("a sodoku with manually set consts") {
+		sodoku puzzle(3);
+
+		// 0 . 1
+		// 2 . .
+		// . . .
+		puzzle.set_const_cell(0, 0, 0); // top left
+		puzzle.set_const_cell(1, 2, 0); // top right
+		puzzle.set_const_cell(2, 0, 1); // 2 at 0, 1
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
+SCENARIO("Auto solve a sodoku with manually set consts with backtracing and two constants next to each other") {
+	GIVEN("a sodoku with manually set consts") {
+		sodoku puzzle(3);
+
+		// 0 2 .
+		// 2 . .
+		// . . .
+		puzzle.set_const_cell(0, 0, 0); // top left
+		puzzle.set_const_cell(2, 1, 0); // top right
+		puzzle.set_const_cell(2, 0, 1); // 2 at 0, 1
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
+SCENARIO("Auto solve a larger sodoku with manually set consts") {
+	GIVEN("a sodoku with manually set consts") {
+		sodoku puzzle(9);
+
+		// 0 . 1 . . . . . . // 0
+		// . 2 . . . . . . . // 1
+		// . . . . . . . . . // 2
+		// . . . . . . . . . // 3
+		// . . . . . . . . . // 4
+		// . . . . . . . . . // 5
+		// . . . . . . . . . // 6
+		// . . . . . . . 5 . // 7
+		// . . . . . . . . . // 8
+		puzzle.set_const_cell(0, 0, 0);
+		puzzle.set_const_cell(1, 2, 0);
+		puzzle.set_const_cell(2, 0, 1);
+		puzzle.set_const_cell(5, 7, 7);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
 				REQUIRE(solved);
 				REQUIRE(puzzle.is_complete());
 			}

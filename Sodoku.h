@@ -6,8 +6,12 @@
 class sodoku
 {
 	public:
-		// Constructor for the Soduku object.
+		// Constructor for the Soduku object with a default size of 2.
 		sodoku(void);
+
+		// Overloaded constructor for the Soduku object with a configurable
+		// size is given, the size will be set to 0.
+		sodoku(int size);
 
 		// DeConstructor for the Soduku object.
 		~sodoku(void);
@@ -39,6 +43,9 @@ class sodoku
 
 		// Fill in a a percentage of cells with at least one filled.
 		void partial_fill(const float&);
+
+		// FOR UNIT TESTING ONLY! DON'T USE ME
+		void set_const_cell(int value, int x, int y);
 
 		// Checks if the soduko puzzle is complete, meaning if it is valid and every
 		// cell is filled.
@@ -86,10 +93,23 @@ class sodoku
 		// backtracking algorythm to keep track of what "nodes" we were in.
 		std::vector<coordinates> attempted_cells;
 
+		coordinates working_cell;
+
+		bool next_cell(void);
+		bool back_cell(void);
+
 		// Checks if the input coordinates exist in the vector of coordinates for cells
 		// we are not allowed to modify.
 		bool can_set(int x, int y);
 
+		// Try to fill the cell at x and y, if fail then return a false.
+		bool try_to_fill(const int &x, const int &y);
+
+		// Keeps track of how many steps we took to solve the puzzle.
+		int amount_of_steps;
+
+		// Flag to view how the puzzle gets solved step by step.
+		bool view_progress;
 };
 
 #endif
