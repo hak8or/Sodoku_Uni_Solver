@@ -759,6 +759,8 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 	}
 }
 
+// Homework implimentation. No command line arguments taken, added here for 
+// compliance though.
 int main(int argc, char *argv[])
 {
 	cout << "Running self tests ... \n";
@@ -767,6 +769,19 @@ int main(int argc, char *argv[])
 	if (Catch::Session().run( argc, argv ) != 0)
 		cout << "Self tests failed, the program will still run but the results"
 				 "are probably incorrect." << endl;
+
+	// Get the users requested size of the sodoku puzzle.
+	int size;
+	cout << "Size of Sodoku puzzle: ";
+	cin >> size;
+
+	// If the size was less than 1, then say that the size is bad and request
+	// a new size.
+	while(size < 1)
+	{
+		cout << "Size selection was not valid, please type in a resonable size: ";
+		cin >> size;
+	}
 
 	return 0;
 }
