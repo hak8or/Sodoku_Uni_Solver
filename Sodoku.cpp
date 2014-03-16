@@ -240,8 +240,30 @@ bool sodoku::increment_cell(const int& row, const int& column){
 	// If we got here, then something went wrong, so return a false.
 	else {return false;}
 }
+
+// Decrements the cell by one. This is quicker than having to get the cell
+// and then set the cell using two LOC, or three if you want it to look nice.
+// Returns a zero if the new value will be out of bounds or if you can't write
+// to that cell because it is a constant.
+bool sodoku::decrement_cell(const int& row, const int& column){
+	if ( row < this->matrix.Get_Size() && // Is the row out of bounds?
+		 column < this->matrix.Get_Size() && // Is the column out of bounds?
+		 this->can_set(row, column) && // Is the cell writable?
+		 this->Get_Cell(row, column) <= 0 ) // Is the new already too small?
+	{
+		// Holds the contents of the cell.
+		int cell_contents = this->Get_Cell(row, column);
+
+		// Increment the contents by one.
+		cell_contents--;
+
+		// Save the new contents into the cell.
+		this->matrix.Set_Elem(cell_contents, row, column);
+
+		// We were able to save the new cell contents, so all went well!
 		return true;
 	}
+	// If we got here, then something went wrong, so return a false.
 	else {return false;}
 }
 

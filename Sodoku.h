@@ -50,6 +50,9 @@ class sodoku
 		// to that cell because it is a constant.
 		bool increment_cell(const int& row, const int& column);
 
+		// Decrements the cell by one. Same as increment but decreases by one.
+		bool decrement_cell(const int& row, const int& column);
+
 	private:
 		Square_Matrix matrix;
 
