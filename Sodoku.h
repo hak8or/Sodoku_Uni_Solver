@@ -38,7 +38,7 @@ class sodoku
 		bool check_sodoku_validity(void);
 
 		// Fill in a a percentage of cells with at least one filled.
-		void partial_fill(float);
+		void partial_fill(const float&);
 
 		// Checks if the soduko puzzle is complete, meaning if it is valid and every
 		// cell is filled.

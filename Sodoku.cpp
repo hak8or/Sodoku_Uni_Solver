@@ -153,49 +153,58 @@ bool sodoku::check_sodoku_validity(void){
 	return true;
 }
 
-// Fill in a a percentage of cells with at least one filled.
-void sodoku::partial_fill(float percentage){
+// Fill in a a percentage of cells with at least one filled. Also adds the cells
+// coordinates into a vector which is used to differentiate between nodes which
+// can and can't be changed when attempting to solve the puzzle.
+//
+// 		NOTE
+// This ONLY works for small percentages since it can only go back one "node",
+// so if it turns out that no matter what you try to the current node and it 
+// still won't be valid, then this will fail.
+void sodoku::partial_fill(const float& percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
 	this->trying_to_fill = total_cell_count * percentage;
 
 	// We need to make sure there is at least one partially filled cell for
 	// really small puzzles.
-	if (this->trying_to_fill < 1)
-		this->trying_to_fill = 1;
+	if (this->trying_to_fill < 1) {this->trying_to_fill = 1;}
 	
-	while (this->trying_to_fill--)
+	// Keeps track of how many cells were filled.
+	int filled = 0;
+
+	// While the filled cells is less than the amount of cells we are trying to
+	// fill, keep this loop going.
+	while (filled != this->trying_to_fill)
 	{
 		// Make a random set of coordinates and a random int.
 		int var = rand() % ( this->matrix.Get_Size() );
 		int x_coordinate = rand() % ( this->matrix.Get_Size() );
 		int y_coordinate = rand() % ( this->matrix.Get_Size() );
 
-		// If this coordinate has not been already set
-		if ((this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1) || this->can_set(x_coordinate, y_coordinate))
+		// If this coordinate has not been already set earlier, try to put a
+		// new value into it.
+		if (this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1)
 		{
 			// Write the cell.
 			this->matrix.Set_Elem(var, x_coordinate, y_coordinate);
 
-			// Check if the changes are valid, if not then reverse the changes.
+			// Check if the changes are valid, if not then reverse the changes,
+			// if they are good then add them into the const_cells entry.
 			if (this->check_sodoku_validity())
 			{
+				// Add the new coordinates to the list.
 				const_cells.push_back( coordinates() );
-				const_cells[trying_to_fill].x = x_coordinate;
-				const_cells[trying_to_fill].y = y_coordinate;
-			}
-			else
-			{
-				this->trying_to_fill++;
-				this->matrix.Set_Elem(-1, x_coordinate, y_coordinate);
-			}
-		}
-		else
-		{
-			this->trying_to_fill++;
+				const_cells[filled].x = x_coordinate;
+				const_cells[filled].y = y_coordinate;
 
-			if (const_cells.size() != 0)
-				const_cells.pop_back();
+				// Increment the amount of filled cells.
+				filled++;
+			}
+			// If the new cell is not valid, reset that cell back to its original
+			// state.
+			else
+				this->matrix.Set_Elem(-1, x_coordinate, y_coordinate);
 		}
 	}
 }
