@@ -24,7 +24,8 @@ chase.
 #include "Sodoku.h"
 
 // For the testing suite.
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+// I am supplying my own main which contains the homework implimentation.
+#define CATCH_CONFIG_RUNNER 
 #include "catch.hpp"
 
 using namespace std;
@@ -756,4 +757,16 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 			}
 		}
 	}
+}
+
+int main(int argc, char *argv[])
+{
+	cout << "Running self tests ... \n";
+
+	// If we did not get a 0 then the tests failed.
+	if (Catch::Session().run( argc, argv ) != 0)
+		cout << "Self tests failed, the program will still run but the results"
+				 "are probably incorrect." << endl;
+
+	return 0;
 }
