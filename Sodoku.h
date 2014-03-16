@@ -38,6 +38,9 @@ class sodoku
 		bool check_sodoku_validity(void);
 	private:
 		Square_Matrix matrix;
+
+		// Counts how many cells have been filled already.
+		int count_filled_cells(void);
 };
 
 #endif

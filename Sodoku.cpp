@@ -145,3 +145,24 @@ bool sodoku::check_sodoku_validity(void){
 	// If we get here, it means that the puzzle is valid.
 	return true;
 }
+
+// Counts how many cells have been filled already.
+int sodoku::count_filled_cells(void){
+	// Holds the counter for how many cells have been set.
+	int filled_cell_count = 0;
+
+	// Go through each column.
+	for (int i = 0; i < this->matrix.Get_Size(); ++i)
+	{
+		// Check if more than 1 of that int exists in the column.
+		for (int j = 0; j < this->matrix.Get_Size(); ++j)
+		{
+			// If the number appears twice and it is not an unset cell and it is
+			// not checking itself, then that column is invalid.
+			if (this->matrix.Get_Elem(i, j) != -1)
+				filled_cell_count++;
+		}
+	}
+
+	return filled_cell_count;
+}
