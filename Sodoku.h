@@ -44,6 +44,12 @@ class sodoku
 		// cell is filled.
 		bool is_complete(void);
 
+		// Increments the cell by one. This is quicker than having to get the cell
+		// and then set the cell using two LOC, or three if you want it to look nice.
+		// Returns a zero if the new value will be out of bounds or if you can't write
+		// to that cell because it is a constant.
+		bool increment_cell(const int& row, const int& column);
+
 	private:
 		Square_Matrix matrix;
 

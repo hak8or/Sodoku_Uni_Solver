@@ -213,6 +213,24 @@ void sodoku::partial_fill(const float& percentage){
 sodoku solve_puzzle(sodoku& previous_sodoku){
 }
 
+// Increments the cell by one. This is quicker than having to get the cell
+// and then set the cell using two LOC, or three if you want it to look nice.
+// Returns a zero if the new value will be out of bounds or if you can't write
+// to that cell because it is a constant.
+bool sodoku::increment_cell(const int& row, const int& column){
+	if ( row < this.matrix.Get_Size() && // Is the row out of bounds?
+		 column < this.matrix.Get_Size() && // Is the column out of bounds?
+		 this->can_set(row, column) && // Is the cell writable?
+		 this->Get_Cell(row, column) < this->matrix.Get_Size() ) // Is the new
+		// value out of bounds?
+	{
+		int cell_contents = this->Get_Cell(row, column);
+		cell_contents++;
+		return true;
+	}
+	else {return false;}
+}
+
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
 // cell is filled.
 bool sodoku::is_complete(void){
