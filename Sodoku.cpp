@@ -174,10 +174,21 @@ void sodoku::partial_fill(float percentage){
 		// If this coordinate has not been already set
 		if ((this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1) || this->can_set(x_coordinate, y_coordinate))
 		{
+			// Write the cell.
 			this->matrix.Set_Elem(var, x_coordinate, y_coordinate);
-			const_cells.push_back( coordinates() );
-			const_cells[trying_to_fill].x = x_coordinate;
-			const_cells[trying_to_fill].y = y_coordinate;
+
+			// Check if the changes are valid, if not then reverse the changes.
+			if (this->check_sodoku_validity())
+			{
+				const_cells.push_back( coordinates() );
+				const_cells[trying_to_fill].x = x_coordinate;
+				const_cells[trying_to_fill].y = y_coordinate;
+			}
+			else
+			{
+				this->trying_to_fill++;
+				this->matrix.Set_Elem(-1, x_coordinate, y_coordinate);
+			}
 		}
 		else
 		{
