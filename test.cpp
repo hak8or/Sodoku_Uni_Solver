@@ -783,5 +783,25 @@ int main(int argc, char *argv[])
 		cin >> size;
 	}
 
+	// Makes a sodoku puzzle of the user specifed size.
+	sodoku puzzle(size);
+
+	// Display the empty puzzle.
+	cout << "This is your empty sodoku puzzle. \n";
+	puzzle.display();
+
+	// Fills some randomly selected yet valid starting cells.
+	cout << "Lets fill it with some starting cells ...\n";
+	puzzle.partial_fill(0.15); // It being 15% in this case.
+	puzzle.display(); // And show it back to the user.
+
+	// Solve the puzzle and if it was solved display the contents. Otherwise
+	// show that it was unsolvable.
+	cout << "And now we solve it! \n";
+	if (puzzle.solve_puzzle())
+		puzzle.display();
+	else 
+		cout << "The generated puzzle is unsolvable.";
+
 	return 0;
 }
