@@ -1,5 +1,7 @@
 #include "Sodoku.h"
 #include "Square_Matrix.h"
+#include <time.h> // Solely for seeding the RNG.
+#include <stdlib.h> // Solely for the RNG.
 #include <iostream>
 
 // NOTE:
@@ -15,8 +17,13 @@ using namespace std;
 
 // Constructor for the sodoku object.
 sodoku::sodoku(void){
-	this->matrix.Set_Size(9);
+	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
+	this->solve_status = false;
+	this->trying_to_fill = 0;
+
+	// Seed the random number generator using the time.
+	srand (time(NULL));
 }
 
 // DeConstructor for the sodoku object.
@@ -143,5 +150,111 @@ bool sodoku::check_sodoku_validity(void){
 	}
 
 	// If we get here, it means that the puzzle is valid.
+	return true;
+}
+
+// Fill in a a percentage of cells with at least one filled. Also adds the cells
+// coordinates into a vector which is used to differentiate between nodes which
+// can and can't be changed when attempting to solve the puzzle.
+//
+// 		NOTE
+// This ONLY works for small percentages since it can only go back one "node",
+// so if it turns out that no matter what you try to the current node and it 
+// still won't be valid, then this will fail.
+void sodoku::partial_fill(const float& percentage){
+	// First we need to find out how many cells to fill.
+	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
+	this->trying_to_fill = total_cell_count * percentage;
+
+	// We need to make sure there is at least one partially filled cell for
+	// really small puzzles.
+	if (this->trying_to_fill < 1) {this->trying_to_fill = 1;}
+	
+	// Keeps track of how many cells were filled.
+	int filled = 0;
+
+	// While the filled cells is less than the amount of cells we are trying to
+	// fill, keep this loop going.
+	while (filled != this->trying_to_fill)
+	{
+		// Make a random set of coordinates and a random int.
+		int var = rand() % ( this->matrix.Get_Size() );
+		int x_coordinate = rand() % ( this->matrix.Get_Size() );
+		int y_coordinate = rand() % ( this->matrix.Get_Size() );
+
+		// If this coordinate has not been already set earlier, try to put a
+		// new value into it.
+		if (this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1)
+		{
+			// Write the cell.
+			this->matrix.Set_Elem(var, x_coordinate, y_coordinate);
+
+			// Check if the changes are valid, if not then reverse the changes,
+			// if they are good then add them into the const_cells entry.
+			if (this->check_sodoku_validity())
+			{
+				// Add the new coordinates to the list.
+				const_cells.push_back( coordinates() );
+				const_cells[filled].x = x_coordinate;
+				const_cells[filled].y = y_coordinate;
+
+				// Increment the amount of filled cells.
+				filled++;
+			}
+			// If the new cell is not valid, reset that cell back to its original
+			// state.
+			else
+				this->matrix.Set_Elem(-1, x_coordinate, y_coordinate);
+		}
+	}
+}
+
+// Solves the puzzle based on solve_status.
+sodoku solve_puzzle(sodoku& previous_sodoku){
+}
+
+// Checks if the sodoku puzzle is complete, meaning if it is valid and every
+// cell is filled.
+bool sodoku::is_complete(void){
+	// First we see if every cell is filled.
+	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
+		return false;
+
+	// Secondly, if the contents of the puzzle are valid.
+	if ( !this->check_sodoku_validity() )
+		return false;
+
+	// If we get here, it means the sodoku puzzle is complete.
+	return true;
+}
+
+// Counts how many cells have been filled already.
+int sodoku::count_filled_cells(void){
+	// Holds the counter for how many cells have been set.
+	int filled_cell_count = 0;
+
+	// Go through each column.
+	for (int i = 0; i < this->matrix.Get_Size(); ++i)
+	{
+		// Check if more than 1 of that int exists in the column.
+		for (int j = 0; j < this->matrix.Get_Size(); ++j)
+		{
+			// If the number appears twice and it is not an unset cell and it is
+			// not checking itself, then that column is invalid.
+			if (this->matrix.Get_Elem(i, j) != -1)
+				filled_cell_count++;
+		}
+	}
+
+	return filled_cell_count;
+}
+
+// Checks if the sodoku puzzle is complete, meaning if it is valid and every
+// cell is filled.
+bool sodoku::can_set(int x_coordinate, int y_coordinate){
+	for (int i = 0; i < const_cells.size(); ++i)
+		if ((const_cells[i].x == x_coordinate) && (const_cells[i].y == y_coordinate));
+			return false;
+
 	return true;
 }

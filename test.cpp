@@ -449,8 +449,8 @@ SCENARIO("Making a Sodoku puzzle") {
 		WHEN("Making a Sodoku puzzle object") {
 			sodoku puzzle;
 
-			THEN("The Sodoku puzzle should be 9 by 9 units big") {
-				REQUIRE(puzzle.Get_Size() == 9);
+			THEN("The Sodoku puzzle should be 2 by 2 units big") {
+				REQUIRE(puzzle.Get_Size() == 2);
 			}
 		}
 	}
@@ -491,7 +491,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle with a bad row in it") {
 		sodoku puzzle;
 		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(2, 0, 5);
+		puzzle.Set_Cell(1, 0, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -513,7 +513,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle without a bad row in it") {
 		sodoku puzzle;
 		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(2, 1, 5);
+		puzzle.Set_Cell(1, 1, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -535,7 +535,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle with a bad column in it") {
 		sodoku puzzle;
 		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(0, 2, 5);
+		puzzle.Set_Cell(0, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -557,7 +557,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle without a bad column in it") {
 		sodoku puzzle;
 		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 2, 5);
+		puzzle.Set_Cell(1, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -572,6 +572,91 @@ SCENARIO("Checking an incorrect sodoku") {
 
 			THEN("the return value should be true") {
 				REQUIRE(validity);
+			}
+		}
+	}
+}
+
+SCENARIO("Filling in a few starting cells.") {
+	GIVEN("An empty non partially filled sodoku puzzle") {
+		sodoku puzzle;
+
+		WHEN("filling in a few cells to get started") {
+			puzzle.partial_fill(0.15);
+
+			THEN("a few cells should be correctly filled") {
+				puzzle.display();
+				REQUIRE(puzzle.check_sodoku_validity());
+			}
+		}
+	}
+}
+
+SCENARIO("Checking completness of the puzzle") {
+	GIVEN("An empty sodoku puzzle") {
+		sodoku puzzle;
+
+		WHEN("checking if it is complete") {
+			bool completness = puzzle.is_complete();
+
+			THEN("it should be not complete") {
+				REQUIRE(!completness);
+			}
+		}
+	}
+
+	GIVEN("A partially filled sodoku puzzle") {
+		sodoku puzzle;
+
+		// 1 0
+		// 0 .
+		puzzle.Set_Cell(0, 0, 1);
+		puzzle.Set_Cell(0, 1, 0);
+		puzzle.Set_Cell(1, 0, 0);
+
+		WHEN("checking if it is complete") {
+			bool completness = puzzle.is_complete();
+
+			THEN("it should be not complete") {
+				REQUIRE(!completness);
+			}
+		}
+	}
+
+	GIVEN("An incorrectly filled sodoku puzzle") {
+		sodoku puzzle;
+
+		// 1 0
+		// 0 0
+		puzzle.Set_Cell(0, 0, 1);
+		puzzle.Set_Cell(0, 1, 0);
+		puzzle.Set_Cell(1, 0, 0);
+		puzzle.Set_Cell(1, 1, 0);
+
+		WHEN("checking if it is complete") {
+			bool completness = puzzle.is_complete();
+
+			THEN("it should be not complete") {
+				REQUIRE(!completness);
+			}
+		}
+	}
+
+	GIVEN("An correctly filled sodoku puzzle") {
+		sodoku puzzle;
+
+		// 1 0
+		// 0 1
+		puzzle.Set_Cell(0, 0, 1);
+		puzzle.Set_Cell(0, 1, 0);
+		puzzle.Set_Cell(1, 0, 0);
+		puzzle.Set_Cell(1, 1, 1);
+
+		WHEN("checking if it is complete") {
+			bool completness = puzzle.is_complete();
+
+			THEN("it should be not complete") {
+				REQUIRE(completness);
 			}
 		}
 	}
