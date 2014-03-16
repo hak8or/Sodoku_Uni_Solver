@@ -1,5 +1,7 @@
 #include "Sodoku.h"
 #include "Square_Matrix.h"
+#include <time.h> // Solely for seeding the RNG.
+#include <stdlib.h> // Solely for the RNG.
 #include <iostream>
 
 // NOTE:
@@ -15,8 +17,13 @@ using namespace std;
 
 // Constructor for the sodoku object.
 sodoku::sodoku(void){
-	this->matrix.Set_Size(9);
+	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
+	this->solve_status = false;
+	this->trying_to_fill = 0;
+
+	// Seed the random number generator using the time.
+	srand (time(NULL));
 }
 
 // DeConstructor for the sodoku object.
@@ -146,6 +153,61 @@ bool sodoku::check_sodoku_validity(void){
 	return true;
 }
 
+// Fill in a a percentage of cells with at least one filled.
+void sodoku::partial_fill(float){
+	// First we need to find out how many cells to fill.
+	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
+	this->trying_to_fill = total_cell_count * 0.15;
+
+	// We need to make sure there is at least one partially filled cell for
+	// really small puzzles.
+	if (this->trying_to_fill < 1)
+		this->trying_to_fill = 1;
+	
+	while (this->trying_to_fill--)
+	{
+		// Make a random set of coordinates and a random int.
+		int var = rand() % ( this->matrix.Get_Size() );
+		int x_coordinate = rand() % ( this->matrix.Get_Size() );
+		int y_coordinate = rand() % ( this->matrix.Get_Size() );
+
+		// If this coordinate has not been already set
+		if ((this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1) || this->can_set(x_coordinate, y_coordinate))
+		{
+			this->matrix.Set_Elem(var, x_coordinate, y_coordinate);
+			const_cells.push_back( coordinates() );
+			const_cells[trying_to_fill].x = x_coordinate;
+			const_cells[trying_to_fill].y = y_coordinate;
+		}
+		else
+		{
+			this->trying_to_fill++;
+
+			if (const_cells.size() != 0)
+				const_cells.pop_back();
+		}
+	}
+}
+
+// Solves the puzzle based on solve_status.
+sodoku solve_puzzle(sodoku& previous_sodoku){
+}
+
+// Checks if the sodoku puzzle is complete, meaning if it is valid and every
+// cell is filled.
+bool sodoku::is_complete(void){
+	// First we see if every cell is filled.
+	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
+		return false;
+
+	// Secondly, if the contents of the puzzle are valid.
+	if ( !this->check_sodoku_validity() )
+		return false;
+
+	// If we get here, it means the sodoku puzzle is complete.
+	return true;
+}
+
 // Counts how many cells have been filled already.
 int sodoku::count_filled_cells(void){
 	// Holds the counter for how many cells have been set.
@@ -165,4 +227,14 @@ int sodoku::count_filled_cells(void){
 	}
 
 	return filled_cell_count;
+}
+
+// Checks if the sodoku puzzle is complete, meaning if it is valid and every
+// cell is filled.
+bool sodoku::can_set(int x_coordinate, int y_coordinate){
+	for (int i = 0; i < const_cells.size(); ++i)
+		if ((const_cells[i].x == x_coordinate) && (const_cells[i].y == y_coordinate));
+			return false;
+
+	return true;
 }
