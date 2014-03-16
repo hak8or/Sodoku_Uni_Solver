@@ -224,8 +224,22 @@ bool sodoku::increment_cell(const int& row, const int& column){
 		 this->Get_Cell(row, column) < this->matrix.Get_Size() ) // Is the new
 		// value out of bounds?
 	{
+		// Holds the contents of the cell.
 		int cell_contents = this->Get_Cell(row, column);
+
+		// Increment the contents by one.
 		cell_contents++;
+
+		// Save the new contents into the cell.
+		this->matrix.Set_Elem(cell_contents, row, column);
+
+		// We were able to save the new cell contents, so all went well!
+		return true;
+	}
+
+	// If we got here, then something went wrong, so return a false.
+	else {return false;}
+}
 		return true;
 	}
 	else {return false;}
