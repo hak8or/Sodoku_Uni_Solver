@@ -154,10 +154,10 @@ bool sodoku::check_sodoku_validity(void){
 }
 
 // Fill in a a percentage of cells with at least one filled.
-void sodoku::partial_fill(float){
+void sodoku::partial_fill(float percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
-	this->trying_to_fill = total_cell_count * 0.15;
+	this->trying_to_fill = total_cell_count * percentage;
 
 	// We need to make sure there is at least one partially filled cell for
 	// really small puzzles.
