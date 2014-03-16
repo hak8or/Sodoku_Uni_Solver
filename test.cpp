@@ -585,7 +585,6 @@ SCENARIO("Filling in a few starting cells.") {
 			puzzle.partial_fill(0.15);
 
 			THEN("a few cells should be correctly filled") {
-				puzzle.display();
 				REQUIRE(puzzle.check_sodoku_validity());
 			}
 		}
@@ -657,6 +656,24 @@ SCENARIO("Checking completness of the puzzle") {
 
 			THEN("it should be not complete") {
 				REQUIRE(completness);
+			}
+		}
+	}
+}
+
+SCENARIO("Try to complete the puzzle!") {
+	GIVEN("A partially filled puzzle") {
+		sodoku puzzle;
+		puzzle.partial_fill(0.15);
+
+		WHEN("trying to auto solve it.") {
+			puzzle.display();
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				puzzle.display();
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
 			}
 		}
 	}

@@ -20,7 +20,7 @@ class sodoku
 
 		// Gets a cell from the puzzle using x and y coordinates.
 		// If out of bounds, returns a 0.
-		int Get_Cell(const int&, const int&);
+		int Get_Cell(const int& x_coordinate, const int& y_coordinate);
 
 		// Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
 		bool Set_Cell(const int& x_coordinate, 
@@ -48,10 +48,13 @@ class sodoku
 		// and then set the cell using two LOC, or three if you want it to look nice.
 		// Returns a zero if the new value will be out of bounds or if you can't write
 		// to that cell because it is a constant.
-		bool increment_cell(const int& row, const int& column);
+		bool increment_cell(const int& column, const int& row);
 
+		// Solves the puzzle based on solve_status.
+		bool solve_puzzle(void);
+		
 		// Decrements the cell by one. Same as increment but decreases by one.
-		bool decrement_cell(const int& row, const int& column);
+		bool decrement_cell(const int& column, const int& row);
 
 	private:
 		Square_Matrix matrix;
@@ -68,9 +71,6 @@ class sodoku
 		// partial_fill().
 		int trying_to_fill;
 
-		// Solves the puzzle based on solve_status.
-		sodoku solve_puzzle(sodoku&);
-
 		// Coordinates of a cell which is not allowed to change. Meant for holding
 		// cells which were partially filled when the puzzle is first presented.
 		struct coordinates
@@ -82,8 +82,9 @@ class sodoku
 		// Holds a vector of cell coordinates we are not allowed to modify later.
 		std::vector<coordinates> const_cells;
 
-		// Latest cell tried to fill
-		coordinates attempted_cell;
+		// List in order of attempted to fill cells. This will be used by the 
+		// backtracking algorythm to keep track of what "nodes" we were in.
+		std::vector<coordinates> attempted_cells;
 
 		// Checks if the input coordinates exist in the vector of coordinates for cells
 		// we are not allowed to modify.
