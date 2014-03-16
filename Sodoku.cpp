@@ -218,8 +218,8 @@ sodoku solve_puzzle(sodoku& previous_sodoku){
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
 bool sodoku::increment_cell(const int& row, const int& column){
-	if ( row < this.matrix.Get_Size() && // Is the row out of bounds?
-		 column < this.matrix.Get_Size() && // Is the column out of bounds?
+	if ( row < this->matrix.Get_Size() && // Is the row out of bounds?
+		 column < this->matrix.Get_Size() && // Is the column out of bounds?
 		 this->can_set(row, column) && // Is the cell writable?
 		 this->Get_Cell(row, column) < this->matrix.Get_Size() ) // Is the new
 		// value out of bounds?
