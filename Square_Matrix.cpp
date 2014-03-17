@@ -177,6 +177,15 @@ std::vector<int> Square_Matrix::Get_Row(const int &num_row)
 	return row;
 }
 
+// Fills the entire matrix with this int.
+void Square_Matrix::fill(const int &value)
+{
+	// Goes through the entire matrix and one by one sets each element
+	// to the val.
+	for (int i = 0; i < size; ++i)
+		for (int j = 0; j < size; ++j)
+			matrix[i][j] = value;
+}
 
 // Sanity test to see if all is alive.
 int Square_Matrix::sanity_check(void)
