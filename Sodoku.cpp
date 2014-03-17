@@ -314,7 +314,7 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
-	while (this->increment_cell(x, y))
+	while (this->increment_cell_contents(x, y))
 	{
 		// Used if the user wants to see how the puzzle gets changed over time.
 		if (this->view_progress)
@@ -417,7 +417,7 @@ bool Sodoku::back_cell(void)
 // and then set the cell using two LOC, or three if you want it to look nice.
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
-bool Sodoku::increment_cell(const int& column, const int& row){
+bool Sodoku::increment_cell_contents(const int& column, const int& row){
 	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
 		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
 		(this->matrix.Get_Elem(column, row) < this->matrix.Get_Size() - 1)) // Is the new

@@ -49,12 +49,6 @@ class Sodoku
 		// cell is filled. This does not ignore cells which are unset.
 		bool is_complete(void);
 
-		// Increments the cell by one. This is quicker than having to get the cell
-		// and then set the cell using two LOC, or three if you want it to look nice.
-		// Returns a zero if the new value will be out of bounds or if you can't write
-		// to that cell because it is a constant.
-		bool increment_cell(const int& column, const int& row);
-
 		// Solves the puzzle based on solve_status.
 		bool solve_puzzle(void);
 		
@@ -93,6 +87,12 @@ class Sodoku
 		// Returns false if we can't get to the next/previous valid cell.
 		bool next_cell(void);
 		bool back_cell(void);
+
+		// Increments the cell by one. This is quicker than having to get the cell
+		// and then set the cell using two LOC, or three if you want it to look nice.
+		// Returns a zero if the new value will be out of bounds or if you can't write
+		// to that cell because it is a constant.
+		bool increment_cell_contents(const int& column, const int& row);
 
 		// Checks if the input coordinates exist in the vector of coordinates 
 		// for cells which we are not allowed to modify.
