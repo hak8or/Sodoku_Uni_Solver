@@ -138,20 +138,20 @@ int main(int argc, char *argv[])
 	puzzle.display("\nThis is your empty sodoku puzzle.");
 
 	// Fills some randomly selected yet valid starting cells.
-	cout << "Lets fill it with some starting cells ...\n";
 	puzzle.solve_puzzle_partially(0.15); // It being 15% in this case.
+	cout << "Lets fill it with some starting cells\n";
 	puzzle.display(); // And show it back to the user.
 
 	// Solve the puzzle and if it was solved display the contents. Otherwise
 	// show that it was unsolvable.
-	cout << "And now we solve it! \n";
+	cout << "And now we solve it! This could take a while ...\n";
 	if (puzzle.solve_puzzle())
 	{
 		puzzle.display();
 		cout << "Whew! That took " << puzzle.get_amount_of_steps() << " steps!\n";
 	}
 	else 
-		cout << "The generated puzzle is unsolvable.";
+		cout << "The generated puzzle is unsolvable!\n";
 
 	return 0;
 }
