@@ -85,10 +85,6 @@ class sodoku
 		// Holds a vector of cell coordinates we are not allowed to modify later.
 		std::vector<coordinates> const_cells;
 
-		// List in order of attempted to fill cells. This will be used by the 
-		// backtracking algorythm to keep track of what "nodes" we were in.
-		std::vector<coordinates> attempted_cells;
-
 		coordinates working_cell;
 
 		bool next_cell(void);
