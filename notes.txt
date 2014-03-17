@@ -1,0 +1,183 @@
+NOTES:
+
+-- Now --
+
+
+-- later --
+
+
+------- Complete -------
+[Y] - Update compilation instructions.
+[Y] - Change test.cpp to main.cpp (kept test.cpp, made main.cpp)
+[Y] - Say if using backtrack or recusrion in program start.
+[Y] - Display num_steps
+[Y] - Change partial fill to use the backtracking algo but somehow limited.
+[Y] - Change names for increment decrement cell to indicate we are changing contents.
+[Y] - Use matrix.Get/Set and Soduku.Get/Set correctly. In class use matrix only.
+[Y] - set_const_cell needs info for it not being used for anything but unit tests.
+[Y] - Fix upper and lower case diffirences.
+[Y] - Add warning if trying to fill more than 9 cells to indicate solving could take a while.
+[Y] - Fix description for solve_puzzle when taking away solve_Status.
+[Y] - Change can_set description
+[Y] - Prompt user for puzzle size.
+[Y] - User defines size of sodoku puzzle
+[Y] - Remove Attempted Cells
+[Y] - Remove solve Status.
+[Y] - Add test and fix for when the first cell is unset.
+[Y] - Have display() output an input string.
+[Y] - Have the tests run before the the main program.
+[Y] - Use an "unset" var of -1
+[Y] - When using display, display nothing for unset var's
+[Y] - Impliment row + column check taking into account unset vars
+[Y] - Fill in some cells by dividing size by filling in 15% with at least 1 cell.
+[Y] - Add padding to display depending on if 1 digit ints or 2 digit ints.
+
+
+LOC
+Sodoku.cpp 	--------- 525
+Sodoku.h ------------ 109
+test.cpp ------------ 800
+main.cpp ------------ 79
+Square_Matrix.h ----- 78
+Square_Matrix.cpp --- 315
+-------------------------
+			   Total: 1906
+
+
+Why can I use optional paramaters only in .cpp and not .h?
+Is there some sort of standard for accessors using capital letters?
+-----------------------------------------------
+solve_puzzle uses backtrack with next_cell using a dash of recursion.
+
+
+
+
+-----------------------------------------------
+-- Solution! --
+Recusively solve the matrix using backtrace!
+auto_solve(void)
+{
+	solve(this)
+}
+
+sodoku solve_puzzle(sodoku&)
+{	
+	if(!valid)
+	{
+		Put in the next variable one int higher than current, 
+		  going row member to row member 
+		  next row member to row member.
+
+		solve(this)
+	}
+	else
+		return this
+	
+
+	Once we get here, it means the puzzle is solved!
+}
+
+// If the puzzle is not yet completed, try another node in the tree of
+// possibilities.
+/*if( !this->is_complete)
+{
+
+	Put in the next variable one int higher than current, 
+	  going row member to row member 
+	  next row member to row member.
+
+	solve_puzzle(this)
+}
+else
+	return this
+
+
+Once we get here, it means the puzzle is solved!*/
+
+
+
+-----------------------------------------------
+GIVEN("A partially filled sodoku puzzle") {
+	sodoku puzzle;
+	puzzle.partial_fill(0.15);
+
+	WHEN("trying to increment writable cell") {
+		int x = 0;
+		int y = 0;
+
+		// Find a writable cell first.
+		for (int row = 0; row < puzzle.Get_Size(); ++row)
+			for (int column = 0; column < puzzle.Get_Size(); ++column)
+				if (puzzle.can_)
+				{
+					/* code */
+				}
+
+		puzzle.increment_cell(0, 0);
+
+		THEN("a few cells should be correctly filled") {
+			puzzle.display();
+			REQUIRE(puzzle.check_sodoku_validity());
+		}
+	}
+}
+
+(cell_contents == -1) ? (cell_contents = 1) : (cell_contents++);
+this->matrix.Set_Elem(cell_contents, row, column);
+
+SOLVE PUZZLE INCREMENT MUST TRY INCREMENTING MORE THAN ONCE!!!!
+
+
+---------------------------
+	// Starts on the top left of the puzzle to the top right, then down a row 
+	// from left to right, and repeats to the end.
+	for (int row = 0; row < this->matrix.Get_Size(); ++row)
+		for (int column = 0; column < this->matrix.Get_Size(); ++column)
+		{
+			// If can't set that cell since it is a const cell, skip to the next cell.
+			if (!this->can_set(column, row))
+				continue;
+
+			if (!this->try_to_fill(column, row))
+			{
+				// Go back in terms of coordinates.
+				// If current node is at the first unit of a row, go up
+				// a row and shift to the right most column.
+				if (column == 0)
+				{
+					column = this->matrix.Get_Size();
+					row--;
+				}
+				else
+					column = column - 2;
+			}
+		}
+
+	// If we reached here, then the all cells have been successfully set!
+	return true;
+
+
+
+
+	bool sodoku::try_to_fill(const int& column, const int& row){
+	for (int i = 0; i <= this->matrix.Get_Size(); i++)
+	{
+		if (this->increment_cell(column, row)) // Can we increment the cell?
+		{
+			if (this->check_sodoku_validity()) // Is the new cell valid?
+			{
+				this->display();
+				// If the new cell is valid then break out of trying to
+				// increment the cell to a valid int.
+				return true;
+			}
+		}
+		// If the cell was incremented all the way and still a no go.
+		else
+		{
+			// then change the cell back to default
+			this->decrement_cell(column, row);
+
+			return false;
+		}
+	}
