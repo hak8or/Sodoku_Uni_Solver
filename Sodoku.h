@@ -88,6 +88,8 @@ class sodoku
 		// The coordinates of the current cell we are trying to fill.
 		coordinates working_cell;
 
+		// Used to increment and decrement the coordinates of working_cell().
+		// Returns false if we can't get to the next/previous valid cell.
 		bool next_cell(void);
 		bool back_cell(void);
 
