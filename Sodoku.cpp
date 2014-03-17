@@ -159,7 +159,7 @@ bool sodoku::check_column_validity(const int& column){
 }
 
 // Checks if the entire Sodoku puzzle is correct, combines checking each row
-// and column into just one function call.
+// and column into just one function call. This ignores cells which are unset.
 bool sodoku::check_sodoku_validity(void){
 
 	// Since this is a square, we can check rows and columns in one for loop.
@@ -469,7 +469,7 @@ bool sodoku::decrement_cell(const int& column, const int& row){
 }
 
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
-// cell is filled.
+// cell is filled. This does not ignore cells which are unset.
 bool sodoku::is_complete(void){
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )

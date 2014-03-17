@@ -39,7 +39,7 @@ class sodoku
 		bool check_column_validity(const int& column);
 
 		// Checks if the entire Sodoku puzzle is correct, combines checking each row
-		// and column into just one function call.
+		// and column into just one function call. This ignores cells which are unset.
 		bool check_sodoku_validity(void);
 
 		// Fill in a a percentage of cells with at least one filled.
@@ -49,7 +49,7 @@ class sodoku
 		void set_const_cell(int value, int x, int y);
 
 		// Checks if the soduko puzzle is complete, meaning if it is valid and every
-		// cell is filled.
+		// cell is filled. This does not ignore cells which are unset.
 		bool is_complete(void);
 
 		// Increments the cell by one. This is quicker than having to get the cell
