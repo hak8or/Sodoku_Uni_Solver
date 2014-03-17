@@ -85,6 +85,7 @@ class sodoku
 		// Holds a vector of cell coordinates we are not allowed to modify later.
 		std::vector<coordinates> const_cells;
 
+		// The coordinates of the current cell we are trying to fill.
 		coordinates working_cell;
 
 		bool next_cell(void);
