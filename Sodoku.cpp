@@ -443,33 +443,6 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 
 }
 
-// Decrements the cell by one. This is quicker than having to get the cell
-// and then set the cell using two LOC, or three if you want it to look nice.
-// Returns a zero if the new value will be out of bounds or if you can't write
-// to that cell because it is a constant.
-bool Sodoku::decrement_cell(const int& column, const int& row){
-	if (row < this->matrix.Get_Size() && // Is the row out of bounds?
-		column < this->matrix.Get_Size() && // Is the column out of bounds?
-		this->can_set(column, row) && // Is the cell writable?
-		this->matrix.Get_Elem(column, row) > -1) // Is the new already too small?
-	{
-		// Holds the contents of the cell.
-		int cell_contents = this->matrix.Get_Elem(column, row);
-
-		// Increment the contents by one.
-		cell_contents--;
-
-		// Save the new contents into the cell.
-		this->matrix.Set_Elem(cell_contents, column, row);
-
-		// We were able to save the new cell contents, so all went well!
-		return true;
-	}
-	// If we got here, then something went wrong, so return a false.
-	else
-		return false;
-}
-
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
 // cell is filled. This does not ignore cells which are unset.
 bool Sodoku::is_complete(void){

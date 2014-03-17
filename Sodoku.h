@@ -51,9 +51,6 @@ class Sodoku
 
 		// Solves the puzzle based on solve_status.
 		bool solve_puzzle(void);
-		
-		// Decrements the cell by one. Same as increment but decreases by one.
-		bool decrement_cell(const int& column, const int& row);
 
 		// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
 		// Not in private because then it couldn't be accessed by the unit tests.
