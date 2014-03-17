@@ -119,9 +119,13 @@ int main(int argc, char *argv[])
 		cin >> size;
 	}
 
-	if(size > 10)
+	if(size == 11)
 		cout << "You chose a somewhat large matrix. It could take a minute or "
 				"two to solve depending on how much backtracing is needed.";
+
+	if(size > 11)
+		cout << "You chose a somewhat large matrix. Go get a cup of coffee or "
+				"something because this will take a long time.";
 
 	// Makes a sodoku puzzle of the user specifed size.
 	Sodoku puzzle(size);
