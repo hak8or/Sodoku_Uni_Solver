@@ -117,6 +117,9 @@ bool Sodoku::set_cell(const int& x, const int& y, const int& val){
 	// Each write to a cell is considered an attempt or try.
 	amount_of_steps++;
 
+	// This is really useful for debugging, so leave this in.
+	// this->display("changed: " + std::to_string(x) + ", " + std::to_string(y) + "\n");
+
 	// If the coordinates are out of bounds, return false.
 	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
 		return false;
@@ -267,48 +270,41 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 //		If we return to the first writable cell and still can't find a solution 
 //		then consider the puzzle unsolvable with the current unwritable cells.
 bool Sodoku::solve_puzzle(void){
-	// Set the working_cell to 0,0 when starting to solve the puzzle. Surprisingly,
+	// Set the working_cell to -1,-1 when starting to solve the puzzle. Surprisingly,
 	// I didn't need to do this in visual studio since it started at 0,0 but in
 	// GCC it started at 4410251, 0 which is cool.
-	this->working_cell.x = 0;
-	this->working_cell.y = 0;
+	this->working_cell.x = -1;
+	this->working_cell.y = -1;
 
-	// Manually try to solve the first cell if it isn't a const to get started.
-	if (can_set(working_cell.x, working_cell.y))
-		this->try_to_fill(this->working_cell.x, this->working_cell.y);
+	// Just for when the first cell is not writable. Also checks if there are any
+	// writable cells in the first place.
+	if (!this->next_cell())
+		return false;
+
 
 	// Starts on the top left of the puzzle to the top right, then down a row 
 	// from left to right, and repeats to the end.
-	while (this->next_cell()){
-		// Stick a display here to see how the matrix is solved step by step.
-		// this->display();
-
+	while(true){
 		// If try_to_fill fails, it means that all attempts to fill the current
 		// cell have failed, so go back a cell.
 		if (this->try_to_fill(this->working_cell.x, this->working_cell.y)){
-			// Good place to pop some debugging statements.
+			// If we detect that the puzzle is solved, exit the loop.
+			if (this->is_complete())
+				break;
+
+			// If are at the last cell and trying to keep going to the next
+			// cell, then the puzzle should be considered unsolvable.
+			if (!this->next_cell())
+				return false;
 		}
 		else{
-			// Thrown in here for debugging so output is easier to navigate.
-			// cout << "Backtracing now!\n";
+			// Set the cell to unset so it it won't bother us when comparing it again
+			// in the future.
+			this->matrix.Set_Elem(-1, this->working_cell.x, this->working_cell.y);
 
-			// First we need to reset the current cell to the unset value though.
-			this->set_cell(working_cell.x, working_cell.y, -1);
-
-			// This is done twice because in the while loop here both checking
-			// and incrementing are done twice. If we only go back once, then
-			// after the while conditional both checks and increments we will
-			// be right back to the same cell. Chaining these together into
-			// one if statement for some reason does not work.
 			// If going back a a cell failed, then it means we can't go further
 			// back, so the puzzle is unsolvable.
-			if (this->back_cell())
-			{
-				if(!this->back_cell())
-					 // Return false to show it was unable to be solved.
-					return false;
-			}
-			else 
+			if (!this->back_cell())
 				return false;
 		}
 	}
@@ -330,10 +326,6 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 	// not all possible values have been tried, keep trying higher values.
 	while (this->increment_cell_contents(x, y))
 	{
-		// Used if the user wants to see how the puzzle gets changed over time.
-		if (this->view_progress)
-			this->display();
-
 		// Check the validity of the changes. 
 		if (check_sodoku_validity())
 			return true;
@@ -347,10 +339,6 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 	// Reset the cell contents to what they were when we first tried to 
 	// fill the cell.
 	this->set_cell(x, y, orig_contents);
-
-	// Used if the user wants to see how the puzzle gets changed over time.
-	if (this->view_progress)
-			this->display();
 
 	// Return false to indicate that we can't fill this cell.
 	return false;
@@ -381,6 +369,10 @@ bool Sodoku::next_cell(void)
 	// cell coordinates to one cell to the right.
 	else if (working_cell.x != this->matrix.Get_Size() - 1)
 		working_cell.x++;
+
+	// If the cell was already written to, skip it.
+	if (this->get_cell(working_cell.x, working_cell.y) != -1)
+		this->next_cell();
 
 	// If the next cell is one of the const_cells, ones which we are not
 	// allowed to modify because they were filled using partial fill, then
@@ -494,8 +486,16 @@ int Sodoku::count_filled_cells(void){
 }
 
 // Checks if the input coordinates exist in the vector of coordinates for cells 
-// which we are not allowed to modify.
+// which we are not allowed to modify. Also, if out of bounds return false.
 bool Sodoku::can_set(int x_coordinate, int y_coordinate){
+	// First check if the coordinates are out of bounds.
+	if ((x_coordinate < 0) || (y_coordinate < 0) ||
+		(x_coordinate >= this->get_size()) || 
+		(x_coordinate >= this->get_size()))
+	{
+		return false;
+	}
+
 	for (int i = 0; i < this->const_cells.size(); ++i)
 		if ((this->const_cells[i].x == x_coordinate) &&
 			(this->const_cells[i].y == y_coordinate))
@@ -514,7 +514,7 @@ int Sodoku::get_amount_of_steps(void)
 
 // THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
 // Not in private because then it couldn't be accessed by the unit tests.
-void Sodoku::set_const_cell(int value, int x, int y){
+void Sodoku::set_const_cell( int x, int y, int value){
 	this->matrix.Set_Elem(value, x, y);
 
 	// Add the new coordinates to the list.

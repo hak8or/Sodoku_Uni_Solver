@@ -81,6 +81,10 @@ To do it all: make clean && make && ./Sodoku
 | There were troubles with using version control for this since I originally was just
 | putting everything into a develop branch but later wanted to use gitflow which did
 | work out too well so it remained as is. The branching and merging is not miraculous.
+|
+| The -std=c++0x flag was added due to a bug for converting int to string from the
+| standard library. 
+| http://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-so-g
 --------
 
 */

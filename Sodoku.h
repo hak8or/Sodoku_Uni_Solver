@@ -54,7 +54,7 @@ class Sodoku
 
 		// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
 		// Not in private because then it couldn't be accessed by the unit tests.
-		void set_const_cell(int value, int x, int y);
+		void set_const_cell(int x, int y, int value);
 
 		// Returns an idea of how "hard" it was to find the solution.
 		int get_amount_of_steps(void);
