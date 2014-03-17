@@ -310,7 +310,7 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 	// Contents of the cell when originally hit this function 
 	// which will be used for resetting the variable back to its
 	// original state if we can't fill the cell.
-	int orig_contents = this->get_cell(x, y);
+	int orig_contents = this->matrix.Get_Elem(x, y);
 
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
@@ -420,11 +420,11 @@ bool Sodoku::back_cell(void)
 bool Sodoku::increment_cell(const int& column, const int& row){
 	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
 		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
-		(this->get_cell(column, row) < this->matrix.Get_Size() - 1)) // Is the new
+		(this->matrix.Get_Elem(column, row) < this->matrix.Get_Size() - 1)) // Is the new
 		// value out of bounds?
 	{
 		// Holds the contents of the cell.
-		int cell_contents = this->get_cell(column, row);
+		int cell_contents = this->matrix.Get_Elem(column, row);
 
 		// Increment the contents by one.
 		cell_contents++;
@@ -451,10 +451,10 @@ bool Sodoku::decrement_cell(const int& column, const int& row){
 	if (row < this->matrix.Get_Size() && // Is the row out of bounds?
 		column < this->matrix.Get_Size() && // Is the column out of bounds?
 		this->can_set(column, row) && // Is the cell writable?
-		this->get_cell(column, row) > -1) // Is the new already too small?
+		this->matrix.Get_Elem(column, row) > -1) // Is the new already too small?
 	{
 		// Holds the contents of the cell.
-		int cell_contents = this->get_cell(column, row);
+		int cell_contents = this->matrix.Get_Elem(column, row);
 
 		// Increment the contents by one.
 		cell_contents--;
