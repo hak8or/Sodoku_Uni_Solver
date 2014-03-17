@@ -64,6 +64,15 @@ void sodoku::display(std::string input_string){
 	if (!input_string.empty())
 		cout << input_string << endl;
 
+	// Sets how much padding is needed for each cell display so the columns
+	// align properly.
+	int padding = 1; 
+
+	// Since we are not expecting values higher than two digits, just manually
+	// check if the size is bigger than 1 digit.
+	if (this->matrix.Get_Size() > 10)
+		padding = 2; // Since we need two spaces for numbers over nine.
+
 	// Go through each row.
 	for (int row = 0; row < this->matrix.Get_Size(); ++row)
 	{
@@ -73,17 +82,20 @@ void sodoku::display(std::string input_string){
 		// Makes some nice formatting to the start of the row.
 		cout << "| ";
 
-		// Displays the contents of each cell of the row with right hand padding.
+		// Displays the contents of each cell of the row with spacing between cells.
 		for (int cell_count = 0; cell_count < this->matrix.Get_Size(); ++cell_count)
 		{
+			// Sets up padding for the cell output.
+			cout.width(padding);
+
 			if (row_contents[cell_count] == -1)
-				cout << ". ";
+				cout << "." << " ";
 			else
 				cout << row_contents[cell_count] << " ";
 		}
 
 		// Shows that the row is done.
-		cout << "|" << endl;
+		cout << " |" << endl;
 	}
 
 	// Add in a line to make things look nicer.
