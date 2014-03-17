@@ -1,0 +1,15 @@
+Your program asks user to input integer number N. Then program creates square grid of size N by N and fills it randomly with a numbers from 1 to N in such a way that the same number is never seen twice in the same row or the same column (obviously, each number will be seen in a grid multiple times).
+
+Your program got to show different random solutions for the problem. In other words, if I execute your program few times with a same input parameter, each time I should see different (but still correct) answer.
+
+Your algorithm MUST use recursion OR backtracking OR both. Please state what you are trying to use in the comments in the beginning of the program.
+
+Memory for the grid to be filled should be allocated dynamically. If you want to, you can use YOUR (only your own) class and include files created in a previous homework assignment. In this case dont forget to include header and cpp-file together with your assignment submission.
+
+Make sure your output is easy to read and understand.
+
+Project must be completed individually. Any look-alike works will be graded 0 points (both of them).
+
+Project must be submitted ONLY through the Blackboard. Make sure your submittion includes all the files that I need to compile and run your program (dont forget your self-made include files and corresponding files with implementations that you might use).
+
+Project is due to MARCH 18. No late submittions will be accepted or graded!

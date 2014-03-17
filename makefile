@@ -1,9 +1,9 @@
 CC=g++
 CFLAGS=-c -g
 LDFLAGS=
-SOURCES= test.cpp Square_Matrix.cpp Sodoku.cpp
+SOURCES= test.cpp Square_Matrix.cpp Sodoku.cpp main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=Square_Matrix
+EXECUTABLE=Sodoku
 
 all: $(SOURCES) $(EXECUTABLE)
 	

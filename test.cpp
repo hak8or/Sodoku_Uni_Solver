@@ -25,7 +25,6 @@ chase.
 
 // For the testing suite.
 // I am supplying my own main which contains the homework implimentation.
-#define CATCH_CONFIG_RUNNER 
 #include "catch.hpp"
 
 using namespace std;
@@ -448,10 +447,10 @@ SCENARIO("Matrix addition") {
 SCENARIO("Making a Sodoku puzzle") {
 	GIVEN("A clean slate") {
 		WHEN("Making a Sodoku puzzle object") {
-			sodoku puzzle;
+			Sodoku puzzle;
 
 			THEN("The Sodoku puzzle should be 2 by 2 units big") {
-				REQUIRE(puzzle.Get_Size() == 2);
+				REQUIRE(puzzle.get_size() == 2);
 			}
 		}
 	}
@@ -459,10 +458,10 @@ SCENARIO("Making a Sodoku puzzle") {
 
 SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 	GIVEN("A empty non partially filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		WHEN("acessing an cell") {
-			int cell_contents = puzzle.Get_Cell(0,1);
+			int cell_contents = puzzle.get_cell(0,1);
 
 			THEN("cell contents should be unset(-1)") {
 				REQUIRE(cell_contents == -1);
@@ -470,7 +469,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		}
 
 		WHEN("writing to an out of bounds cell") {
-			bool successful_write = puzzle.Set_Cell(98, 99, 5);
+			bool successful_write = puzzle.set_cell(98, 99, 5);
 
 			THEN("the return value should be false") {
 				REQUIRE(!successful_write);
@@ -478,11 +477,11 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		}
 
 		WHEN("writing to an in bounds cell") {
-			bool successful_write = puzzle.Set_Cell(0, 1, 5);
+			bool successful_write = puzzle.set_cell(0, 1, 5);
 
 			THEN("The cell contents should be changed") {
 				REQUIRE(successful_write);
-				REQUIRE(puzzle.Get_Cell(0,1) == 5);
+				REQUIRE(puzzle.get_cell(0,1) == 5);
 			}
 		}
 	}
@@ -490,9 +489,9 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 
 SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle with a bad row in it") {
-		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 0, 5);
+		Sodoku puzzle;
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 0, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -512,9 +511,9 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle without a bad row in it") {
-		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 1, 5);
+		Sodoku puzzle;
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 1, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -534,9 +533,9 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle with a bad column in it") {
-		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(0, 1, 5);
+		Sodoku puzzle;
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(0, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -556,9 +555,9 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle without a bad column in it") {
-		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 1, 5);
+		Sodoku puzzle;
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -579,11 +578,11 @@ SCENARIO("Checking an incorrect sodoku") {
 }
 
 SCENARIO("Filling in a few starting cells.") {
-	GIVEN("An empty non partially filled sodoku puzzle") {
-		sodoku puzzle;
+	GIVEN("An empty partially filled sodoku puzzle") {
+		Sodoku puzzle;
 
 		WHEN("filling in a few cells to get started") {
-			puzzle.partial_fill(0.15);
+			puzzle.solve_puzzle_partially(0.15);
 
 			THEN("a few cells should be correctly filled") {
 				REQUIRE(puzzle.check_sodoku_validity());
@@ -594,7 +593,7 @@ SCENARIO("Filling in a few starting cells.") {
 
 SCENARIO("Checking completness of the puzzle") {
 	GIVEN("An empty sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -605,14 +604,14 @@ SCENARIO("Checking completness of the puzzle") {
 		}
 	}
 
-	GIVEN("A partially filled sodoku puzzle") {
-		sodoku puzzle;
+	GIVEN("A partially manually filled sodoku puzzle") {
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 .
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -624,14 +623,14 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 
 	GIVEN("An incorrectly filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 0
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
-		puzzle.Set_Cell(1, 1, 0);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
+		puzzle.set_cell(1, 1, 0);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -643,30 +642,28 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 
 	GIVEN("An correctly filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 1
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
-		puzzle.Set_Cell(1, 1, 1);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
+		puzzle.set_cell(1, 1, 1);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
 
-			THEN("it should be not complete") {
+			THEN("it should be complete") {
 				REQUIRE(completness);
 			}
 		}
 	}
 }
 
-// Partial fill is not tested because I don't have a good idea on how to test it.
-
 SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
 		// 1 2 .
 		// . 1 .
@@ -688,12 +685,11 @@ SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
 
 SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
-		// 0 . 1
+		// . . 1
 		// 2 . .
 		// . . .
-		puzzle.set_const_cell(0, 0, 0); // top left
 		puzzle.set_const_cell(1, 2, 0); // top right
 		puzzle.set_const_cell(2, 0, 1); // 2 at 0, 1
 
@@ -708,9 +704,25 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 	}
 }
 
+SCENARIO("Auto solve a sodoku partially auto filled.") {
+	GIVEN("a sodoku partially auto filled") {
+		Sodoku puzzle(3);
+		puzzle.solve_puzzle_partially(0.15);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
 SCENARIO("Auto solve a sodoku with manually set consts with backtracing and two constants next to each other") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
 		// 0 2 .
 		// 2 . .
@@ -732,7 +744,7 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing and two 
 
 SCENARIO("Auto solve a larger sodoku with manually set consts") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(9);
+		Sodoku puzzle(9);
 
 		// 0 . 1 . . . . . . // 0
 		// . 2 . . . . . . . // 1
@@ -759,7 +771,7 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 	}
 
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(9);
+		Sodoku puzzle(9);
 
 		// . . 1 . . . . . . // 0
 		// . 2 . . . . . . . // 1
@@ -784,54 +796,4 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 			}
 		}
 	}
-}
-
-// Homework implimentation. No command line arguments taken, added here for 
-// compliance though.
-int main(int argc, char *argv[])
-{
-	cout << "Running self tests ... \n";
-
-	// If we did not get a 0 then the tests failed.
-	if (Catch::Session().run( argc, argv ) != 0)
-		cout << "Self tests failed, the program will still run but the results"
-				 "are probably incorrect." << endl;
-
-	// Get the users requested size of the sodoku puzzle.
-	int size;
-	cout << "Size of Sodoku puzzle: ";
-	cin >> size;
-
-	// If the size was less than 1, then say that the size is bad and request
-	// a new size.
-	while(size < 1)
-	{
-		cout << "Size selection was not valid, please type in a resonable size: ";
-		cin >> size;
-	}
-
-	if(size > 10)
-		cout << "You chose a somewhat large matrix. It could take a minute or "
-				"two to solve depending on how much backtracing is needed.";
-
-	// Makes a sodoku puzzle of the user specifed size.
-	sodoku puzzle(size);
-
-	// Display the empty puzzle.
-	puzzle.display("\nThis is your empty sodoku puzzle.");
-
-	// Fills some randomly selected yet valid starting cells.
-	cout << "Lets fill it with some starting cells ...\n";
-	puzzle.partial_fill(0.15); // It being 15% in this case.
-	puzzle.display(); // And show it back to the user.
-
-	// Solve the puzzle and if it was solved display the contents. Otherwise
-	// show that it was unsolvable.
-	cout << "And now we solve it! \n";
-	if (puzzle.solve_puzzle())
-		puzzle.display();
-	else 
-		cout << "The generated puzzle is unsolvable.";
-
-	return 0;
 }
