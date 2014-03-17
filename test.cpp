@@ -470,7 +470,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		}
 
 		WHEN("writing to an out of bounds cell") {
-			bool successful_write = puzzle.Set_Cell(98, 99, 5);
+			bool successful_write = puzzle.set_cell(98, 99, 5);
 
 			THEN("the return value should be false") {
 				REQUIRE(!successful_write);
@@ -478,7 +478,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		}
 
 		WHEN("writing to an in bounds cell") {
-			bool successful_write = puzzle.Set_Cell(0, 1, 5);
+			bool successful_write = puzzle.set_cell(0, 1, 5);
 
 			THEN("The cell contents should be changed") {
 				REQUIRE(successful_write);
@@ -491,8 +491,8 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle with a bad row in it") {
 		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 0, 5);
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 0, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -513,8 +513,8 @@ SCENARIO("Checking an incorrect sodoku") {
 
 	GIVEN("A sodoku puzzle without a bad row in it") {
 		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 1, 5);
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 1, 5);
 
 		WHEN("checking if there is a bad row") {
 			bool validity = puzzle.check_row_validity(0);
@@ -535,8 +535,8 @@ SCENARIO("Checking an incorrect sodoku") {
 
 	GIVEN("A sodoku puzzle with a bad column in it") {
 		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(0, 1, 5);
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(0, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -557,8 +557,8 @@ SCENARIO("Checking an incorrect sodoku") {
 
 	GIVEN("A sodoku puzzle without a bad column in it") {
 		sodoku puzzle;
-		puzzle.Set_Cell(0, 0, 5);
-		puzzle.Set_Cell(1, 1, 5);
+		puzzle.set_cell(0, 0, 5);
+		puzzle.set_cell(1, 1, 5);
 
 		WHEN("checking if there is a bad column") {
 			bool validity = puzzle.check_column_validity(0);
@@ -610,9 +610,9 @@ SCENARIO("Checking completness of the puzzle") {
 
 		// 1 0
 		// 0 .
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -628,10 +628,10 @@ SCENARIO("Checking completness of the puzzle") {
 
 		// 1 0
 		// 0 0
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
-		puzzle.Set_Cell(1, 1, 0);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
+		puzzle.set_cell(1, 1, 0);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -647,10 +647,10 @@ SCENARIO("Checking completness of the puzzle") {
 
 		// 1 0
 		// 0 1
-		puzzle.Set_Cell(0, 0, 1);
-		puzzle.Set_Cell(0, 1, 0);
-		puzzle.Set_Cell(1, 0, 0);
-		puzzle.Set_Cell(1, 1, 1);
+		puzzle.set_cell(0, 0, 1);
+		puzzle.set_cell(0, 1, 0);
+		puzzle.set_cell(1, 0, 0);
+		puzzle.set_cell(1, 1, 1);
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();

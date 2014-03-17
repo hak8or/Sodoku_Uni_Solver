@@ -109,7 +109,7 @@ int sodoku::get_cell(const int &x, const int &y){
 }
 
 // Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
-bool sodoku::Set_Cell(const int& x, const int& y, const int& val){
+bool sodoku::set_cell(const int& x, const int& y, const int& val){
 
 	// If the coordinates are out of bounds, return false.
 	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
@@ -332,7 +332,7 @@ bool sodoku::try_to_fill(const int& x, const int& y){
 	// to its maximum value but none of the attempted values were correct.
 	// Reset the cell contents to what they were when we first tried to 
 	// fill the cell.
-	this->Set_Cell(x, y, orig_contents);
+	this->set_cell(x, y, orig_contents);
 
 	// Used if the user wants to see how the puzzle gets changed over time.
 	if (this->view_progress)

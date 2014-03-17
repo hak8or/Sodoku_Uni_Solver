@@ -28,7 +28,7 @@ class sodoku
 		int get_cell(const int& x_coordinate, const int& y_coordinate);
 
 		// Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
-		bool Set_Cell(const int& x_coordinate, 
+		bool set_cell(const int& x_coordinate, 
 					  const int& y_coordinate, 
 					  const int& new_value);
 
