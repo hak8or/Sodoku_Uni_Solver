@@ -25,7 +25,6 @@ chase.
 
 // For the testing suite.
 // I am supplying my own main which contains the homework implimentation.
-#define CATCH_CONFIG_RUNNER 
 #include "catch.hpp"
 
 using namespace std;
@@ -797,57 +796,4 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 			}
 		}
 	}
-}
-
-// Homework implimentation. No command line arguments taken, added here for 
-// compliance though.
-int main(int argc, char *argv[])
-{
-	cout << "Running self tests ... \n";
-
-	// If we did not get a 0 then the tests failed.
-	if (Catch::Session().run( argc, argv ) != 0)
-		cout << "Self tests failed, the program will still run but the results"
-				 "are probably incorrect." << endl;
-
-	// Get the users requested size of the sodoku puzzle.
-	int size;
-	cout << "Size of Sodoku puzzle: ";
-	cin >> size;
-
-	// If the size was less than 1, then say that the size is bad and request
-	// a new size.
-	while(size < 1)
-	{
-		cout << "Size selection was not valid, please type in a resonable size: ";
-		cin >> size;
-	}
-
-	if(size > 10)
-		cout << "You chose a somewhat large matrix. It could take a minute or "
-				"two to solve depending on how much backtracing is needed.";
-
-	// Makes a sodoku puzzle of the user specifed size.
-	Sodoku puzzle(size);
-
-	// Display the empty puzzle.
-	puzzle.display("\nThis is your empty sodoku puzzle.");
-
-	// Fills some randomly selected yet valid starting cells.
-	cout << "Lets fill it with some starting cells ...\n";
-	puzzle.solve_puzzle_partially(0.15); // It being 15% in this case.
-	puzzle.display(); // And show it back to the user.
-
-	// Solve the puzzle and if it was solved display the contents. Otherwise
-	// show that it was unsolvable.
-	cout << "And now we solve it! \n";
-	if (puzzle.solve_puzzle())
-	{
-		puzzle.display();
-		cout << "Whew! That took " << puzzle.get_amount_of_steps() << " steps!\n";
-	}
-	else 
-		cout << "The generated puzzle is unsolvable.";
-
-	return 0;
 }
