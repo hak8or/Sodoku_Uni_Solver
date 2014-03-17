@@ -810,6 +810,10 @@ int main(int argc, char *argv[])
 		cin >> size;
 	}
 
+	if(size > 10)
+		cout << "You chose a somewhat large matrix. It could take a minute or "
+				"two to solve depending on how much backtracing is needed.";
+
 	// Makes a sodoku puzzle of the user specifed size.
 	sodoku puzzle(size);
 
