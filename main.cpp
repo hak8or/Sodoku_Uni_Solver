@@ -81,6 +81,10 @@ To do it all: make clean && make && ./Sodoku
 | There were troubles with using version control for this since I originally was just
 | putting everything into a develop branch but later wanted to use gitflow which did
 | work out too well so it remained as is. The branching and merging is not miraculous.
+|
+| The -std=c++0x flag was added due to a bug for converting int to string from the
+| standard library. 
+| http://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-so-g
 --------
 
 */
@@ -134,20 +138,20 @@ int main(int argc, char *argv[])
 	puzzle.display("\nThis is your empty sodoku puzzle.");
 
 	// Fills some randomly selected yet valid starting cells.
-	cout << "Lets fill it with some starting cells ...\n";
 	puzzle.solve_puzzle_partially(0.15); // It being 15% in this case.
+	cout << "Lets fill it with some starting cells\n";
 	puzzle.display(); // And show it back to the user.
 
 	// Solve the puzzle and if it was solved display the contents. Otherwise
 	// show that it was unsolvable.
-	cout << "And now we solve it! \n";
+	cout << "And now we solve it! This could take a while ...\n";
 	if (puzzle.solve_puzzle())
 	{
 		puzzle.display();
 		cout << "Whew! That took " << puzzle.get_amount_of_steps() << " steps!\n";
 	}
 	else 
-		cout << "The generated puzzle is unsolvable.";
+		cout << "The generated puzzle is unsolvable!\n";
 
 	return 0;
 }

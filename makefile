@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -g
+CFLAGS=-c -g -std=c++0x
 LDFLAGS=
 SOURCES= test.cpp Square_Matrix.cpp Sodoku.cpp main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
