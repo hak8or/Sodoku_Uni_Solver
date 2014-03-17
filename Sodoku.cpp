@@ -3,6 +3,7 @@
 #include <time.h> // Solely for seeding the RNG.
 #include <stdlib.h> // Solely for the RNG.
 #include <iostream>
+#include <string>
 
 // NOTE:
 // Because I do not wish to modify Square_Matrix from the previous assignment, 
@@ -55,12 +56,15 @@ int sodoku::Get_Size(void){
 
 // Throws out the current sodoku puzzle contents by going row through row, and
 // adding spacing between each cells contents for making it easier to read.
-void sodoku::display(void){
-	// For saying that these are the contents.
-	cout << "Contents of puzzle: " << endl;
-
+// Takes an input string to display on top of the puzzle, and if no message was
+// given then don't display a message.
+void sodoku::display(std::string input_string){
 	// Will hold the current row.
 	vector<int> row_contents;
+
+	// If no input string was given then don't the string.
+	if (!input_string.empty())
+		cout << input_string << endl;
 
 	// Go through each row.
 	for (int row = 0; row < this->matrix.Get_Size(); ++row)
@@ -83,6 +87,9 @@ void sodoku::display(void){
 		// Shows that the row is done.
 		cout << "|" << endl;
 	}
+
+	// Add in a line to make things look nicer.
+	cout << endl;
 }
 
 // Returns the contents of the cell at the X and Y coordinates. If out of bounds,

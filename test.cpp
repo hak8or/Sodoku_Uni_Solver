@@ -814,8 +814,7 @@ int main(int argc, char *argv[])
 	sodoku puzzle(size);
 
 	// Display the empty puzzle.
-	cout << "This is your empty sodoku puzzle. \n";
-	puzzle.display();
+	puzzle.display("\nThis is your empty sodoku puzzle.");
 
 	// Fills some randomly selected yet valid starting cells.
 	cout << "Lets fill it with some starting cells ...\n";

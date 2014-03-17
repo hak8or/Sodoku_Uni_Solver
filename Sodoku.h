@@ -2,6 +2,7 @@
 #define Sodoku_H
 
 #include "Square_Matrix.h"
+#include <string>
 
 class sodoku
 {
@@ -16,8 +17,8 @@ class sodoku
 		// DeConstructor for the Soduku object.
 		~sodoku(void);
 
-		// Throws out the current soduku puzzle's contents.
-		void display(void);
+		// Throws out the current soduku puzzle's contents with a message.
+		void display(std::string input_string = "");
 
 		// Displays the size of the Sodoku puzzle
 		int Get_Size(void);
