@@ -235,6 +235,10 @@ bool sodoku::solve_puzzle(void){
 	this->working_cell.x = 0;
 	this->working_cell.y = 0;
 
+	// Manually try to solve the first cell if it isn't a const to get started.
+	if (can_set(working_cell.x, working_cell.y))
+		this->try_to_fill(this->working_cell.x, this->working_cell.y);
+
 	// Starts on the top left of the puzzle to the top right, then down a row 
 	// from left to right, and repeats to the end.
 	while (this->next_cell()){
@@ -248,9 +252,6 @@ bool sodoku::solve_puzzle(void){
 			amount_of_steps++;
 		}
 		else{
-			// If going back a a cell failed, then it means we can't go further
-			// back, so the puzzle is unsolvable.
-
 			// Thrown in here for debugging so output is easier to navigate.
 			// cout << "Backtracing now!\n";
 
@@ -262,6 +263,8 @@ bool sodoku::solve_puzzle(void){
 			// after the while conditional both checks and increments we will
 			// be right back to the same cell. Chaining these together into
 			// one if statement for some reason does not work.
+			// If going back a a cell failed, then it means we can't go further
+			// back, so the puzzle is unsolvable.
 			if (this->back_cell())
 			{
 				if(!this->back_cell())

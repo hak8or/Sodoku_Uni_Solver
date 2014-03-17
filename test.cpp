@@ -757,6 +757,33 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 			}
 		}
 	}
+
+	GIVEN("a sodoku with manually set consts") {
+		sodoku puzzle(9);
+
+		// . . 1 . . . . . . // 0
+		// . 2 . . . . . . . // 1
+		// . . . . . . . . . // 2
+		// . . . . . . . . . // 3
+		// . . . . . . . . . // 4
+		// . . . 0 . . . . . // 5
+		// . . . . . . . . . // 6
+		// . . . . . . . 5 . // 7
+		// . . . . . . . . . // 8
+		puzzle.set_const_cell(0, 3, 5);
+		puzzle.set_const_cell(1, 2, 0);
+		puzzle.set_const_cell(2, 0, 1);
+		puzzle.set_const_cell(5, 7, 7);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
 }
 
 // Homework implimentation. No command line arguments taken, added here for 
