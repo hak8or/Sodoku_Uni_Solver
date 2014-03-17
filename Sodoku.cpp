@@ -229,7 +229,7 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 		if (this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1)
 		{
 			// Write the cell.
-			this->matrix.Set_Elem(var, x_coordinate, y_coordinate);
+			this->set_cell(x_coordinate, y_coordinate, var);
 
 			// Check if the changes are valid, if not then reverse the changes,
 			// if they are good then add them into the const_cells entry.
@@ -246,7 +246,7 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 			// If the new cell is not valid, reset that cell back to its original
 			// state.
 			else
-				this->matrix.Set_Elem(-1, x_coordinate, y_coordinate);
+				this->set_cell(x_coordinate, y_coordinate, -1);
 		}
 	}
 }
@@ -286,7 +286,7 @@ bool Sodoku::solve_puzzle(void){
 			// cout << "Backtracing now!\n";
 
 			// First we need to reset the current cell to the unset value though.
-			this->matrix.Set_Elem(-1, working_cell.x, working_cell.y);
+			this->set_cell(working_cell.x, working_cell.y, -1);
 
 			// This is done twice because in the while loop here both checking
 			// and incrementing are done twice. If we only go back once, then
@@ -437,7 +437,7 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 		cell_contents++;
 
 		// Save the new contents into the cell.
-		this->matrix.Set_Elem(cell_contents, column, row);
+		this->set_cell(column, row, cell_contents);
 
 		// We were able to save the new cell contents, so all went well!
 		return true;
