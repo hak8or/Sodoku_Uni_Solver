@@ -48,7 +48,7 @@ sodoku::~sodoku(void){
 
 }
 
-int sodoku::Get_Size(void){
+int sodoku::get_size(void){
 	return this->matrix.Get_Size();
 }
 

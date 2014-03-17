@@ -21,7 +21,7 @@ class sodoku
 		void display(std::string input_string = "");
 
 		// Displays the size of the Sodoku puzzle
-		int Get_Size(void);
+		int get_size(void);
 
 		// Gets a cell from the puzzle using x and y coordinates.
 		// If out of bounds, returns a 0.

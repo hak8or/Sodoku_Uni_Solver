@@ -451,7 +451,7 @@ SCENARIO("Making a Sodoku puzzle") {
 			sodoku puzzle;
 
 			THEN("The Sodoku puzzle should be 2 by 2 units big") {
-				REQUIRE(puzzle.Get_Size() == 2);
+				REQUIRE(puzzle.get_size() == 2);
 			}
 		}
 	}
