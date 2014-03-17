@@ -93,8 +93,8 @@ class sodoku
 		bool next_cell(void);
 		bool back_cell(void);
 
-		// Checks if the input coordinates exist in the vector of coordinates for cells
-		// we are not allowed to modify.
+		// Checks if the input coordinates exist in the vector of coordinates 
+		// for cells which we are not allowed to modify.
 		bool can_set(int x, int y);
 
 		// Try to fill the cell at x and y, if fail then return a false.

@@ -504,8 +504,8 @@ int sodoku::count_filled_cells(void){
 	return filled_cell_count;
 }
 
-// Checks if the sodoku puzzle is complete, meaning if it is valid and every
-// cell is filled.
+// Checks if the input coordinates exist in the vector of coordinates for cells 
+// which we are not allowed to modify.
 bool sodoku::can_set(int x_coordinate, int y_coordinate){
 	for (int i = 0; i < this->const_cells.size(); ++i)
 		if ((this->const_cells[i].x == x_coordinate) &&
