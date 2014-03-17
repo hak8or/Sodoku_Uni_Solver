@@ -714,7 +714,6 @@ SCENARIO("Auto solve a sodoku partially auto filled.") {
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
-				puzzle.display("From auto_solve");
 				REQUIRE(solved);
 				REQUIRE(puzzle.is_complete());
 			}
