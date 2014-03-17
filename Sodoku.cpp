@@ -20,7 +20,6 @@ using namespace std;
 sodoku::sodoku(void){
 	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
-	this->solve_status = false;
 	this->trying_to_fill = 0;
 
 	// Seed the random number generator using the time.
@@ -35,7 +34,6 @@ sodoku::sodoku(void){
 sodoku::sodoku(int size){
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);
-	this->solve_status = false;
 	this->trying_to_fill = 0;
 
 	// Seed the random number generator using the time.
@@ -234,7 +232,13 @@ void sodoku::partial_fill(const float& percentage){
 	}
 }
 
-// Solves the puzzle based on solve_status.
+// This is the main function for solving the sodoku puzzle.
+// 1) Sets the current cell we are trying to solve to the origin cell, 0,0.
+// 2) Solves the first cell if it is not unset.
+// 3) Goes to the next writable cell and tries to fill it with a valid entry.
+// 4) Repeat step 3 until either we reach the last cell and solve it. 
+//		If we return to the first writable cell and still can't find a solution 
+//		then consider the puzzle unsolvable with the current unwritable cells.
 bool sodoku::solve_puzzle(void){
 	// Set the working_cell to 0,0 when starting to solve the puzzle. Surprisingly,
 	// I didn't need to do this in visual studio since it started at 0,0 but in

@@ -70,11 +70,6 @@ class sodoku
 		// Counts how many cells have been filled already.
 		int count_filled_cells(void);
 
-		// Bool used to say if currently trying to fill it or just some cells.
-		// 1 = solve everything
-		// 0 = solve just some
-		bool solve_status;
-
 		// Used solely to keep track of how many cells we want to fill when using
 		// partial_fill().
 		int trying_to_fill;
