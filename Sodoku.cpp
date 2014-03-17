@@ -104,7 +104,7 @@ void sodoku::display(std::string input_string){
 
 // Returns the contents of the cell at the X and Y coordinates. If out of bounds,
 // returns a 0, of which the behavior is implemented in the Square_Matrix lib.
-int sodoku::Get_Cell(const int &x, const int &y){
+int sodoku::get_cell(const int &x, const int &y){
 	return this->matrix.Get_Elem(x, y);
 }
 
@@ -310,7 +310,7 @@ bool sodoku::try_to_fill(const int& x, const int& y){
 	// Contents of the cell when originally hit this function 
 	// which will be used for resetting the variable back to its
 	// original state if we can't fill the cell.
-	int orig_contents = this->Get_Cell(x, y);
+	int orig_contents = this->get_cell(x, y);
 
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
@@ -420,11 +420,11 @@ bool sodoku::back_cell(void)
 bool sodoku::increment_cell(const int& column, const int& row){
 	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
 		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
-		(this->Get_Cell(column, row) < this->matrix.Get_Size() - 1)) // Is the new
+		(this->get_cell(column, row) < this->matrix.Get_Size() - 1)) // Is the new
 		// value out of bounds?
 	{
 		// Holds the contents of the cell.
-		int cell_contents = this->Get_Cell(column, row);
+		int cell_contents = this->get_cell(column, row);
 
 		// Increment the contents by one.
 		cell_contents++;
@@ -461,10 +461,10 @@ bool sodoku::decrement_cell(const int& column, const int& row){
 	if (row < this->matrix.Get_Size() && // Is the row out of bounds?
 		column < this->matrix.Get_Size() && // Is the column out of bounds?
 		this->can_set(column, row) && // Is the cell writable?
-		this->Get_Cell(column, row) > -1) // Is the new already too small?
+		this->get_cell(column, row) > -1) // Is the new already too small?
 	{
 		// Holds the contents of the cell.
-		int cell_contents = this->Get_Cell(column, row);
+		int cell_contents = this->get_cell(column, row);
 
 		// Increment the contents by one.
 		cell_contents--;

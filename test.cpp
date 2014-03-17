@@ -462,7 +462,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 		sodoku puzzle;
 
 		WHEN("acessing an cell") {
-			int cell_contents = puzzle.Get_Cell(0,1);
+			int cell_contents = puzzle.get_cell(0,1);
 
 			THEN("cell contents should be unset(-1)") {
 				REQUIRE(cell_contents == -1);
@@ -482,7 +482,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 
 			THEN("The cell contents should be changed") {
 				REQUIRE(successful_write);
-				REQUIRE(puzzle.Get_Cell(0,1) == 5);
+				REQUIRE(puzzle.get_cell(0,1) == 5);
 			}
 		}
 	}
