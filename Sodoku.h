@@ -45,9 +45,6 @@ class Sodoku
 		// Fill in a a percentage of cells with at least one filled.
 		void partial_fill(const float&);
 
-		// FOR UNIT TESTING ONLY! DON'T USE ME
-		void set_const_cell(int value, int x, int y);
-
 		// Checks if the soduko puzzle is complete, meaning if it is valid and every
 		// cell is filled. This does not ignore cells which are unset.
 		bool is_complete(void);
@@ -63,6 +60,10 @@ class Sodoku
 		
 		// Decrements the cell by one. Same as increment but decreases by one.
 		bool decrement_cell(const int& column, const int& row);
+
+		// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+		// Not in private because then it couldn't be accessed by the unit tests.
+		void set_const_cell(int value, int x, int y);
 
 	private:
 		Square_Matrix matrix;

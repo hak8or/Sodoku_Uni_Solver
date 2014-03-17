@@ -443,16 +443,6 @@ bool Sodoku::increment_cell(const int& column, const int& row){
 
 }
 
-void Sodoku::set_const_cell(int value, int x, int y){
-	this->matrix.Set_Elem(value, x, y);
-
-	// Add the new coordinates to the list.
-	coordinates const_cell;
-	const_cell.x = x;
-	const_cell.y = y;
-	const_cells.push_back( const_cell );
-}
-
 // Decrements the cell by one. This is quicker than having to get the cell
 // and then set the cell using two LOC, or three if you want it to look nice.
 // Returns a zero if the new value will be out of bounds or if you can't write
@@ -527,4 +517,16 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 		}
 
 	return true;
+}
+
+// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+// Not in private because then it couldn't be accessed by the unit tests.
+void Sodoku::set_const_cell(int value, int x, int y){
+	this->matrix.Set_Elem(value, x, y);
+
+	// Add the new coordinates to the list.
+	coordinates const_cell;
+	const_cell.x = x;
+	const_cell.y = y;
+	const_cells.push_back( const_cell );
 }
