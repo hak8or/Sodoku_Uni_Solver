@@ -4,18 +4,18 @@
 #include "Square_Matrix.h"
 #include <string>
 
-class sodoku
+class Sodoku
 {
 	public:
 		// Constructor for the Soduku object with a default size of 2.
-		sodoku(void);
+		Sodoku(void);
 
 		// Overloaded constructor for the Soduku object with a configurable
 		// size is given, the size will be set to 0.
-		sodoku(int size);
+		Sodoku(int size);
 
 		// DeConstructor for the Soduku object.
-		~sodoku(void);
+		~Sodoku(void);
 
 		// Throws out the current soduku puzzle's contents with a message.
 		void display(std::string input_string = "");

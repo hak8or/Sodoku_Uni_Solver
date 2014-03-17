@@ -448,7 +448,7 @@ SCENARIO("Matrix addition") {
 SCENARIO("Making a Sodoku puzzle") {
 	GIVEN("A clean slate") {
 		WHEN("Making a Sodoku puzzle object") {
-			sodoku puzzle;
+			Sodoku puzzle;
 
 			THEN("The Sodoku puzzle should be 2 by 2 units big") {
 				REQUIRE(puzzle.get_size() == 2);
@@ -459,7 +459,7 @@ SCENARIO("Making a Sodoku puzzle") {
 
 SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 	GIVEN("A empty non partially filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		WHEN("acessing an cell") {
 			int cell_contents = puzzle.get_cell(0,1);
@@ -490,7 +490,7 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 
 SCENARIO("Checking an incorrect sodoku") {
 	GIVEN("A sodoku puzzle with a bad row in it") {
-		sodoku puzzle;
+		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 0, 5);
 
@@ -512,7 +512,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle without a bad row in it") {
-		sodoku puzzle;
+		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
 
@@ -534,7 +534,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle with a bad column in it") {
-		sodoku puzzle;
+		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(0, 1, 5);
 
@@ -556,7 +556,7 @@ SCENARIO("Checking an incorrect sodoku") {
 	}
 
 	GIVEN("A sodoku puzzle without a bad column in it") {
-		sodoku puzzle;
+		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
 
@@ -580,7 +580,7 @@ SCENARIO("Checking an incorrect sodoku") {
 
 SCENARIO("Filling in a few starting cells.") {
 	GIVEN("An empty non partially filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		WHEN("filling in a few cells to get started") {
 			puzzle.partial_fill(0.15);
@@ -594,7 +594,7 @@ SCENARIO("Filling in a few starting cells.") {
 
 SCENARIO("Checking completness of the puzzle") {
 	GIVEN("An empty sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
@@ -606,7 +606,7 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 
 	GIVEN("A partially filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 .
@@ -624,7 +624,7 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 
 	GIVEN("An incorrectly filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 0
@@ -643,7 +643,7 @@ SCENARIO("Checking completness of the puzzle") {
 	}
 
 	GIVEN("An correctly filled sodoku puzzle") {
-		sodoku puzzle;
+		Sodoku puzzle;
 
 		// 1 0
 		// 0 1
@@ -666,7 +666,7 @@ SCENARIO("Checking completness of the puzzle") {
 
 SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
 		// 1 2 .
 		// . 1 .
@@ -688,7 +688,7 @@ SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
 
 SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
 		// 0 . 1
 		// 2 . .
@@ -710,7 +710,7 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 
 SCENARIO("Auto solve a sodoku with manually set consts with backtracing and two constants next to each other") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(3);
+		Sodoku puzzle(3);
 
 		// 0 2 .
 		// 2 . .
@@ -732,7 +732,7 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing and two 
 
 SCENARIO("Auto solve a larger sodoku with manually set consts") {
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(9);
+		Sodoku puzzle(9);
 
 		// 0 . 1 . . . . . . // 0
 		// . 2 . . . . . . . // 1
@@ -759,7 +759,7 @@ SCENARIO("Auto solve a larger sodoku with manually set consts") {
 	}
 
 	GIVEN("a sodoku with manually set consts") {
-		sodoku puzzle(9);
+		Sodoku puzzle(9);
 
 		// . . 1 . . . . . . // 0
 		// . 2 . . . . . . . // 1
@@ -815,7 +815,7 @@ int main(int argc, char *argv[])
 				"two to solve depending on how much backtracing is needed.";
 
 	// Makes a sodoku puzzle of the user specifed size.
-	sodoku puzzle(size);
+	Sodoku puzzle(size);
 
 	// Display the empty puzzle.
 	puzzle.display("\nThis is your empty sodoku puzzle.");

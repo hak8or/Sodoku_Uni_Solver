@@ -17,7 +17,7 @@
 using namespace std;
 
 // Constructor for the sodoku object.
-sodoku::sodoku(void){
+Sodoku::Sodoku(void){
 	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
 	this->trying_to_fill = 0;
@@ -31,7 +31,7 @@ sodoku::sodoku(void){
 
 // Overloaded constructor for the Soduku object with a configurable size. If a
 // negative size is given, the size will be set to 0.
-sodoku::sodoku(int size){
+Sodoku::Sodoku(int size){
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);
 	this->trying_to_fill = 0;
@@ -44,11 +44,11 @@ sodoku::sodoku(int size){
 }
 
 // DeConstructor for the sodoku object.
-sodoku::~sodoku(void){
+Sodoku::~Sodoku(void){
 
 }
 
-int sodoku::get_size(void){
+int Sodoku::get_size(void){
 	return this->matrix.Get_Size();
 }
 
@@ -56,7 +56,7 @@ int sodoku::get_size(void){
 // adding spacing between each cells contents for making it easier to read.
 // Takes an input string to display on top of the puzzle, and if no message was
 // given then don't display a message.
-void sodoku::display(std::string input_string){
+void Sodoku::display(std::string input_string){
 	// Will hold the current row.
 	vector<int> row_contents;
 
@@ -104,12 +104,12 @@ void sodoku::display(std::string input_string){
 
 // Returns the contents of the cell at the X and Y coordinates. If out of bounds,
 // returns a 0, of which the behavior is implemented in the Square_Matrix lib.
-int sodoku::get_cell(const int &x, const int &y){
+int Sodoku::get_cell(const int &x, const int &y){
 	return this->matrix.Get_Elem(x, y);
 }
 
 // Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
-bool sodoku::set_cell(const int& x, const int& y, const int& val){
+bool Sodoku::set_cell(const int& x, const int& y, const int& val){
 
 	// If the coordinates are out of bounds, return false.
 	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
@@ -125,7 +125,7 @@ bool sodoku::set_cell(const int& x, const int& y, const int& val){
 // Checks if the row is valid, meaning if there are multiples if a number.
 // This goes through each element in the row and checks if that element exists 
 // elsewhere in the row.
-bool sodoku::check_row_validity(const int& row){
+bool Sodoku::check_row_validity(const int& row){
 	// Holds the row of int's
 	std::vector<int> row_contents = this->matrix.Get_Row(row);
 
@@ -149,7 +149,7 @@ bool sodoku::check_row_validity(const int& row){
 // Checks if column is valid, meaning if there are multiples if a number.
 // This goes through each element in the column and checks if that element exists 
 // elsewhere in the column.
-bool sodoku::check_column_validity(const int& column){
+bool Sodoku::check_column_validity(const int& column){
 	// Holds the column of int's
 	std::vector<int> column_contents = this->matrix.Get_Column(column);
 
@@ -172,7 +172,7 @@ bool sodoku::check_column_validity(const int& column){
 
 // Checks if the entire Sodoku puzzle is correct, combines checking each row
 // and column into just one function call. This ignores cells which are unset.
-bool sodoku::check_sodoku_validity(void){
+bool Sodoku::check_sodoku_validity(void){
 
 	// Since this is a square, we can check rows and columns in one for loop.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
@@ -196,7 +196,7 @@ bool sodoku::check_sodoku_validity(void){
 // This ONLY works for small percentages since it can only go back one "node",
 // so if it turns out that no matter what you try to the current node and it 
 // still won't be valid, then this will fail.
-void sodoku::partial_fill(const float& percentage){
+void Sodoku::partial_fill(const float& percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
 	this->trying_to_fill = total_cell_count * percentage;
@@ -251,7 +251,7 @@ void sodoku::partial_fill(const float& percentage){
 // 4) Repeat step 3 until either we reach the last cell and solve it. 
 //		If we return to the first writable cell and still can't find a solution 
 //		then consider the puzzle unsolvable with the current unwritable cells.
-bool sodoku::solve_puzzle(void){
+bool Sodoku::solve_puzzle(void){
 	// Set the working_cell to 0,0 when starting to solve the puzzle. Surprisingly,
 	// I didn't need to do this in visual studio since it started at 0,0 but in
 	// GCC it started at 4410251, 0 which is cool.
@@ -306,7 +306,7 @@ bool sodoku::solve_puzzle(void){
 
 // Tries to fill the specified cell with valid data. Does not check if the
 // cell is already valid or not.
-bool sodoku::try_to_fill(const int& x, const int& y){
+bool Sodoku::try_to_fill(const int& x, const int& y){
 	// Contents of the cell when originally hit this function 
 	// which will be used for resetting the variable back to its
 	// original state if we can't fill the cell.
@@ -346,7 +346,7 @@ bool sodoku::try_to_fill(const int& x, const int& y){
 // within the sodoku object to the next writable and valid one.
 // Starts on the top left of the puzzle to the top right, then down a row from
 // left to right, and repeats to the end.
-bool sodoku::next_cell(void)
+bool Sodoku::next_cell(void)
 {
 	// If currently on the last element of a row, but not the last element
 	// of the puzzle, go to the next y and  x = 0
@@ -381,7 +381,7 @@ bool sodoku::next_cell(void)
 
 // Decrements what the current cell we are trying to fill by changing working_cell
 // within the sodoku object to the closest writable and valid one behind this one.
-bool sodoku::back_cell(void)
+bool Sodoku::back_cell(void)
 {
 	// If currently on the last element of a row, but not the last element
 	// of the puzzle, go up one row and to the last column.
@@ -417,7 +417,7 @@ bool sodoku::back_cell(void)
 // and then set the cell using two LOC, or three if you want it to look nice.
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
-bool sodoku::increment_cell(const int& column, const int& row){
+bool Sodoku::increment_cell(const int& column, const int& row){
 	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
 		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
 		(this->get_cell(column, row) < this->matrix.Get_Size() - 1)) // Is the new
@@ -443,7 +443,7 @@ bool sodoku::increment_cell(const int& column, const int& row){
 
 }
 
-void sodoku::set_const_cell(int value, int x, int y){
+void Sodoku::set_const_cell(int value, int x, int y){
 	this->matrix.Set_Elem(value, x, y);
 
 	// Add the new coordinates to the list.
@@ -457,7 +457,7 @@ void sodoku::set_const_cell(int value, int x, int y){
 // and then set the cell using two LOC, or three if you want it to look nice.
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
-bool sodoku::decrement_cell(const int& column, const int& row){
+bool Sodoku::decrement_cell(const int& column, const int& row){
 	if (row < this->matrix.Get_Size() && // Is the row out of bounds?
 		column < this->matrix.Get_Size() && // Is the column out of bounds?
 		this->can_set(column, row) && // Is the cell writable?
@@ -482,7 +482,7 @@ bool sodoku::decrement_cell(const int& column, const int& row){
 
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
 // cell is filled. This does not ignore cells which are unset.
-bool sodoku::is_complete(void){
+bool Sodoku::is_complete(void){
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
 		return false;
@@ -496,7 +496,7 @@ bool sodoku::is_complete(void){
 }
 
 // Counts how many cells have been filled already.
-int sodoku::count_filled_cells(void){
+int Sodoku::count_filled_cells(void){
 	// Holds the counter for how many cells have been set.
 	int filled_cell_count = 0;
 
@@ -518,7 +518,7 @@ int sodoku::count_filled_cells(void){
 
 // Checks if the input coordinates exist in the vector of coordinates for cells 
 // which we are not allowed to modify.
-bool sodoku::can_set(int x_coordinate, int y_coordinate){
+bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 	for (int i = 0; i < this->const_cells.size(); ++i)
 		if ((this->const_cells[i].x == x_coordinate) &&
 			(this->const_cells[i].y == y_coordinate))
