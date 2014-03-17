@@ -579,11 +579,11 @@ SCENARIO("Checking an incorrect sodoku") {
 }
 
 SCENARIO("Filling in a few starting cells.") {
-	GIVEN("An empty non partially filled sodoku puzzle") {
+	GIVEN("An empty partially filled sodoku puzzle") {
 		Sodoku puzzle;
 
 		WHEN("filling in a few cells to get started") {
-			puzzle.partial_fill(0.15);
+			puzzle.solve_puzzle_partially(0.15);
 
 			THEN("a few cells should be correctly filled") {
 				REQUIRE(puzzle.check_sodoku_validity());
@@ -605,7 +605,7 @@ SCENARIO("Checking completness of the puzzle") {
 		}
 	}
 
-	GIVEN("A partially filled sodoku puzzle") {
+	GIVEN("A partially manually filled sodoku puzzle") {
 		Sodoku puzzle;
 
 		// 1 0
@@ -655,14 +655,12 @@ SCENARIO("Checking completness of the puzzle") {
 		WHEN("checking if it is complete") {
 			bool completness = puzzle.is_complete();
 
-			THEN("it should be not complete") {
+			THEN("it should be complete") {
 				REQUIRE(completness);
 			}
 		}
 	}
 }
-
-// Partial fill is not tested because I don't have a good idea on how to test it.
 
 SCENARIO("Auto solve a sodoku with manually set consts without backtracing") {
 	GIVEN("a sodoku with manually set consts") {
@@ -690,10 +688,9 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 	GIVEN("a sodoku with manually set consts") {
 		Sodoku puzzle(3);
 
-		// 0 . 1
+		// . . 1
 		// 2 . .
 		// . . .
-		puzzle.set_const_cell(0, 0, 0); // top left
 		puzzle.set_const_cell(1, 2, 0); // top right
 		puzzle.set_const_cell(2, 0, 1); // 2 at 0, 1
 
@@ -701,6 +698,23 @@ SCENARIO("Auto solve a sodoku with manually set consts with backtracing") {
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
+SCENARIO("Auto solve a sodoku partially auto filled.") {
+	GIVEN("a sodoku partially auto filled") {
+		Sodoku puzzle(3);
+		puzzle.solve_puzzle_partially(0.15);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				puzzle.display("From auto_solve");
 				REQUIRE(solved);
 				REQUIRE(puzzle.is_complete());
 			}
@@ -822,7 +836,7 @@ int main(int argc, char *argv[])
 
 	// Fills some randomly selected yet valid starting cells.
 	cout << "Lets fill it with some starting cells ...\n";
-	puzzle.partial_fill(0.15); // It being 15% in this case.
+	puzzle.solve_puzzle_partially(0.15); // It being 15% in this case.
 	puzzle.display(); // And show it back to the user.
 
 	// Solve the puzzle and if it was solved display the contents. Otherwise

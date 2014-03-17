@@ -20,7 +20,6 @@ using namespace std;
 Sodoku::Sodoku(void){
 	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
-	this->trying_to_fill = 0;
 
 	// Seed the random number generator using the time.
 	srand(time(NULL));
@@ -34,7 +33,6 @@ Sodoku::Sodoku(void){
 Sodoku::Sodoku(int size){
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);
-	this->trying_to_fill = 0;
 
 	// Seed the random number generator using the time.
 	srand(time(NULL));
@@ -192,25 +190,34 @@ bool Sodoku::check_sodoku_validity(void){
 // coordinates into a vector which is used to differentiate between nodes which
 // can and can't be changed when attempting to solve the puzzle.
 //
-// 		NOTE
-// This ONLY works for small percentages since it can only go back one "node",
-// so if it turns out that no matter what you try to the current node and it 
-// still won't be valid, then this will fail.
-void Sodoku::partial_fill(const float& percentage){
+// This is a heavily modified version of solve_puzzle with the addition of 
+// adding the coordinates to const_cells vector, randomly choosing the cells 
+// to fill in, and randomly choosing the data to fill it with.
+//
+// No backtracking or recursion though, as that would be difficult considering
+// I need to non serially fill the data which would require a list of attempted
+// cells with attempted contents to prevent multiple redundant attempts.
+//
+// This means that you shouldn't be using this for larger percentages since
+// this is a randomized brute force method which is extremely ineficiant.
+// You also shouldn't be using this for larger percentages anyways since it 
+// will hangup on itself if it cannot fill another node without deleting a 
+// node from before. 
+//
+// It was chosen to be done this way for simplicities sake, as explained
+// in the previous paragraph.
+void Sodoku::solve_puzzle_partially(const float& percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
-	this->trying_to_fill = total_cell_count * percentage;
+	int trying_to_fill = total_cell_count * percentage;
 
 	// We need to make sure there is at least one partially filled cell for
 	// really small puzzles.
-	if ( this->trying_to_fill < 1 ) { this->trying_to_fill = 1; }
-
-	// Keeps track of how many cells were filled.
-	int filled = 0;
+	if ( trying_to_fill < 1 ) { trying_to_fill = 1; }
 
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
-	while (filled != this->trying_to_fill)
+	while (count_filled_cells() != trying_to_fill)
 	{
 		// Make a random set of coordinates and a random int.
 		int var = rand() % (this->matrix.Get_Size());
@@ -228,13 +235,13 @@ void Sodoku::partial_fill(const float& percentage){
 			// if they are good then add them into the const_cells entry.
 			if ( this->check_sodoku_validity() )
 			{
-				// Add the new coordinates to the list.
+				// Add an empty coordinate data struct into const_cells.
 				const_cells.push_back( coordinates() );
-				const_cells[filled].x = x_coordinate;
-				const_cells[filled].y = y_coordinate;
 
-				// Increment the amount of filled cells.
-				filled++;
+				// Write the new coordinates to the coordinate.struct
+				// - 1 because arrays start counting at zero.
+				const_cells[count_filled_cells() - 1].x = x_coordinate;
+				const_cells[count_filled_cells() - 1].y = y_coordinate;
 			}
 			// If the new cell is not valid, reset that cell back to its original
 			// state.

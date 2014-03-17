@@ -43,7 +43,7 @@ class Sodoku
 		bool check_sodoku_validity(void);
 
 		// Fill in a a percentage of cells with at least one filled.
-		void partial_fill(const float&);
+		void solve_puzzle_partially(const float&);
 
 		// Checks if the soduko puzzle is complete, meaning if it is valid and every
 		// cell is filled. This does not ignore cells which are unset.
@@ -61,10 +61,6 @@ class Sodoku
 
 		// Counts how many cells have been filled already.
 		int count_filled_cells(void);
-
-		// Used solely to keep track of how many cells we want to fill when using
-		// partial_fill().
-		int trying_to_fill;
 
 		// Coordinates of a cell which is not allowed to change. Meant for holding
 		// cells which were partially filled when the puzzle is first presented.
