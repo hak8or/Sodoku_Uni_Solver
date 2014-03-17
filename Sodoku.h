@@ -56,6 +56,9 @@ class Sodoku
 		// Not in private because then it couldn't be accessed by the unit tests.
 		void set_const_cell(int value, int x, int y);
 
+		// Returns an idea of how "hard" it was to find the solution.
+		int get_amount_of_steps(void);
+
 	private:
 		Square_Matrix matrix;
 
@@ -94,7 +97,9 @@ class Sodoku
 		// Try to fill the cell at x and y, if fail then return a false.
 		bool try_to_fill(const int &x, const int &y);
 
-		// Keeps track of how many steps we took to solve the puzzle.
+		// Keeps track of how many attempts or tries there were for cells.
+		// Each write counts as an attempt or try. While not ideal for
+		// measuring how difficult it was, it gives a good idea.
 		int amount_of_steps;
 
 		// Flag to view how the puzzle gets solved step by step.

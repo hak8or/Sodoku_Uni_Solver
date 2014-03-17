@@ -842,7 +842,10 @@ int main(int argc, char *argv[])
 	// show that it was unsolvable.
 	cout << "And now we solve it! \n";
 	if (puzzle.solve_puzzle())
+	{
 		puzzle.display();
+		cout << "Whew! That took " << puzzle.get_amount_of_steps() << " steps!\n";
+	}
 	else 
 		cout << "The generated puzzle is unsolvable.";
 

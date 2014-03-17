@@ -21,6 +21,9 @@ Sodoku::Sodoku(void){
 	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
 
+	// Keeps track of how many attempts or tries there were for cells.
+	this->amount_of_steps = 0;
+
 	// Seed the random number generator using the time.
 	srand(time(NULL));
 
@@ -33,6 +36,9 @@ Sodoku::Sodoku(void){
 Sodoku::Sodoku(int size){
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);
+
+	// Keeps track of how many attempts or tries there were for cells.
+	this->amount_of_steps = 0;
 
 	// Seed the random number generator using the time.
 	srand(time(NULL));
@@ -108,6 +114,8 @@ int Sodoku::get_cell(const int &x, const int &y){
 
 // Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
 bool Sodoku::set_cell(const int& x, const int& y, const int& val){
+	// Each write to a cell is considered an attempt or try.
+	amount_of_steps++;
 
 	// If the coordinates are out of bounds, return false.
 	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
@@ -278,8 +286,7 @@ bool Sodoku::solve_puzzle(void){
 		// If try_to_fill fails, it means that all attempts to fill the current
 		// cell have failed, so go back a cell.
 		if (this->try_to_fill(this->working_cell.x, this->working_cell.y)){
-			// Increment the amount of steps it took so far to solve this puzzle.
-			amount_of_steps++;
+			// Good place to pop some debugging statements.
 		}
 		else{
 			// Thrown in here for debugging so output is easier to navigate.
@@ -497,6 +504,12 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 		}
 
 	return true;
+}
+
+// Returns an idea of how "hard" it was to find the solution.
+int Sodoku::get_amount_of_steps(void)
+{
+	return this->amount_of_steps;
 }
 
 // THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
