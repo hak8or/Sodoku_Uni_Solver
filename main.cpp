@@ -179,9 +179,15 @@ int main(int argc, char *argv[])
 	// Since solve_puzzle_partially does not guarantee to give
 	// a solvable puzzle, lets do a loop till it finds a solvable
 	// partially solved puzzle if it is already unsolvable.
+	//
+	// For some reason sometimes there are massive groups of unsolvable
+	// puzzles. I think this is because the random number generator used
+	// for generating new coordinates and values during partial solving
+	// hasn't had time to change it's seed.
 	while(!puzzle.solve_puzzle())
 	{
-		// uncomment to see how we try to find a solvable puzzle.
+		// uncomment the display()'s to see how we try to find 
+		// a solvable puzzle.
 		cout << "Found an unsolvable puzzle, making a new one...\n";
 		// puzzle.display("before wipe");
 		puzzle.wipe();
