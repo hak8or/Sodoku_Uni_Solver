@@ -18,38 +18,94 @@ using namespace std;
 
 // Constructor for the sodoku object.
 Sodoku::Sodoku(void){
+	// The actual puzzle itself.
 	this->matrix.Set_Size(2);
 	this->matrix.fill(-1);
+
+	// How many times each cell was written too.
+	this->heatmap.Set_Size(2);
+	this->heatmap.fill(0);
+
+	// If the cells are allowed to be changed.
+	this->writable.Set_Size(2);
+	this->writable.fill(1);
 
 	// Keeps track of how many attempts or tries there were for cells.
 	this->amount_of_steps = 0;
 
+	// Resets the current cell we are working on. While this is set when needed
+	// in solve_puzzle, I added it in here for clarities sake.
+	working_cell.x = -1;
+	working_cell.y = -1;
+
 	// Seed the random number generator using the time.
 	srand(time(NULL));
-
-	// Enable this to see how the puzzle gets solved step by step.
-	this->view_progress = 0;
 }
 
 // Overloaded constructor for the Soduku object with a configurable size. If a
 // negative size is given, the size will be set to 0.
 Sodoku::Sodoku(int size){
+	// The actual puzzle itself.
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);
+
+	// How many times each cell was written too.
+	this->heatmap.Set_Size(size);
+	this->heatmap.fill(0);
+
+	// If the cells are allowed to be changed.
+	this->writable.Set_Size(size);
+	this->writable.fill(1);
 
 	// Keeps track of how many attempts or tries there were for cells.
 	this->amount_of_steps = 0;
 
+	// Resets the current cell we are working on. While this is set when needed
+	// in solve_puzzle, I added it in here for clarities sake.
+	working_cell.x = -1;
+	working_cell.y = -1;
+
 	// Seed the random number generator using the time.
 	srand(time(NULL));
-
-	// Enable this to see how the puzzle gets solved step by step.
-	this->view_progress = 0;
 }
 
 // DeConstructor for the sodoku object.
 Sodoku::~Sodoku(void){
+	// Don't need to put anything here because no dynamic memory
+	// was allocated by Sodoku. Square_Matrix does do dynamic memory
+	// allocation but it has its own destructor which is called when 
+	// the sodoku object gets destroyed.
+}
 
+// Wipe the contents of the puzzle. This is used when resetting the
+// puzzle. Everything but the size of the puzzle is reset.
+void Sodoku::wipe(void){
+	// Holds the only object member which is not swapped,
+	// the size of the puzzle.
+	int size = this->matrix.Get_Size();
+
+	// The actual puzzle itself.
+	this->matrix.Set_Size(size);
+	this->matrix.fill(-1);
+
+	// How many times each cell was written too.
+	this->heatmap.Set_Size(size);
+	this->heatmap.fill(0);
+
+	// If the cells are allowed to be changed.
+	this->writable.Set_Size(size);
+	this->writable.fill(1);
+
+	// Keeps track of how many attempts or tries there were for cells.
+	this->amount_of_steps = 0;
+
+	// Resets the current cell we are working on. While this is set when needed
+	// in solve_puzzle, I added it in here for clarities sake.
+	working_cell.x = -1;
+	working_cell.y = -1;
+
+	// Seed the random number generator using the time.
+	srand(time(NULL));
 }
 
 int Sodoku::get_size(void){
@@ -115,10 +171,12 @@ int Sodoku::get_cell(const int &x, const int &y){
 // Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
 bool Sodoku::set_cell(const int& x, const int& y, const int& val){
 	// Each write to a cell is considered an attempt or try.
-	amount_of_steps++;
+	this->amount_of_steps++;
 
-	// This is really useful for debugging, so leave this in.
-	// this->display("changed: " + std::to_string(x) + ", " + std::to_string(y) + "\n");
+	// And add that attempt to the heatmap.
+	int temp = this->heatmap.Get_Elem(x, y);
+	temp++;
+	this->heatmap.Set_Elem(temp, x, y);
 
 	// If the coordinates are out of bounds, return false.
 	if (x > this->matrix.Get_Size() - 1 || y > this->matrix.Get_Size() - 1)
@@ -210,13 +268,15 @@ bool Sodoku::check_sodoku_validity(void){
 // cells with attempted contents to prevent multiple redundant attempts.
 //
 // This means that you shouldn't be using this for larger percentages since
-// this is a randomized brute force method which is extremely ineficiant.
-// You also shouldn't be using this for larger percentages anyways since it 
-// will hangup on itself if it cannot fill another node without deleting a 
-// node from before. 
+// this is a randomized brute force method which is extremely ineficiant. It
+// will eventually probably find a puzzle with such a high percentage, but don't
+// count on it happening while you still remember you even set it.
 //
 // It was chosen to be done this way for simplicities sake, as explained
 // in the previous paragraph.
+//
+// NOTE: 
+//		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
 void Sodoku::solve_puzzle_partially(const float& percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
@@ -230,36 +290,34 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 	// fill, keep this loop going.
 	while (count_filled_cells() != trying_to_fill)
 	{
+		// Kept for debugging.
+		/*cout << std::to_string(this->count_filled_cells()) + " out of " 
+			+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size()) 
+			+ " are filled.\n";*/
+
 		// Make a random set of coordinates and a random int.
-		int var = rand() % (this->matrix.Get_Size());
+		int var = rand() % (this->matrix.Get_Size() - 1);
 		int x_coordinate = rand() % (this->matrix.Get_Size());
 		int y_coordinate = rand() % (this->matrix.Get_Size());
 
-		// If this coordinate has not been already set earlier, try to put a
-		// new value into it.
-		if (this->matrix.Get_Elem(x_coordinate, y_coordinate) == -1)
-		{
-			// Write the cell.
-			this->set_cell(x_coordinate, y_coordinate, var);
+		// Kept for debugging.
+		// cout << std::to_string(x_coordinate) + " " + std::to_string(y_coordinate) + "\n";
 
-			// Check if the changes are valid, if not then reverse the changes,
-			// if they are good then add them into the const_cells entry.
-			if ( this->check_sodoku_validity() )
-			{
-				// Add an empty coordinate data struct into const_cells.
-				const_cells.push_back( coordinates() );
+		// Write the cell.
+		this->set_cell(x_coordinate, y_coordinate, var);
 
-				// Write the new coordinates to the coordinate.struct
-				// - 1 because arrays start counting at zero.
-				const_cells[count_filled_cells() - 1].x = x_coordinate;
-				const_cells[count_filled_cells() - 1].y = y_coordinate;
-			}
-			// If the new cell is not valid, reset that cell back to its original
-			// state.
-			else
-				this->set_cell(x_coordinate, y_coordinate, -1);
-		}
+		// Check if the changes are valid, if not then reverse the changes,
+		// if they are good then add them into the const_cells entry.
+		if ( this->check_sodoku_validity() )
+			this->writable.Set_Elem(0, x_coordinate, y_coordinate);
+		// If the new cell is not valid, reset that cell back to its original
+		// state.
+		else
+			this->set_cell(x_coordinate, y_coordinate, -1);
 	}
+
+	// Reset write attempts per cell since we don't want to count the pre-fill.
+	this->heatmap.fill(0);
 }
 
 // This is the main function for solving the sodoku puzzle.
@@ -281,6 +339,10 @@ bool Sodoku::solve_puzzle(void){
 	if (!this->next_cell())
 		return false;
 
+	// Variables used if user wants to continue trying to solve the puzzle
+	// when the puzzle is taking many steps.
+	int level = 0;
+	char query;
 
 	// Starts on the top left of the puzzle to the top right, then down a row 
 	// from left to right, and repeats to the end.
@@ -298,15 +360,35 @@ bool Sodoku::solve_puzzle(void){
 				return false;
 		}
 		else{
-			// Set the cell to unset so it it won't bother us when comparing it again
-			// in the future.
-			this->matrix.Set_Elem(-1, this->working_cell.x, this->working_cell.y);
-
 			// If going back a a cell failed, then it means we can't go further
 			// back, so the puzzle is unsolvable.
 			if (!this->back_cell())
 				return false;
 		}
+
+		// If the puzzle is taking a long time, ask if user wants to 
+		// continue trying to solve the puzzlewhen the puzzle is taking
+		// many steps.
+		if ((this->amount_of_steps > 50000) && (level == 0))
+		{
+			cout << "So far 50k steps have been taken, continue? [y/n]";
+			cin >> query;
+			if (query == 'n')
+				return 0;
+			level++;
+		}
+		else if ((this->amount_of_steps > 500000) && (level == 1))
+		{
+			cout << "So far 500k steps have been taken, really continue? [y/n] ";
+			cin >> query;
+			if (query == 'n')
+				return 0;
+			level++;
+		}
+
+		// Uncomment this to see how the puzzle tries to get solved over time.
+		// this->display();
+		// this->display_heatmap();
 	}
 
 	// If we were able to get here, then it means the puzzle has been
@@ -317,11 +399,6 @@ bool Sodoku::solve_puzzle(void){
 // Tries to fill the specified cell with valid data. Does not check if the
 // cell is already valid or not.
 bool Sodoku::try_to_fill(const int& x, const int& y){
-	// Contents of the cell when originally hit this function 
-	// which will be used for resetting the variable back to its
-	// original state if we can't fill the cell.
-	int orig_contents = this->matrix.Get_Elem(x, y);
-
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
 	while (this->increment_cell_contents(x, y))
@@ -336,9 +413,8 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 
 	// If we got here, then the cell has been incremented all the way
 	// to its maximum value but none of the attempted values were correct.
-	// Reset the cell contents to what they were when we first tried to 
-	// fill the cell.
-	this->set_cell(x, y, orig_contents);
+	// Reset the cell contents to an unset state.
+	this->set_cell(x, y, -1);
 
 	// Return false to indicate that we can't fill this cell.
 	return false;
@@ -377,7 +453,7 @@ bool Sodoku::next_cell(void)
 	// If the next cell is one of the const_cells, ones which we are not
 	// allowed to modify because they were filled using partial fill, then
 	// call next_cell again so we can skip over the const_cell.
-	if (can_set(working_cell.x, working_cell.y))
+	if (this->can_set(working_cell.x, working_cell.y))
 		return true; // If we got here, the node coordinates were succesfully
 					 // incremented, so return a true.
 	else
@@ -389,6 +465,12 @@ bool Sodoku::next_cell(void)
 // within the sodoku object to the closest writable and valid one behind this one.
 bool Sodoku::back_cell(void)
 {
+	if ((this->get_cell(2, 8) == 6) && (this->get_cell(6, 7) == 0) && (this->get_cell(8, 6) == 5))
+	{
+		// This is really useful for debugging, so leave this in.
+		//this->display("Went back at [" + std::to_string(this->working_cell.x) + ", " + std::to_string(this->working_cell.y) + "] \n");
+	}
+
 	// If currently on the last element of a row, but not the last element
 	// of the puzzle, go up one row and to the last column.
 	if (this->working_cell.x == 0 && this->working_cell.y != 0)
@@ -410,7 +492,7 @@ bool Sodoku::back_cell(void)
 
 	// If the next cell is one of the const_cells, ones which we are not
 	// allowed to modify because they were filled using partial fill, then
-	// call next_cell again so we can skip over the const_cell.
+	// call back_cell again so we can skip over the const_cell.
 	if (this->can_set(this->working_cell.x, this->working_cell.y))
 		return true; // If we got here, the node coordinates were succesfully
 					 // incremented, so return a true.
@@ -424,34 +506,39 @@ bool Sodoku::back_cell(void)
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
 bool Sodoku::increment_cell_contents(const int& column, const int& row){
-	if ((row < this->matrix.Get_Size()) && // Is the row out of bounds?
-		(column < this->matrix.Get_Size()) && // Is the column out of bounds?
-		(this->matrix.Get_Elem(column, row) < this->matrix.Get_Size() - 1)) // Is the new
-		// value out of bounds?
-	{
-		// Holds the contents of the cell.
-		int cell_contents = this->matrix.Get_Elem(column, row);
-
-		// Increment the contents by one.
-		cell_contents++;
-
-		// Save the new contents into the cell.
-		this->set_cell(column, row, cell_contents);
-
-		// We were able to save the new cell contents, so all went well!
-		return true;
-	}
-	else
-	{
-		// If we got here, then something went wrong, so return a false.
+	// Check if the cell is in bounds.
+	if ( (row > this->matrix.Get_Size()) && (column > this->matrix.Get_Size()) )
 		return false;
-	}
 
+	// Check if we can write to the cell.
+	if ( !this->can_set(column, row) )
+		return false;
+
+	// Check if the new value will be larger than allowed in a sodoku puzzle.
+	if ( (this->matrix.Get_Elem(column, row) >= this->matrix.Get_Size() - 1)) 
+		return false;
+
+	// Holds the contents of the cell.
+	int cell_contents = this->matrix.Get_Elem(column, row);
+
+	// Increment the contents by one.
+	cell_contents++;
+
+	// Save the new contents into the cell.
+	this->set_cell(column, row, cell_contents);
+
+	// We were able to save the new cell contents, so all went well!
+	return true;
 }
 
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
 // cell is filled. This does not ignore cells which are unset.
 bool Sodoku::is_complete(void){
+	// Kept for debugging.
+	/*cout << std::to_string(this->count_filled_cells()) + " out of " 
+		+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size()) 
+		+ " are filled.\n";*/
+
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
 		return false;
@@ -477,7 +564,7 @@ int Sodoku::count_filled_cells(void){
 		{
 			// If the number appears twice and it is not an unset cell and it is
 			// not checking itself, then that column is invalid.
-			if (this->matrix.Get_Elem(i, j) != -1)
+			if (this->matrix.Get_Elem(i, j) >= 0)
 				filled_cell_count++;
 		}
 	}
@@ -491,17 +578,18 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 	// First check if the coordinates are out of bounds.
 	if ((x_coordinate < 0) || (y_coordinate < 0) ||
 		(x_coordinate >= this->get_size()) || 
-		(x_coordinate >= this->get_size()))
+		(y_coordinate >= this->get_size()) )
 	{
 		return false;
 	}
 
-	for (int i = 0; i < this->const_cells.size(); ++i)
-		if ((this->const_cells[i].x == x_coordinate) &&
-			(this->const_cells[i].y == y_coordinate))
-		{
-			return false;
-		}
+	// Checks if the cell was filled using partial_fill.
+	if (this->writable.Get_Elem(x_coordinate, y_coordinate) == 0)
+	{
+		// Kept for debugging.
+		// cout << "Coordinate " + std::to_string(x_coordinate) + ", " + std::to_string(y_coordinate) + "is non_writable\n";
+		return false;
+	}
 
 	return true;
 }
@@ -509,7 +597,13 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 // Returns an idea of how "hard" it was to find the solution.
 int Sodoku::get_amount_of_steps(void)
 {
-	return this->amount_of_steps;
+	int temp = 0;
+
+	for (int column = 0; column < this->matrix.Get_Size(); column++)
+		for (int row = 0; row < this->matrix.Get_Size(); row++)
+			temp = temp + this->heatmap.Get_Elem(column, row);
+
+	return temp;
 }
 
 // THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
@@ -517,9 +611,106 @@ int Sodoku::get_amount_of_steps(void)
 void Sodoku::set_const_cell( int x, int y, int value){
 	this->matrix.Set_Elem(value, x, y);
 
-	// Add the new coordinates to the list.
-	coordinates const_cell;
-	const_cell.x = x;
-	const_cell.y = y;
-	const_cells.push_back( const_cell );
+	// Indicate that this cell is not writable.
+	this->writable.Set_Elem(0, x, y);
+}
+
+
+// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+// Not in private because then it couldn't be accessed by the unit tests.
+void Sodoku::display_heatmap(string input_string){
+	// Will hold the current row.
+	vector<int> row_contents;
+
+	// If no input string was given then don't the string.
+	if (!input_string.empty())
+		cout << input_string << endl;
+
+	// Sets how much padding is needed for each cell display so the columns
+	// align properly. Uses the largest digit wise heatmap value found.
+	//-----------------------------
+	int largest_heatmap_value = 0;
+	int padding = 1;
+
+	// Gets the largest heatmap value.
+	for (int y = 0; y < this->matrix.Get_Size(); ++y)
+		for (int x = 0; x < this->matrix.Get_Size(); ++x)
+			if (this->heatmap.Get_Elem(x, y) > largest_heatmap_value)
+				largest_heatmap_value = this->heatmap.Get_Elem(x, y);
+
+	// Find out how many digits that value has.
+	while ( largest_heatmap_value /= 10 )
+		padding++;
+
+
+	// Go through each row.
+	for (int row = 0; row < this->heatmap.Get_Size(); ++row)
+	{
+		// Copies the row into a vector.
+		row_contents = this->heatmap.Get_Row(row);
+
+		// Makes some nice formatting to the start of the row.
+		cout << "| ";
+
+		// Displays the contents of each cell of the row with spacing between cells.
+		for (int cell_count = 0; cell_count < this->heatmap.Get_Size(); ++cell_count)
+		{
+			// Sets up padding for the cell output.
+			cout.width(padding);
+
+			if (row_contents[cell_count] == -1)
+				cout << "." << " ";
+			else
+				cout << row_contents[cell_count] << " ";
+		}
+
+		// Shows that the row is done.
+		cout << " |" << endl;
+	}
+
+	// Add in a line to make things look nicer.
+	cout << endl;
+}
+
+// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+// Not in private because then it couldn't be accessed by the unit tests.
+void Sodoku::display_writable(string input_string){
+	// Will hold the current row.
+	vector<int> row_contents;
+
+	// If no input string was given then don't the string.
+	if (!input_string.empty())
+		cout << input_string << endl;
+
+	// Sets how much padding is needed for each cell display so the columns
+	// align properly.
+	int padding = 1;
+
+	// Go through each row.
+	for (int row = 0; row < this->writable.Get_Size(); ++row)
+	{
+		// Copies the row into a vector.
+		row_contents = this->writable.Get_Row(row);
+
+		// Makes some nice formatting to the start of the row.
+		cout << "| ";
+
+		// Displays the contents of each cell of the row with spacing between cells.
+		for (int cell_count = 0; cell_count < this->writable.Get_Size(); ++cell_count)
+		{
+			// Sets up padding for the cell output.
+			cout.width(padding);
+
+			if (row_contents[cell_count] == -1)
+				cout << "." << " ";
+			else
+				cout << row_contents[cell_count] << " ";
+		}
+
+		// Shows that the row is done.
+		cout << " |" << endl;
+	}
+
+	// Add in a line to make things look nicer.
+	cout << endl;
 }
