@@ -17,6 +17,10 @@ class Sodoku
 		// DeConstructor for the Soduku object.
 		~Sodoku(void);
 
+		// Wipe the contents of the puzzle. This is used when resetting
+		// the puzzle. Everything but the size of the puzzle is reset.
+		void wipe(void);
+
 		// Throws out the current soduku puzzle's contents with a message.
 		void display(std::string input_string = "");
 
@@ -59,6 +63,9 @@ class Sodoku
 		// Returns an idea of how "hard" it was to find the solution.
 		int get_amount_of_steps(void);
 
+		void display_heatmap(std::string input_string = "");
+		void display_writable(std::string input_string = "");
+
 	private:
 		Square_Matrix matrix;
 
@@ -72,9 +79,6 @@ class Sodoku
 			int x;
 			int y;
 		};
-
-		// Holds a vector of cell coordinates we are not allowed to modify later.
-		std::vector<coordinates> const_cells;
 
 		// The coordinates of the current cell we are trying to fill.
 		coordinates working_cell;
@@ -102,8 +106,11 @@ class Sodoku
 		// measuring how difficult it was, it gives a good idea.
 		int amount_of_steps;
 
-		// Flag to view how the puzzle gets solved step by step.
-		bool view_progress;
+		// Heatmap for attempts per cell.
+		Square_Matrix heatmap;
+
+		// Map saying if we can or can't write to the cell (partial_fill'ed).
+		Square_Matrix writable;
 };
 
 #endif
