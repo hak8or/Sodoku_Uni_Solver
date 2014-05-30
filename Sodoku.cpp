@@ -667,6 +667,26 @@ int Sodoku::get_amount_of_steps(void)
 	return temp;
 }
 
+// Transfers all the contents of the other sodoku puzzle into
+// this one, including the current heatmap, matrix, steps, and
+// writable cells.
+Sodoku Sodoku::operator&=(const Sodoku other_matrix){
+	// Gotta check self assignment first!
+	if (this == &other_matrix)
+		return *this;
+
+	// While this operator should not require a deep copy and
+	// therefore not a custom operator implimentation, I added
+	// it in just in case and for clarities sake.
+	this->heatmap = other_matrix.heatmap;
+	this->writable = other_matrix.writable;
+	this->matrix = other_matrix.matrix;
+	this->working_cell = other_matrix.working_cell;
+	this->amount_of_steps = other_matrix.amount_of_steps;
+	this->failed_solve = other_matrix.failed_solve;
+	this->working_cell = other_matrix.working_cell;
+}
+
 // THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
 // Not in private because then it couldn't be accessed by the unit tests.
 void Sodoku::set_const_cell( int x, int y, int value){

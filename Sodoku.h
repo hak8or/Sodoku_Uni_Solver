@@ -69,6 +69,10 @@ class Sodoku
 		void display_heatmap(std::string input_string = "");
 		void display_writable(std::string input_string = "");
 
+		// Transfers all the contents of the other sodoku puzzle into
+		// this one, including the current heatmap, matrix, steps, and
+		// writable cells.
+		Sodoku operator&=(const Sodoku other_matrix);
 	private:
 		Square_Matrix matrix;
 
