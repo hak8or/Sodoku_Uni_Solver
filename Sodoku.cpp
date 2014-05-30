@@ -69,6 +69,19 @@ Sodoku::Sodoku(int size){
 	srand(time(NULL));
 }
 
+// Copies the contents of the other sodoku into this sodoku. Very similar to 
+// a copy constructor.
+void Sodoku::copy(const Sodoku &other){
+	// Copy all the guys into this. Similar to assignment operator.
+	this->heatmap = other.heatmap;
+	this->writable = other.writable;
+	this->matrix = other.matrix;
+	this->working_cell = other.working_cell;
+	this->amount_of_steps = other.amount_of_steps;
+	this->failed_solve = other.failed_solve;
+	this->working_cell = other.working_cell;
+}
+
 // DeConstructor for the sodoku object.
 Sodoku::~Sodoku(void){
 	// Don't need to put anything here because no dynamic memory

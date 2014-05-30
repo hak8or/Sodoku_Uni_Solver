@@ -114,6 +114,9 @@ class Sodoku
 
 		// Map saying if we can or can't write to the cell (partial_fill'ed).
 		Square_Matrix writable;
+		// Copies the contents of the other sodoku into this sodoku. Very
+		// similar to a copy constructor.
+		void copy(const Sodoku &other);
 };
 
 #endif
