@@ -253,10 +253,11 @@ Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix)
 	if (other_matrix.size < 0)
 		return *this;
 
+	// Deallocates all of the previous square matrix.
 	if (this->size != other_matrix.size && other_matrix.size != 0 && this->size != 0)
 	{
 		// Delete the array held by each row pointer
-		for (int row = 0; row < other_matrix.size; ++row)
+		for (int row = 0; row < this->size; ++row)
 		{
 			delete[] this->matrix[row];
 			this->matrix[row] = NULL;
