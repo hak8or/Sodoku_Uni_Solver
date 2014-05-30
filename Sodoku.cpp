@@ -320,6 +320,54 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 	this->heatmap.fill(0);
 }
 
+// Fill in a selected amount of cells with at least one filled. Also adds the cells
+// coordinates into a vector which is used to differentiate between nodes which
+// can and can't be changed when attempting to solve the puzzle.
+//
+// This is a heavily modified version of solve_puzzle with the addition of 
+// adding the coordinates to const_cells vector, randomly choosing the cells 
+// to fill in, and randomly choosing the data to fill it with.
+//
+// Don't use this for a large portion of the array, since it randomly
+// tries to solve it instead of backtracking or any other smarter way.
+void Sodoku::solve_puzzle_partially_count(const int& trying_to_fill){
+	// Gets how many cells we have to fill.
+	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
+
+	// While the filled cells is less than the amount of cells we are trying to
+	// fill, keep this loop going.
+	while (count_filled_cells() != trying_to_fill)
+	{
+		// Kept for debugging.
+		/*cout << std::to_string(this->count_filled_cells()) + " out of "
+		+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size())
+		+ " are filled.\n";*/
+
+		// Make a random set of coordinates and a random int.
+		int var = rand() % (this->matrix.Get_Size() - 1);
+		int x_coordinate = rand() % (this->matrix.Get_Size());
+		int y_coordinate = rand() % (this->matrix.Get_Size());
+
+		// Kept for debugging.
+		// cout << std::to_string(x_coordinate) + " " + std::to_string(y_coordinate) + "\n";
+
+		// Write the cell.
+		this->set_cell(x_coordinate, y_coordinate, var);
+
+		// Check if the changes are valid, if not then reverse the changes,
+		// if they are good then add them into the const_cells entry.
+		if (this->check_sodoku_validity())
+			this->writable.Set_Elem(0, x_coordinate, y_coordinate);
+		// If the new cell is not valid, reset that cell back to its original
+		// state.
+		else
+			this->set_cell(x_coordinate, y_coordinate, -1);
+	}
+
+	// Reset write attempts per cell since we don't want to count the pre-fill.
+	this->heatmap.fill(0);
+}
+
 // This is the main function for solving the sodoku puzzle.
 // 1) Sets the current cell we are trying to solve to the origin cell, 0,0.
 // 2) Solves the first cell if it is not unset.
