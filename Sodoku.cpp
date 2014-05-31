@@ -4,6 +4,8 @@
 #include <stdlib.h> // Solely for the RNG.
 #include <iostream>
 #include <string>
+#include <thread>
+#include <chrono>
 
 // NOTE:
 // Because I do not wish to modify Square_Matrix from the previous assignment, 
@@ -32,6 +34,9 @@ Sodoku::Sodoku(void){
 
 	// Keeps track of how many attempts or tries there were for cells.
 	this->amount_of_steps = 0;
+
+	// Flag indicating the given sodoku puzzle is not solvable.
+	this->failed_solve = 0;
 
 	// Resets the current cell we are working on. While this is set when needed
 	// in solve_puzzle, I added it in here for clarities sake.
@@ -111,6 +116,9 @@ void Sodoku::wipe(void){
 
 	// Keeps track of how many attempts or tries there were for cells.
 	this->amount_of_steps = 0;
+
+	// If the puzzle failed to be solved.
+	this->failed_solve = 0;
 
 	// Resets the current cell we are working on. While this is set when needed
 	// in solve_puzzle, I added it in here for clarities sake.
@@ -399,15 +407,45 @@ bool Sodoku::solve_puzzle(void){
 	// writable cells in the first place.
 	if (!this->next_cell())
 		return false;
+	
+	// Make a new thread for solving the Sodoku.
+	Sodoku sodoku_for_thread;
+	sodoku_for_thread = *this;
+	std::thread solving_thread = std::thread(&Sodoku::solver_for_thread, &sodoku_for_thread );
 
-	// Variables used if user wants to continue trying to solve the puzzle
-	// when the puzzle is taking many steps.
-	int level = 0;
-	char query;
+	// Check the status of the thread and react accordingly if the
+	// thread found a solution or found an unsolvable solution.
+	while (true){
+		// If the thread found a solution, copy the contents of the
+		// sodoku from that thread into this one and indicate success.
+		if (sodoku_for_thread.is_complete())
+		{
+			this->copy(sodoku_for_thread);
+			solving_thread.join();
+			return true;
+		}
 
+		// If the thread indicated that there is no solution, copy
+		// the contents of the sodoku from that thread into this
+		// one and indicate failure.
+		if (sodoku_for_thread.failed_solve)
+		{
+			this->copy(sodoku_for_thread);
+			solving_thread.join();
+			return false;
+		}
+			
+		// Wait a bit so we don't spam checks to the thread, wasting
+		// preformance.
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	}
+	
+}
+
+void Sodoku::solver_for_thread(void){
 	// Starts on the top left of the puzzle to the top right, then down a row 
 	// from left to right, and repeats to the end.
-	while(true){
+	while (!this->failed_solve){
 		// If try_to_fill fails, it means that all attempts to fill the current
 		// cell have failed, so go back a cell.
 		if (this->try_to_fill(this->working_cell.x, this->working_cell.y)){
@@ -417,44 +455,25 @@ bool Sodoku::solve_puzzle(void){
 
 			// If are at the last cell and trying to keep going to the next
 			// cell, then the puzzle should be considered unsolvable.
-			if (!this->next_cell())
-				return false;
+			if (!this->next_cell()){
+				failed_solve = true;
+				break;
+			}
 		}
 		else{
 			// If going back a a cell failed, then it means we can't go further
 			// back, so the puzzle is unsolvable.
-			if (!this->back_cell())
-				return false;
-		}
-
-		// If the puzzle is taking a long time, ask if user wants to 
-		// continue trying to solve the puzzlewhen the puzzle is taking
-		// many steps.
-		if ((this->amount_of_steps > 50000) && (level == 0))
-		{
-			cout << "So far 50k steps have been taken, continue? [y/n]";
-			cin >> query;
-			if (query == 'n')
-				return 0;
-			level++;
-		}
-		else if ((this->amount_of_steps > 500000) && (level == 1))
-		{
-			cout << "So far 500k steps have been taken, really continue? [y/n] ";
-			cin >> query;
-			if (query == 'n')
-				return 0;
-			level++;
+			if (!this->back_cell()){
+				failed_solve = true;
+				break;
+			}
 		}
 
 		// Uncomment this to see how the puzzle tries to get solved over time.
 		// this->display();
 		// this->display_heatmap();
+		// std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
-
-	// If we were able to get here, then it means the puzzle has been
-	// fully solved, so return true.
-	return true;
 }
 
 // Tries to fill the specified cell with valid data. Does not check if the
@@ -595,11 +614,6 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 // Checks if the sodoku puzzle is complete, meaning if it is valid and every
 // cell is filled. This does not ignore cells which are unset.
 bool Sodoku::is_complete(void){
-	// Kept for debugging.
-	/*cout << std::to_string(this->count_filled_cells()) + " out of " 
-		+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size()) 
-		+ " are filled.\n";*/
-
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
 		return false;

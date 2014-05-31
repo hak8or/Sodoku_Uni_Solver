@@ -118,9 +118,16 @@ class Sodoku
 
 		// Map saying if we can or can't write to the cell (partial_fill'ed).
 		Square_Matrix writable;
+
+		// The actual solving of the puzzle inside a thread.
+		void solver_for_thread(void);
+
 		// Copies the contents of the other sodoku into this sodoku. Very
 		// similar to a copy constructor.
 		void copy(const Sodoku &other);
+
+		// Flag indicating the given sodoku puzzle is not solvable.
+		bool failed_solve;
 };
 
 #endif
