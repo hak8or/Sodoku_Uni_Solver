@@ -3,6 +3,7 @@
 
 #include "Square_Matrix.h"
 #include <string>
+#include <thread>
 
 class Sodoku
 {
@@ -126,8 +127,16 @@ class Sodoku
 		// similar to a copy constructor.
 		void copy(const Sodoku &other);
 
+		// Shut down all the current solving threads. This is a blocking function!
+		void shutdown_solving_threads(std::vector<std::thread> &solving_threads, std::vector<Sodoku> &sodokus_for_threads);
+
 		// Flag indicating the given sodoku puzzle is not solvable.
 		bool failed_solve;
+
+		// Indicates if the current solving attempt should stop.
+		// Only for controling other threads. This is my first fooray
+		// into threads and there are abundant bad design choices here!
+		bool stop_solving;
 };
 
 #endif

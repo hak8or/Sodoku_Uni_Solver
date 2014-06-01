@@ -38,6 +38,9 @@ Sodoku::Sodoku(void){
 	// Flag indicating the given sodoku puzzle is not solvable.
 	this->failed_solve = 0;
 
+	// Indicates if the current solving attempt should stop.
+	this->stop_solving = 0;
+
 	// Resets the current cell we are working on. While this is set when needed
 	// in solve_puzzle, I added it in here for clarities sake.
 	working_cell.x = -1;
@@ -70,6 +73,12 @@ Sodoku::Sodoku(int size){
 	working_cell.x = -1;
 	working_cell.y = -1;
 
+	// Flag indicating the given sodoku puzzle is not solvable.
+	this->failed_solve = 0;
+
+	// Indicates if the current solving attempt should stop.
+	this->stop_solving = 0;
+
 	// Seed the random number generator using the time.
 	srand(time(NULL));
 }
@@ -85,6 +94,7 @@ void Sodoku::copy(const Sodoku &other){
 	this->amount_of_steps = other.amount_of_steps;
 	this->failed_solve = other.failed_solve;
 	this->working_cell = other.working_cell;
+	this->stop_solving = other.stop_solving;
 }
 
 // DeConstructor for the sodoku object.
@@ -119,6 +129,9 @@ void Sodoku::wipe(void){
 
 	// If the puzzle failed to be solved.
 	this->failed_solve = 0;
+
+	// Indicates if the current solving attempt should stop.
+	this->stop_solving = 0;
 
 	// Resets the current cell we are working on. While this is set when needed
 	// in solve_puzzle, I added it in here for clarities sake.
@@ -357,7 +370,7 @@ void Sodoku::solve_puzzle_partially_count(const int& trying_to_fill){
 
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
-	while (count_filled_cells() != trying_to_fill)
+	while (count_filled_cells() <= trying_to_fill)
 	{
 		// Kept for debugging.
 		/*cout << std::to_string(this->count_filled_cells()) + " out of "
@@ -399,7 +412,9 @@ void Sodoku::solve_puzzle_partially_count(const int& trying_to_fill){
 bool Sodoku::solve_puzzle(void){
 	// Set the working_cell to -1,-1 when starting to solve the puzzle. Surprisingly,
 	// I didn't need to do this in visual studio since it started at 0,0 but in
-	// GCC it started at 4410251, 0 which is cool.
+	// GCC it started at 4410251, 0 which is cool. I think this is because in VS
+	// I test everything using a debug mode instead of relase mode, with debug mode
+	// forcing all unitialized variables to zero instead of undefined.
 	this->working_cell.x = -1;
 	this->working_cell.y = -1;
 
@@ -407,45 +422,82 @@ bool Sodoku::solve_puzzle(void){
 	// writable cells in the first place.
 	if (!this->next_cell())
 		return false;
-	
-	// Make a new thread for solving the Sodoku.
-	Sodoku sodoku_for_thread;
-	sodoku_for_thread = *this;
-	std::thread solving_thread = std::thread(&Sodoku::solver_for_thread, &sodoku_for_thread );
 
+	// Get how many threads we should run based on cores available.
+	int threads = thread::hardware_concurrency() * 2;
+	
+	// Generate that many different potential sodoku puzzles (with hints).
+	vector<Sodoku> sodokus_for_threads;
+	for (int i = 0; i < threads; i++){
+		sodokus_for_threads.push_back(*this);
+		sodokus_for_threads[i].solve_puzzle_partially_count(1);
+	}
+
+	// Add another sodoku without any hints to the beginning.
+	sodokus_for_threads.insert(sodokus_for_threads.begin(), *this);
+
+	// Generate a thread for each of those puzzles.
+	vector<std::thread> solving_threads;
+	for (int i = 0; i < sodokus_for_threads.size(); i++)
+		solving_threads.push_back(std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]));
+
+	// This keeps track of how many times a thread failed to find a solution. 
+	// It sucks to do it this way but I can't easily keep track of what hints
+	// I used already. Change this to a better way some day in the future.
+	int failed_solves = 0;
+	int max_solve_retries = (this->matrix.Get_Size() * this->matrix.Get_Size()) * 0.75;
+	
 	// Check the status of the thread and react accordingly if the
 	// thread found a solution or found an unsolvable solution.
 	while (true){
-		// If the thread found a solution, copy the contents of the
-		// sodoku from that thread into this one and indicate success.
-		if (sodoku_for_thread.is_complete())
-		{
-			this->copy(sodoku_for_thread);
-			solving_thread.join();
-			return true;
-		}
+		for (int i = 0; i < solving_threads.size(); i++){
+			// If the thread found a solution, copy the contents of the
+			// sodoku from that thread into this one and indicate success.
+			if (sodokus_for_threads[i].is_complete()){
+				this->copy(sodokus_for_threads[i]);
+				this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
+				return true;
+			}
 
-		// If the thread indicated that there is no solution, copy
-		// the contents of the sodoku from that thread into this
-		// one and indicate failure.
-		if (sodoku_for_thread.failed_solve)
-		{
-			this->copy(sodoku_for_thread);
-			solving_thread.join();
-			return false;
+			// If the thread indicated that there is no solution give it another
+			// sodoku with another hint.
+			if (sodokus_for_threads[i].failed_solve){
+				// If the first thread failed, stop all the other threads and indicate
+				// failure.
+				if (sodokus_for_threads[0].failed_solve){
+					this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
+					return false;
+				}
+				
+				// Stop generating new threads if we retried more than some amount.
+				if (failed_solves >= max_solve_retries)
+					continue;
+				else
+					failed_solves++;
+
+				// Get the thread back.
+				solving_threads[i].join();
+
+				// Generate a sodoku with a new hint.
+				sodokus_for_threads[i] = *this;
+				sodokus_for_threads[i].solve_puzzle_partially_count(1);
+
+				// And replace the old thread with a new thread using the
+				// new sodoku.
+				solving_threads[i] = std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
+			}
 		}
 			
 		// Wait a bit so we don't spam checks to the thread, wasting
-		// preformance.
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		// performance.
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
-	
 }
 
 void Sodoku::solver_for_thread(void){
-	// Starts on the top left of the puzzle to the top right, then down a row 
-	// from left to right, and repeats to the end.
-	while (!this->failed_solve){
+	// While the puzzle is not solved, keep tring to solve it. stop_solving
+	// is for multithreaded purposes, a way to request the thread to stop.
+	while (!this->failed_solve & !this->stop_solving){
 		// If try_to_fill fails, it means that all attempts to fill the current
 		// cell have failed, so go back a cell.
 		if (this->try_to_fill(this->working_cell.x, this->working_cell.y)){
@@ -808,4 +860,16 @@ void Sodoku::display_writable(string input_string){
 
 	// Add in a line to make things look nicer.
 	cout << endl;
+}
+
+// Shut down all the current solving threads. This is a blocking function!
+void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads, vector<Sodoku> &sodokus_for_threads){
+	// The signaling of the thread to shut down and doing .join() are seperated
+	// to give the thread time to shut down so we don't waste time waiting.
+	for (Sodoku &sodoku : sodokus_for_threads)
+		sodoku.stop_solving = true;
+
+	// And now we get them to all join. Blocking!
+	for (std::thread &solving_thread : solving_threads)
+		solving_thread.join();
 }
