@@ -414,8 +414,8 @@ bool Sodoku::solve_puzzle(void){
 		return false;
 
 	// Get how many threads we should run based on cores available.
-	int threads = thread::hardware_concurrency() * 2;
-	
+	int threads = thread::hardware_concurrency() * 2 - 1;
+
 	// Generate that many different potential sodoku puzzles (with hints).
 	vector<Sodoku> sodokus_for_threads;
 	for (int i = 0; i < threads; i++){
@@ -436,11 +436,29 @@ bool Sodoku::solve_puzzle(void){
 	// I used already. Change this to a better way some day in the future.
 	int failed_solves = 0;
 	int max_solve_retries = (this->matrix.Get_Size() * this->matrix.Get_Size()) * 0.75;
+
+	// How many steps of work per cell to solve the puzzle. Change this
+	//  based on how fast we want either a solution or the puzzle being 
+	// marked as unsolvable at the cost of missing a possible solution.
+	const int magic_speed_number = 10^3;
+
+	// How many steps we should wait till we give the thread a  puzzle with a new hint.
+	const int max_steps = (this->get_size() ^ 2 - this->get_prefilled_cell_count() + 1) * magic_speed_number;
 	
 	// Check the status of the thread and react accordingly if the
 	// thread found a solution or found an unsolvable solution.
 	while (true){
-		for (int i = 0; i < solving_threads.size(); i++){
+		// If the first thread failed, stop all the other threads and indicate
+		// failure.
+		if (sodokus_for_threads[0].failed_solve){
+			this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
+			return false;
+		}
+
+		// Loop through all the threads except the initial one and check if
+		// and threads found a solution, give new work to threads which failed
+		// to find a solution after some steps or found out there is no solution.
+		for (int i = 1; i < solving_threads.size(); i++){
 			// If the thread found a solution, copy the contents of the
 			// sodoku from that thread into this one and indicate success.
 			if (sodokus_for_threads[i].is_complete()){
@@ -452,16 +470,9 @@ bool Sodoku::solve_puzzle(void){
 			// If the thread indicated that there is no solution give it another
 			// sodoku with another hint.
 			if (sodokus_for_threads[i].failed_solve){
-				// If the first thread failed, stop all the other threads and indicate
-				// failure.
-				if (sodokus_for_threads[0].failed_solve){
-					this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
-					return false;
-				}
-				
 				// Stop generating new threads if we retried more than some amount.
 				if (failed_solves >= max_solve_retries)
-					continue;
+					continue; // Skip what is left in the while loop after me.
 				else
 					failed_solves++;
 
@@ -476,11 +487,31 @@ bool Sodoku::solve_puzzle(void){
 				// new sodoku.
 				solving_threads[i] = std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
 			}
+
+			// Gives threads which have been going a long time a new sodoku
+			// with a new hint. My method of solving a sodoku reacts very well
+			// to good hints.
+			if (sodokus_for_threads[i].get_amount_of_steps() > max_steps)
+			{
+				cout << "Thread took too many steps, giving new work." << endl;
+
+				// Get the thread back.
+				sodokus_for_threads[i].stop_solving = true;
+				solving_threads[i].join();
+
+				// Generate a sodoku with a new hint.
+				sodokus_for_threads[i] = *this;
+				sodokus_for_threads[i].solve_puzzle_partially_count(1);
+
+				// And replace the old thread with a new thread using the
+				// new sodoku.
+				solving_threads[i] = std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
+			}
 		}
 			
 		// Wait a bit so we don't spam checks to the thread, wasting
 		// performance.
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
@@ -862,4 +893,16 @@ void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads, vect
 	// And now we get them to all join. Blocking!
 	for (std::thread &solving_thread : solving_threads)
 		solving_thread.join();
+}
+
+// Returns how many cells were filled with partial_solve.
+int Sodoku::get_prefilled_cell_count(void)
+{
+	int temp = 0;
+
+	for (int column = 0; column < this->matrix.Get_Size(); column++)
+		for (int row = 0; row < this->matrix.Get_Size(); row++)
+			temp = temp + this->writable.Get_Elem(column, row);
+
+	return temp;
 }

@@ -127,6 +127,9 @@ class Sodoku
 		// similar to a copy constructor.
 		void copy(const Sodoku &other);
 
+		// Returns how many cells were filled with partial_solve.
+		int get_prefilled_cell_count(void);
+
 		// Shut down all the current solving threads. This is a blocking function!
 		void shutdown_solving_threads(std::vector<std::thread> &solving_threads, std::vector<Sodoku> &sodokus_for_threads);
 
@@ -137,6 +140,9 @@ class Sodoku
 		// Only for controling other threads. This is my first fooray
 		// into threads and there are abundant bad design choices here!
 		bool stop_solving;
+
+		// Factorial function thrown in.
+		inline int factorial(int n) { return ((n == 1 || n == 0) ? 1 : factorial(n - 1) * n); }
 };
 
 #endif
