@@ -526,7 +526,7 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 	while (this->increment_cell_contents(x, y))
 	{
 		// Check the validity of the changes. 
-		if (check_sodoku_validity())
+		if (this->check_column_validity(x) && this->check_row_validity(y))
 			return true;
 		else
 			// If the changes were not valid, keep trying to increment the cell.
