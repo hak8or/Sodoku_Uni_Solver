@@ -491,9 +491,8 @@ bool Sodoku::solve_puzzle(void){
 			// Gives threads which have been going a long time a new sodoku
 			// with a new hint. My method of solving a sodoku reacts very well
 			// to good hints.
-			if (sodokus_for_threads[i].get_amount_of_steps() > max_steps)
-			{
-				cout << "Thread took too many steps, giving new work." << endl;
+			if (sodokus_for_threads[i].get_amount_of_steps() > max_steps) {
+				cout << "Thread " << i << " took too many steps, giving new work." << endl;
 
 				// Get the thread back.
 				sodokus_for_threads[i].stop_solving = true;
