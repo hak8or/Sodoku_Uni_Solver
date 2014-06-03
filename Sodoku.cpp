@@ -435,7 +435,7 @@ bool Sodoku::solve_puzzle(void){
 	// It sucks to do it this way but I can't easily keep track of what hints
 	// I used already. Change this to a better way some day in the future.
 	int failed_solves = 0;
-	int max_solve_retries = (this->matrix.Get_Size() * this->matrix.Get_Size()) * 0.75;
+	int max_hinted_retries = (this->matrix.Get_Size() * this->matrix.Get_Size()) * 0.75;
 
 	// How many steps of work per cell to solve the puzzle. Change this
 	//  based on how fast we want either a solution or the puzzle being 
@@ -471,7 +471,7 @@ bool Sodoku::solve_puzzle(void){
 			// sodoku with another hint.
 			if (sodokus_for_threads[i].failed_solve){
 				// Stop generating new threads if we retried more than some amount.
-				if (failed_solves >= max_solve_retries)
+				if (failed_solves >= max_hinted_retries)
 					continue; // Skip what is left in the while loop after me.
 				else
 					failed_solves++;
