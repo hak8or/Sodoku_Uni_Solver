@@ -455,6 +455,13 @@ bool Sodoku::solve_puzzle(void){
 			return false;
 		}
 
+		// Also check if the first thread found a solution.
+		if (sodokus_for_threads[0].is_complete()){
+			this->copy(sodokus_for_threads[0]);
+			this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
+			return true;
+		}
+
 		// Loop through all the threads except the initial one and check if
 		// and threads found a solution, give new work to threads which failed
 		// to find a solution after some steps or found out there is no solution.
