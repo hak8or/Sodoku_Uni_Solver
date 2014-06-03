@@ -658,16 +658,8 @@ bool Sodoku::back_cell(void)
 // Returns a zero if the new value will be out of bounds or if you can't write
 // to that cell because it is a constant.
 bool Sodoku::increment_cell_contents(const int& column, const int& row){
-	// Check if the cell is in bounds.
-	if ( (row > this->matrix.Get_Size()) && (column > this->matrix.Get_Size()) )
-		return false;
-
 	// Check if we can write to the cell.
 	if ( !this->can_set(column, row) )
-		return false;
-
-	// Check if the new value will be larger than allowed in a sodoku puzzle.
-	if ( (this->matrix.Get_Elem(column, row) >= this->matrix.Get_Size() - 1)) 
 		return false;
 
 	// Holds the contents of the cell.
@@ -675,6 +667,10 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 
 	// Increment the contents by one.
 	cell_contents++;
+
+	// Check if the new value will be larger than allowed in a sodoku puzzle.
+	if ((this->matrix.Get_Elem(column, row) >= this->matrix.Get_Size() - 1))
+		return false;
 
 	// Save the new contents into the cell.
 	this->set_cell(column, row, cell_contents);
