@@ -2,20 +2,11 @@
 #include "Square_Matrix.h"
 #include <time.h> // Solely for seeding the RNG.
 #include <stdlib.h> // Solely for the RNG.
-#include <iostream>
-#include <string>
-#include <thread>
-#include <chrono>
+#include <iostream> // Cout capability.
+#include <string> // Couting strings.
+#include <thread> // Threads.
+#include <chrono> // Used for making threads sleep
 
-// NOTE:
-// Because I do not wish to modify Square_Matrix from the previous assignment, 
-// some issues are dealt with in this project. For example, to deal with cells
-// existing but not yet written to, I fill the entire matrix with -1's and if a 
-// -1 is found it is considered to be not yet written to. I don't know how to
-// handle Get_Cell.
-
-// Gotta use a namespace or else all my couts will have to specify the namespace
-// each time.
 using namespace std;
 
 // Constructor for the sodoku object.

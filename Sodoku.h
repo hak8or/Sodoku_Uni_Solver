@@ -2,8 +2,8 @@
 #define Sodoku_H
 
 #include "Square_Matrix.h"
-#include <string>
-#include <thread>
+#include <string> // Couting strings.
+#include <thread> // For threads
 
 class Sodoku
 {
