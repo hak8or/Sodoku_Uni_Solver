@@ -414,7 +414,7 @@ bool Sodoku::solve_puzzle(void){
 		return false;
 
 	// Get how many threads we should run based on cores available.
-	int threads = thread::hardware_concurrency() * 2 - 1;
+	int threads = thread::hardware_concurrency() - 1;
 
 	// Generate that many different potential sodoku puzzles (with hints).
 	vector<Sodoku> sodokus_for_threads;
