@@ -4,11 +4,12 @@ NOTES:
 
 
 -- later --
-[N] - Allow entering of coordinates via a vector or string to make setting up puzzles
-for testing quicker.
+[ ] - Allow entering of coordinates via a vector or string to make setting up puzzles for testing quicker.
+[ ] - Add in terminal GUI.
 
 
 ------- Complete -------
+[Y] - Shut down threads when we found a thread with a solution.
 [Y] - Update compilation instructions.
 [Y] - Change test.cpp to main.cpp (kept test.cpp, made main.cpp)
 [Y] - Say if using backtrack or recusrion in program start.
