@@ -916,12 +916,11 @@ SCENARIO("A manually partially filled puzzle which is too large for my algo to s
 		puzzle.set_const_cell(2, 8, 6);
 
 		WHEN("trying to auto solve it.") {
-			// bool solved = puzzle.solve_puzzle();
+			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
-				REQUIRE(true);
-				// REQUIRE(solved);
-				// REQUIRE(puzzle.is_complete());
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
 			}
 		}
 	}
