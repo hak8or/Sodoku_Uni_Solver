@@ -440,10 +440,10 @@ bool Sodoku::solve_puzzle(void){
 	// How many steps of work per cell to solve the puzzle. Change this
 	//  based on how fast we want either a solution or the puzzle being 
 	// marked as unsolvable at the cost of missing a possible solution.
-	const int magic_speed_number = 10^3;
+	const unsigned int magic_speed_number = 100000; // 100,000
 
-	// How many steps we should wait till we give the thread a  puzzle with a new hint.
-	const int max_steps = (this->get_size() ^ 2 - this->get_prefilled_cell_count() + 1) * magic_speed_number;
+	// How many steps we should wait till we give the thread a puzzle with a new hint.
+	const unsigned long max_steps = (this->get_size() * this->get_size() - this->get_prefilled_cell_count()) * magic_speed_number;
 	
 	// Check the status of the thread and react accordingly if the
 	// thread found a solution or found an unsolvable solution.
