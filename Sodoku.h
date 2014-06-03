@@ -82,11 +82,7 @@ class Sodoku
 
 		// Coordinates of a cell which is not allowed to change. Meant for holding
 		// cells which were partially filled when the puzzle is first presented.
-		struct coordinates
-		{
-			int x;
-			int y;
-		};
+		struct coordinates { int x; int y; };
 
 		// The coordinates of the current cell we are trying to fill.
 		coordinates working_cell;
