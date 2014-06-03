@@ -902,7 +902,8 @@ int Sodoku::get_prefilled_cell_count(void)
 
 	for (int column = 0; column < this->matrix.Get_Size(); column++)
 		for (int row = 0; row < this->matrix.Get_Size(); row++)
-			temp = temp + this->writable.Get_Elem(column, row);
+			if (this->writable.Get_Elem(column, row) == 0)
+				temp++;
 
 	return temp;
 }
