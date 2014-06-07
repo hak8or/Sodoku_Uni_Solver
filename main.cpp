@@ -13,9 +13,7 @@ To do it all: make clean && make && ./Sodoku
 |-Square_Matrix
 ----------------
 | This project relies on the usage of our previous library, Square_Matrix, 
-| as what holds the contents of the sodoku puzzle. I added get_row and get_column
-| which returns a vector of those elements, and a fill function which fills the
-| entire matrix with an int all in one go.
+| as what holds the contents of the sodoku puzzle.
 ----------------
 
 
@@ -24,8 +22,7 @@ To do it all: make clean && make && ./Sodoku
 | This uses two "filling" algorithms. The first is used to fill just a small
 | section of the puzzle to get us started. It should be used for only small
 | percentages of the puzzle because it fills the puzzle using a random brute
-| force method which is very inefficiant. This was done for simplicities 
-| sake and because it would be an issue only for larger percentages.
+| force method which is very inefficiant.
 |
 | This does NOT guarantee a solvable puzzle. To check if it would be
 | solvable would require to try to actually solve it, which would
@@ -49,7 +46,8 @@ To do it all: make clean && make && ./Sodoku
 | It can go like this for the entire sodoku puzzle, once it finishes the
 | last element, then it is considered that the puzzle has been fully solved.
 | If it went all the way back to the earliest cell not filled with partial_fill
-| then it is considered that the puzzle in its current form is not solvable.
+| and incrememnted to the highest possible value, then it is considered that 
+| the puzzle in its current form is not solvable.
 --------------------------------------------
 
 
@@ -92,18 +90,14 @@ To do it all: make clean && make && ./Sodoku
 |
 | I also threw in my notes onto the VCS where this is stored.
 |
-| There were troubles with using version control for this since I originally was just
-| putting everything into a develop branch but later wanted to use gitflow which did
-| work out too well so it remained as is. The branching and merging is not miraculous.
+| There were troubles with using version control for this since I originally was 
+| just putting everything into a develop branch but later wanted to use gitflow 
+| which did not work out too well so it remained as is. The branching and merging
+| is not miraculous.
 |
 | The main filling algo was rewritten a few times due to me wanting to make it more
 | clear, faster, or cleaner. While I did update the comments to reflect the changes,
 | some old comments from previous implimentations might remain.
-|
-| Since I log how many steps were taken so far when solving a puzzle, with a little
-| modification to the sodoku class I can have the solving process automatically fail
-| if more than a certain number of steps were taken so far which would let me make
-| sodoku puzzles which are simple to solve using this algo. I found this cool.
 |
 | The -std=c++0x flag was added due to a bug for converting int to string from the
 | standard library. 
