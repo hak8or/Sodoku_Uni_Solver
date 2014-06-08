@@ -276,15 +276,13 @@ bool Sodoku::set_cell(const int& x, const int& y, const int& val){
  */
 bool Sodoku::check_row_validity(const int& row){
 	// Go through each row.
-	for (int i = 0; i < this->matrix.Get_Size(); ++i){
+	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 		// Check if more than 1 of that int exists in the row.
-		for (int j = 0; j < this->matrix.Get_Size(); ++j){
+		for (int j = 0; j < this->matrix.Get_Size(); ++j)
 			// If the number appears twice and it is not an unset cell and it is
 			// not checking itself, then that row is invalid.
 			if ((this->matrix.Get_Elem(i, row) == this->matrix.Get_Elem(j, row)) && (this->matrix.Get_Elem(i, row) != -1) && (i != j))
 				return false;
-		}
-	}
 
 	// If we get here, it means that the row is valid.
 	return true;
@@ -302,15 +300,13 @@ bool Sodoku::check_row_validity(const int& row){
  */
 bool Sodoku::check_column_validity(const int& column){
 	// Go through each column.
-	for (int i = 0; i < this->matrix.Get_Size(); ++i){
+	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 		// Check if more than 1 of that int exists in the column.
-		for (int j = 0; j < this->matrix.Get_Size(); ++j){
+		for (int j = 0; j < this->matrix.Get_Size(); ++j)
 			// If the number appears twice and it is not an unset cell and it is
 			// not checking itself, then that column is invalid.
 			if ((this->matrix.Get_Elem(column, i) == this->matrix.Get_Elem(column, j)) && (this->matrix.Get_Elem(column, i) != -1) && (i != j))
 				return false;
-		}
-	}
 
 	// If we get here, it means that the column is valid.
 	return true;
