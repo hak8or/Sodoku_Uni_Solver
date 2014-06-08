@@ -570,15 +570,16 @@ bool Sodoku::solve_puzzle(void){
  * @details Utilizes backtracking to find a solution for the puzzle.
  */
 void Sodoku::solver_for_thread(void){
-	// 1) Sets the current cell we are trying to solve to the origin cell, 0,0.
-	// 2) Solves the first cell if it is not unset.
-	// 3) Goes to the next writable cell and tries to fill it with a valid entry.
+	// 1) Tries to fill the first avalible cell.
+	// 2) Goes to the next writable cell and tries to fill it with a valid entry.
+	// 3) If no valid entries were found for the current cell, go back a cell and
+	//	  increment the previous one.
 	// 4) Repeat step 3 until either we reach the last cell and solve it. 
 	//    If we return to the first writable cell and still can't find a solution 
 	//    then consider the puzzle unsolvable with the current unwritable cells.
 
 	// While the puzzle is not solved, keep tring to solve it. stop_solving
-	// is for multithreaded purposes, a way to request the thread to stop.
+	// is for multithreaded purposes, a way to request this thread to stop.
 	while (!this->failed_solve & !this->stop_solving){
 		// If try_to_fill fails, it means that all attempts to fill the current
 		// cell have failed, so go back a cell.
@@ -602,11 +603,6 @@ void Sodoku::solver_for_thread(void){
 				break;
 			}
 		}
-
-		// Uncomment this to see how the puzzle tries to get solved over time.
-		// this->display();
-		// this->display_heatmap();
-		// std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
