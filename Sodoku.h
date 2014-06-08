@@ -121,6 +121,8 @@ public:
 	 * high percentage, but don't count on it happening while you still remember you
 	 * even set it.
 	 * 
+	 * Do not use this for an already partially filled puzzle!
+	 * 
 	 * NOTE:
 	 * 		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
 	 * 		
