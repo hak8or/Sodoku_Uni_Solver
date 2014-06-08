@@ -79,13 +79,16 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Show the partially filled puzzle first.
-	partially_filled_puzzle.display("Partially pre-filled puzzle.");
+	cout << "Partially pre-filled puzzle." << endl;
+	partially_filled_puzzle.display();
 
 	// And now show the filled puzle!
-	puzzle.display("Solved puzzle");
+	cout << "Solved puzzle" << endl;
+	puzzle.display();
 
 	// Show a heatmap which displays how many times we tried a value in each cell.
-	puzzle.display_heatmap("# of times a value was tried per cell.");
+	cout << "# of times a value was tried per cell." << endl;
+	puzzle.display_heatmap();
 
 	// And lastly show how many totall attempts there were to write to a cell.
 	// This gives a good idea for how "hard" it was to solve the puzzle.

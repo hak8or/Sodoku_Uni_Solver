@@ -881,17 +881,13 @@ void Sodoku::set_const_cell( int x, int y, int value){
 
 /**
  * @brief Displays how many steps were taken to solve the puzzle for each cell
- * using cout. Also puts a provided string on the top of the heatmap.
+ * using cout.
  * 
  * @param input_string string to display.
  */
-void Sodoku::display_heatmap(string input_string){
+void Sodoku::display_heatmap(void){
 	// Will hold the current row.
 	vector<int> row_contents;
-
-	// If no input string was given then don't the string.
-	if (!input_string.empty())
-		cout << input_string << endl;
 
 	// Sets how much padding is needed for each cell display so the columns
 	// align properly. Uses the largest digit wise heatmap value found.
@@ -939,18 +935,11 @@ void Sodoku::display_heatmap(string input_string){
  * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
  * 
  * @details Not in private because then it couldn't be accessed by the unit tests.
- * Shows a chart showing what cells are and aren't writable. Also puts a provided
- * string on the top of the heatmap.
- * 
- * @param input_string String to display.
+ * Shows a chart showing what cells are and aren't writable. 
  */
-void Sodoku::display_writable(string input_string){
+void Sodoku::display_writable(void){
 	// Will hold the current row.
 	vector<int> row_contents;
-
-	// If no input string was given then don't the string.
-	if (!input_string.empty())
-		cout << input_string << endl;
 
 	// Sets how much padding is needed for each cell display so the columns
 	// align properly.

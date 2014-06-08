@@ -193,23 +193,17 @@ public:
 	int get_amount_of_steps(void);
 
 	/**
-	 * @brief Displays how many steps were taken to solve the puzzle for each cell
-	 * using cout. Also puts a provided string on the top of the heatmap.
-	 * 
-	 * @param input_string string to display.
+	 * @brief Displays how many steps were taken to solve the puzzle for each cell.
 	 */
-	void display_heatmap(std::string input_string = "");
+	void display_heatmap(void);
 
 	/**
 	 * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
 	 * 
 	 * @details Not in private because then it couldn't be accessed by the unit tests.
-	 * Shows a chart showing what cells are and aren't writable. Also puts a provided
-	 * string on the top of the heatmap.
-	 * 
-	 * @param input_string String to display.
+	 * Shows a chart showing what cells are and aren't writable.
 	 */
-	void display_writable(std::string input_string = "");
+	void display_writable(void);
 
 	/**
 	 * @brief Copies the sodoku puzzle into *this one.
