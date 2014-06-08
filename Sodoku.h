@@ -233,14 +233,14 @@ private:
 	bool increment_cell_contents(const int& column, const int& row);
 
 	/**
-	 * @brief Checks if the cell is writable and in bounds.
+	 * @brief Checks if the cell is writable.
 	 * 
 	 * @param x_coordinate X value of cell
 	 * @param y_coordinate Y value of cell
 	 * 
-	 * @return True if writable and in bounds, false if otherwise.
+	 * @return True if writable, false if otherwise.
 	 */
-	bool can_set(int x, int y);
+	bool inline can_set(int x, int y);
 
 	/**
 	 * @brief Tries to fill the cell with a value that follows sodoku rules.

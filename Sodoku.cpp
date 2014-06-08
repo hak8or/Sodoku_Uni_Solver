@@ -798,23 +798,14 @@ int Sodoku::count_filled_cells(void){
 }
 
 /**
- * @brief Checks if the cell is writable and in bounds.
+ * @brief Checks if the cell is writable.
  * 
  * @param x_coordinate X value of cell
  * @param y_coordinate Y value of cell
  * 
- * @return True if writable and in bounds, false if otherwise.
+ * @return True if writable, false if otherwise.
  */
-bool Sodoku::can_set(int x_coordinate, int y_coordinate){
-	// First check if the coordinates are out of bounds.
-	if ((x_coordinate < 0) || (y_coordinate < 0) ||
-		(x_coordinate >= this->get_size()) || 
-		(y_coordinate >= this->get_size()) )
-	{
-		return false;
-	}
-
-	// Returns the writable state of the cell.
+bool inline Sodoku::can_set(int x_coordinate, int y_coordinate){
 	return this->writable.Get_Elem(x_coordinate, y_coordinate);
 }
 
