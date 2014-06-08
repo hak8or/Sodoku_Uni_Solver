@@ -23,11 +23,9 @@ Square_Matrix::~Square_Matrix(void)
 {
 	// If destructor was called before Set_Size something bad might
 	// happen, so I threw this in here just in case.
-	if (size != 0)
-	{
-		// Delete the array held by each row pointer
-		for (int row = 0; row < size; ++row)
-		{
+	if (size != 0) {
+		// Delete the array held by each row pointer and then point it to null.
+		for (int row = 0; row < size; ++row) {
 			delete[] matrix[row];
 			matrix[row] = NULL;
 		}
@@ -35,9 +33,10 @@ Square_Matrix::~Square_Matrix(void)
 		// and lastly delete matrix itself.
 		delete[] matrix;
 
-		// Throw in a null pointer in case this gets run twice.
+		// Set matrix to point to nullptr.
 		matrix = NULL;
 
+		// And reset size back to zero.
 		size = 0;
 	}
 }
