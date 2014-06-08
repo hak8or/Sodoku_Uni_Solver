@@ -9,62 +9,134 @@
 
 #include <vector>
 
-// The Square_Matrix class as per the assignment.
-// Object of this class stores integer matrix of size NxN. This matrix is 
-// represented as dynamically allocated two-dimentional array of integers.
+/**
+ * @brief A square matrix of int's
+ * 
+ * @details Object of this class stores integer matrix of size NxN. This matrix
+ * is represented as dynamically allocated two-dimentional array of integers
+ */
 class Square_Matrix {
 public:
-	// Constructor
+	/**
+	 * @brief Allocates a matrix of size 0.
+	 */
 	Square_Matrix(void);
 
-	// Destructor
+	/**
+	 * @brief Properly de allocates all of memory set asside for the matrix.
+	 */
 	~Square_Matrix(void);
 
-	// Allocates memory for the square matrix of given size (new_size) and 
-	// sets the size of matrix to it. If the object already stored matrix 
-	// all the values in it are lost.
-	// Avoid memory leaks! If memory for the matrix was allocated before, 
-	// make sure your properly release it before allocating more memory for 
-	// new matrix size! 
+	/**
+	 * @brief Sets the size of the square matrix, resize will reset contents.
+	 * 
+	 * @details Description taken from assignment requirments.
+	 * Allocates memory for the square matrix of given size (new_size) and 
+	 * sets the size of matrix to it. If the object already stored matrix 
+	 * all the values in it are lost.
+	 * 
+	 * Avoid memory leaks! If memory for the matrix was allocated before, 
+	 * make sure your properly release it before allocating more memory for
+	 * new matrix size! 
+	 * 
+	 * @param new_size [size of an edge.]
+	 */
 	void Set_Size (const int &new_size);
 
-	// Method returns current size of the matrix.
+	/**
+	 * @brief Gets the size of the matrix.
+	 * 
+	 * @return The size of an edge of the matrix.
+	 */
 	int Get_Size(void);
 
-	// Sets element on the intersection of given row (num_row) and given 
-	// column (num_column) to new value (new_value).
+	/**
+	 * @brief Sets an element of the matrix to the given value.
+	 * 
+	 * @param new_value Value we change the element to.
+	 * @param num_column Column of the cell.
+	 * @param num_row Row of the cell.
+	 */
 	void Set_Elem (const int &new_value, const int &num_column, const int &num_row);
 
-	// Returns the value of the element on the intersection of given 
-	// row (num_row) and given column (num_column).
+	/**
+	 * @brief Returns the contents of a cell at the specified row and column.
+	 * 
+	 * @param num_column Column of the cell.
+	 * @param num_row Row of the cell.
+	 * 
+	 * @return Contents of the cell.
+	 */
 	int Get_Elem (const int &num_column, const int &num_row);
 
-	// Returns the selected Row in the form of a vector.
+	/**
+	 * @brief Returns the contents of a row.
+	 * 
+	 * @details If out of bounds, return a correctly sized vector of 0's.
+	 * 
+	 * @param num_row row we want.
+	 * 
+	 * @return Contents of row as a vector of int's.
+	 */
 	std::vector<int> Get_Row(const int &num_row);
 
-	// Returns the selected column in the form of a vector.
+	/**
+	 * @brief Returns the contents of a column.
+	 * 
+	 * @details If out of bounds, return a correctly sized vector of 0's.
+	 * 
+	 * @param num_column Column we want.
+	 * 
+	 * @return Contents of column as a vector of int's.
+	 */
 	std::vector<int> Get_Column(const int &num_column);
 
-	// Fills the entire matrix with this int.
+	/**
+	 * @brief Fills an entire matrix with a value.
+	 * 
+	 * @param value The value to fill the matrix with.
+	 */
 	void fill(const int &value);
 
-	// I am here just to see if all is working.
-	// Should return 2014.
-	int sanity_check(void);
+	/**
+	 * @brief Sanity test (For unit testing mostly).
+	 * 
+	 * @return 2014 as an int
+	 */
+	int inline sanity_check(void) {return 2014;}
 
-	// Equality overloader, checks if size and contents are the same.
+	/**
+	 * @brief Comparison of size and contents of the other matrix.
+	 * 
+	 * @param other_matrix The matrix we are comparing to.
+	 * 
+	 * @return True if the same, false if otherwise.
+	 */
 	bool operator==(const Square_Matrix &other_matrix);
 
-	// Addition overloader
+	/**
+	 * @brief Adds the contents of a same sized matrix to *this. 
+	 * 
+	 * @details You are guaranteed that "+" operator will always receive correct input 
+	 * (two non-empty matrices of the same size).
+	 * 
+	 * @param other_matrix Matrix we are adding to this one.
+	 */
 	Square_Matrix &operator+(const Square_Matrix &other_matrix);
 
-	// Assignment operator, assume I don't need to worry about self assignment.
-	// A class usually sets this up automatically, but it is a good
-	// idea to impliment it yourself to make sure all is well since
-	// when default it might break.
+	/**
+	 * @brief Overwrites *this matrix with the other matrix.
+	 * 
+	 * @details A class usually sets this up automatically, but it is a good idea to
+	 * impliment it yourself to make sure all is well since when default it might break.
+	 * 
+	 * @param other_matrix Matrix we are getting data from.
+	 */
 	Square_Matrix &operator=(const Square_Matrix &other_matrix);
 
-	// Copy Constructor
+	/**
+	 * @brief Constructs *this matrix using another matrix as reference.
+	 */
 	Square_Matrix(const Square_Matrix &other_matrix);
 
 private:
