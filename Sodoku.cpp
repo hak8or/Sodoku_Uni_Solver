@@ -619,8 +619,7 @@ void Sodoku::solver_for_thread(void){
 bool Sodoku::try_to_fill(const int& x, const int& y){
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
-	while (this->increment_cell_contents(x, y))
-	{
+	while (this->increment_cell_contents(x, y)){
 		// Check the validity of the changes. 
 		if (this->check_column_validity(x) && this->check_row_validity(y))
 			return true;
