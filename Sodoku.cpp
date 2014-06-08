@@ -895,7 +895,6 @@ void Sodoku::display_heatmap(string input_string){
 
 	// Sets how much padding is needed for each cell display so the columns
 	// align properly. Uses the largest digit wise heatmap value found.
-	//-----------------------------
 	int largest_heatmap_value = 0;
 	int padding = 1;
 
@@ -909,10 +908,8 @@ void Sodoku::display_heatmap(string input_string){
 	while ( largest_heatmap_value /= 10 )
 		padding++;
 
-
 	// Go through each row.
-	for (int row = 0; row < this->heatmap.Get_Size(); ++row)
-	{
+	for (int row = 0; row < this->heatmap.Get_Size(); ++row){
 		// Copies the row into a vector.
 		row_contents = this->heatmap.Get_Row(row);
 
@@ -920,8 +917,7 @@ void Sodoku::display_heatmap(string input_string){
 		cout << "| ";
 
 		// Displays the contents of each cell of the row with spacing between cells.
-		for (int cell_count = 0; cell_count < this->heatmap.Get_Size(); ++cell_count)
-		{
+		for (int cell_count = 0; cell_count < this->heatmap.Get_Size(); ++cell_count){
 			// Sets up padding for the cell output.
 			cout.width(padding);
 
@@ -961,8 +957,7 @@ void Sodoku::display_writable(string input_string){
 	int padding = 1;
 
 	// Go through each row.
-	for (int row = 0; row < this->writable.Get_Size(); ++row)
-	{
+	for (int row = 0; row < this->writable.Get_Size(); ++row) {
 		// Copies the row into a vector.
 		row_contents = this->writable.Get_Row(row);
 
@@ -970,8 +965,7 @@ void Sodoku::display_writable(string input_string){
 		cout << "| ";
 
 		// Displays the contents of each cell of the row with spacing between cells.
-		for (int cell_count = 0; cell_count < this->writable.Get_Size(); ++cell_count)
-		{
+		for (int cell_count = 0; cell_count < this->writable.Get_Size(); ++cell_count) {
 			// Sets up padding for the cell output.
 			cout.width(padding);
 
