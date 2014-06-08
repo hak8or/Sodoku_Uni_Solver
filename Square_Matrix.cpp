@@ -140,9 +140,7 @@ void Square_Matrix::Set_Size(const int &new_size) {
  * 
  * @return The size of an edge of the matrix.
  */
-int Square_Matrix::Get_Size(void) {
-	return size;
-}
+int Square_Matrix::Get_Size(void) { return size; }
 
 /**
  * @brief Sets an element of the matrix to the given value.
