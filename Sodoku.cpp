@@ -824,8 +824,7 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
  * 
  * @return Amount of steps taken to solve.
  */
-int Sodoku::get_amount_of_steps(void)
-{
+int Sodoku::get_amount_of_steps(void){
 	int temp = 0;
 
 	for (int column = 0; column < this->matrix.Get_Size(); column++)
