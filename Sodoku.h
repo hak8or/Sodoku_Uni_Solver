@@ -198,14 +198,6 @@ public:
 	void display_heatmap(void);
 
 	/**
-	 * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
-	 * 
-	 * @details Not in private because then it couldn't be accessed by the unit tests.
-	 * Shows a chart showing what cells are and aren't writable.
-	 */
-	void display_writable(void);
-
-	/**
 	 * @brief Copies the sodoku puzzle into *this one.
 	 * 
 	 * @details Copies all the contents of the other sodoku puzzle into this one,

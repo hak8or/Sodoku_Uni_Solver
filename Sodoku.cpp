@@ -932,47 +932,6 @@ void Sodoku::display_heatmap(void){
 }
 
 /**
- * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
- * 
- * @details Not in private because then it couldn't be accessed by the unit tests.
- * Shows a chart showing what cells are and aren't writable. 
- */
-void Sodoku::display_writable(void){
-	// Will hold the current row.
-	vector<int> row_contents;
-
-	// Sets how much padding is needed for each cell display so the columns
-	// align properly.
-	int padding = 1;
-
-	// Go through each row.
-	for (int row = 0; row < this->writable.Get_Size(); ++row) {
-		// Copies the row into a vector.
-		row_contents = this->writable.Get_Row(row);
-
-		// Makes some nice formatting to the start of the row.
-		cout << "| ";
-
-		// Displays the contents of each cell of the row with spacing between cells.
-		for (int cell_count = 0; cell_count < this->writable.Get_Size(); ++cell_count) {
-			// Sets up padding for the cell output.
-			cout.width(padding);
-
-			if (row_contents[cell_count] == -1)
-				cout << "." << " ";
-			else
-				cout << row_contents[cell_count] << " ";
-		}
-
-		// Shows that the row is done.
-		cout << " |" << endl;
-	}
-
-	// Add in a line to make things look nicer.
-	cout << endl;
-}
-
-/**
  * @brief Signals all threads to shut down and then waits for them to stop.
  * 
  * @details This is a blocking function!
