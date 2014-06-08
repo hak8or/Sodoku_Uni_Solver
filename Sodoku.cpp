@@ -1009,8 +1009,7 @@ void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads,
  * 
  * @return Count of pre filled cells.
  */
-int Sodoku::get_prefilled_cell_count(void)
-{
+int Sodoku::get_prefilled_cell_count(void){
 	int temp = 0;
 
 	for (int column = 0; column < this->matrix.Get_Size(); column++)
