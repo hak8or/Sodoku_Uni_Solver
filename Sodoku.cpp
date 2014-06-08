@@ -742,18 +742,17 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 	if ( !this->can_set(column, row) )
 		return false;
 
-	// Holds the contents of the cell.
-	int cell_contents = this->matrix.Get_Elem(column, row);
-
-	// Increment the contents by one.
-	cell_contents++;
-
 	// Check if the new value will be larger than allowed in a sodoku puzzle.
-	if ((this->matrix.Get_Elem(column, row) >= this->matrix.Get_Size() - 1))
+	if ( this->matrix.Get_Elem(column, row) + 1 >= this->matrix.Get_Size() )
 		return false;
 
-	// Save the new contents into the cell.
-	this->set_cell(column, row, cell_contents);
+	// Save the contents + 1 into the cell.
+	this->set_cell(column, row,  this->matrix.Get_Elem(column, row) + 1 );
+
+	// this->matrix.Get_Elem(column, row) is not an int and instead done this
+	// way in hopes of it being faster due to not needing to allocate an int.
+	// Not sure how much of a boost this gives, if any, and I am still learning
+	// how to use a profiler correctly, so this is left like this.
 
 	// We were able to save the new cell contents, so all went well!
 	return true;
