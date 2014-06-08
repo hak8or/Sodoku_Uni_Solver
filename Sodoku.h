@@ -5,6 +5,14 @@
 #include <string> // Couting strings.
 #include <thread> // For threads
 
+/**
+ * @brief Holds the puzzle and all related stats.
+ * 
+ * @details The rules state that the puzzle is a square, no number can repeat in
+ * a row or column, and that all cells must be between 0 and the size of the puzzle.
+ * 
+ * Uses a multithreaded solver to find a solution as fast as possible.
+ */
 class Sodoku {
 public:
 	/**
