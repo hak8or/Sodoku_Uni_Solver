@@ -814,15 +814,8 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 		return false;
 	}
 
-	// Checks if the cell was filled using partial_fill.
-	if (this->writable.Get_Elem(x_coordinate, y_coordinate) == 0)
-	{
-		// Kept for debugging.
-		// cout << "Coordinate " + std::to_string(x_coordinate) + ", " + std::to_string(y_coordinate) + "is non_writable\n";
-		return false;
-	}
-
-	return true;
+	// Returns the writable state of the cell.
+	return this->writable.Get_Elem(x_coordinate, y_coordinate;
 }
 
 /**
