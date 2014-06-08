@@ -15,9 +15,6 @@ class Sodoku
 		// size is given, the size will be set to 0.
 		Sodoku(int size);
 
-		// DeConstructor for the Soduku object.
-		~Sodoku(void);
-
 		// Wipe the contents of the puzzle. This is used when resetting
 		// the puzzle. Everything but the size of the puzzle is reset.
 		void wipe(void);

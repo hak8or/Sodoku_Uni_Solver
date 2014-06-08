@@ -88,12 +88,6 @@ void Sodoku::copy(const Sodoku &other){
 	this->stop_solving = other.stop_solving;
 }
 
-// DeConstructor for the sodoku object.
-Sodoku::~Sodoku(void){
-	// Don't need to put anything here because no dynamic memory
-	// was allocated by Sodoku. Square_Matrix does do dynamic memory
-	// allocation but it has its own destructor which is called when 
-	// the sodoku object gets destroyed.
 }
 
 // Wipe the contents of the puzzle. This is used when resetting the
