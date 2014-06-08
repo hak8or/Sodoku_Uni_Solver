@@ -321,15 +321,10 @@ bool Sodoku::check_column_validity(const int& column){
  * @return True if sodoku follows rules, false if otherwise.
  */
 bool Sodoku::check_sodoku_validity(void){
-	// Since this is a square, we can check rows and columns in one for loop.
+	// Since this is a square, we can check rows and columns in one for loop like this.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
-	{
-		if ( this->check_row_validity(i) != true )
+		if ( !this->check_row_validity(i) | !this->check_column_validity(i) )
 			return false;
-
-		if ( this->check_column_validity(i) != true )
-			return false;
-	}
 
 	// If we get here, it means that the puzzle is valid.
 	return true;
