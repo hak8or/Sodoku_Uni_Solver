@@ -14,11 +14,7 @@ using namespace std;
 /**
  * @brief Allocates a matrix of size 0.
  */
-Square_Matrix::Square_Matrix(void)
-{
-	size = 0;
-	matrix = NULL;
-}
+Square_Matrix::Square_Matrix(void) { size = 0; matrix = NULL; }
 
 /**
  * @brief Properly de allocates all of memory set asside for the matrix.
