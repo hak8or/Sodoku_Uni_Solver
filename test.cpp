@@ -1,22 +1,9 @@
 /*
-Author: Marcin Ziemianowicz
-Class: CSCI 235 (Descrete Analysis 2) Section 01
-Professor: Pavel Shostak
-
-To compile tests: make
-To run tests: make test
-To clean: make clean
-To do it all: make clean && make && make test
-
-All tests should be passing!
-
-Notes:
-Shouldn't both Set_Size and Set_Elem return an int so the user
-knows if they executed correctly via a return vode?
+Author: Hak8or
+Class: CSCI 235
 
 For Myself:
-No idea how to test if memory management is done correctly using
-chase.
+No idea how to test if memory management is done correctly using chase.
 */
 
 #include <iostream>
