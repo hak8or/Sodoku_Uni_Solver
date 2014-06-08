@@ -19,8 +19,7 @@ Square_Matrix::Square_Matrix(void) { size = 0; matrix = NULL; }
 /**
  * @brief Properly de allocates all of memory set asside for the matrix.
  */
-Square_Matrix::~Square_Matrix(void)
-{
+Square_Matrix::~Square_Matrix(void) {
 	// If destructor was called before Set_Size something bad might
 	// happen, so I threw this in here just in case.
 	if (size != 0) {
@@ -44,8 +43,7 @@ Square_Matrix::~Square_Matrix(void)
 /**
  * @brief Constructs *this matrix using another matrix as reference.
  */
-Square_Matrix::Square_Matrix(const Square_Matrix &other_matrix)
-{
+Square_Matrix::Square_Matrix(const Square_Matrix &other_matrix) {
 	// Self assignment test
 	if (this == &other_matrix)
 		return;
@@ -62,8 +60,7 @@ Square_Matrix::Square_Matrix(const Square_Matrix &other_matrix)
 	this->size = other_matrix.size;
 
 	// Fill the rows with new data.
-	for (int i = 0; i < other_matrix.size; ++i)
-	{
+	for (int i = 0; i < other_matrix.size; ++i) {
 		this->matrix[i] = new int[other_matrix.size];
 
 		for (int j = 0; j < other_matrix.size; ++j)
@@ -85,8 +82,7 @@ Square_Matrix::Square_Matrix(const Square_Matrix &other_matrix)
  * 
  * @param new_size [size of an edge.]
  */
-void Square_Matrix::Set_Size(const int &new_size)
-{
+void Square_Matrix::Set_Size(const int &new_size) {
 	// We can't have a negative sized matrix. If new_size wasn't
 	// required to be a const I would flip it to a positive, but
 	// I guess just doing nothing is sufficiant.
@@ -96,11 +92,9 @@ void Square_Matrix::Set_Size(const int &new_size)
 	// "If the object already stored matrix all the values in it are lost."
 	// Checks to see if Set_Size was already ran and if so, wipe matrix
 	// contents and clear the pointers.
-	if (new_size != size && size != 0)
-	{
+	if (new_size != size && size != 0) {
 		// Delete the array held by each row pointer
-		for (int row = 0; row < size; ++row)
-		{
+		for (int row = 0; row < size; ++row) {
 			delete[] matrix[row];
 			matrix[row] = NULL;
 		}
@@ -122,8 +116,7 @@ void Square_Matrix::Set_Size(const int &new_size)
 
 	// Goes through each column pointer and assigns a pointer of n ints with
 	// each set to 0 now.
-	for (int i = 0; i < new_size; ++i)
-	{
+	for (int i = 0; i < new_size; ++i) {
 		// Allocate n ints to each column pointer, effectively making the row.
 		/*
 		*              |- *Column 0     ==> item 0 ... item n-1
@@ -147,8 +140,7 @@ void Square_Matrix::Set_Size(const int &new_size)
  * 
  * @return The size of an edge of the matrix.
  */
-int Square_Matrix::Get_Size(void)
-{
+int Square_Matrix::Get_Size(void) {
 	return size;
 }
 
@@ -159,8 +151,7 @@ int Square_Matrix::Get_Size(void)
  * @param num_column Column of the cell.
  * @param num_row Row of the cell.
  */
-void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, const int &num_row)
-{
+void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, const int &num_row) {
 	// Don't really know what I should do here. I guess return makes most
 	// sense.
 	if (num_row > size - 1 || num_column > size - 1)
@@ -180,8 +171,7 @@ void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, const 
  * 
  * @return Contents of the cell.
  */
-int Square_Matrix::Get_Elem(const int &num_column, const int &num_row)
-{
+int Square_Matrix::Get_Elem(const int &num_column, const int &num_row) {
 	// Don't really know what I should do here. Returning 0 seems to be the
 	// gentlest way to avoid a seg fault.
 	if (num_row > size - 1 || num_column > size - 1)
@@ -201,8 +191,7 @@ int Square_Matrix::Get_Elem(const int &num_column, const int &num_row)
  * 
  * @return Contents of column as a vector of int's.
  */
-std::vector<int> Square_Matrix::Get_Column(const int &num_column)
-{
+std::vector<int> Square_Matrix::Get_Column(const int &num_column) {
 	vector<int> column;
 
 	// If the column is out of range, return a vector containing
@@ -226,8 +215,7 @@ std::vector<int> Square_Matrix::Get_Column(const int &num_column)
  * 
  * @return Contents of row as a vector of int's.
  */
-std::vector<int> Square_Matrix::Get_Row(const int &num_row)
-{
+std::vector<int> Square_Matrix::Get_Row(const int &num_row) {
 	vector<int> row;
 
 	// If the row is out of range, return a vector containing
@@ -247,8 +235,7 @@ std::vector<int> Square_Matrix::Get_Row(const int &num_row)
  * 
  * @param value The value to fill the matrix with.
  */
-void Square_Matrix::fill(const int &value)
-{
+void Square_Matrix::fill(const int &value) {
 	// Goes through the entire matrix and one by one sets each element
 	// to the val.
 	for (int i = 0; i < size; ++i)
@@ -263,8 +250,7 @@ void Square_Matrix::fill(const int &value)
  * 
  * @return True if the same, false if otherwise.
  */
-bool Square_Matrix::operator==(const Square_Matrix &other_matrix)
-{
+bool Square_Matrix::operator==(const Square_Matrix &other_matrix) {
 	if (this == &other_matrix)
 		return 1;
 
@@ -295,16 +281,14 @@ bool Square_Matrix::operator==(const Square_Matrix &other_matrix)
  * 
  * @param other_matrix Matrix we are adding to this one.
  */
-Square_Matrix &Square_Matrix::operator+(const Square_Matrix &other_matrix)
-{
+Square_Matrix &Square_Matrix::operator+(const Square_Matrix &other_matrix) {
 	Square_Matrix *temp_matrix;
 	temp_matrix = new Square_Matrix;
 
 	temp_matrix->Set_Size(other_matrix.size);
 
 	for (int i = 0; i < size; ++i)
-		for (int j = 0; j < size; ++j)
-		{
+		for (int j = 0; j < size; ++j) {
 			int val = this->matrix[i][j] + other_matrix.matrix[i][j];
 			temp_matrix->matrix[i][j] = val;
 		}
@@ -320,8 +304,7 @@ Square_Matrix &Square_Matrix::operator+(const Square_Matrix &other_matrix)
  * 
  * @param other_matrix Matrix we are getting data from.
  */
-Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix)
-{
+Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix) {
 	// Self assignment test
 	if (this == &other_matrix)
 		return *this;
@@ -332,11 +315,9 @@ Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix)
 		return *this;
 
 	// Deallocates all of the previous square matrix.
-	if (this->size != other_matrix.size && other_matrix.size != 0 && this->size != 0)
-	{
+	if (this->size != other_matrix.size && other_matrix.size != 0 && this->size != 0) {
 		// Delete the array held by each row pointer
-		for (int row = 0; row < this->size; ++row)
-		{
+		for (int row = 0; row < this->size; ++row) {
 			delete[] this->matrix[row];
 			this->matrix[row] = NULL;
 		}
@@ -354,8 +335,7 @@ Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix)
 	this->size = other_matrix.size;
 
 	// Fill the rows with new data.
-	for (int i = 0; i < other_matrix.size; ++i)
-	{
+	for (int i = 0; i < other_matrix.size; ++i) {
 		this->matrix[i] = new int[other_matrix.size];
 
 		for (int j = 0; j < other_matrix.size; ++j)
