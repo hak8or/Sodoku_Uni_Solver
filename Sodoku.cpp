@@ -440,11 +440,8 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
  * no found solution.
  */
 bool Sodoku::solve_puzzle(void){
-	// Set the working_cell to -1,-1 when starting to solve the puzzle. Surprisingly,
-	// I didn't need to do this in visual studio since it started at 0,0 but in
-	// GCC it started at 4410251, 0 which is cool. I think this is because in VS
-	// I test everything using a debug mode instead of relase mode, with debug mode
-	// forcing all unitialized variables to zero instead of undefined.
+	// Make sure we are starting at 1 less than the starting cell. Used for 
+	// next_cell to check if the first cell is writable.
 	this->working_cell.x = -1;
 	this->working_cell.y = -1;
 
@@ -478,15 +475,17 @@ bool Sodoku::solve_puzzle(void){
 	int max_hinted_retries = (this->matrix.Get_Size() * this->matrix.Get_Size()) * 0.75;
 
 	// How many steps of work per cell to solve the puzzle. Change this
-	//  based on how fast we want either a solution or the puzzle being 
+	// based on how fast we want either a solution or the puzzle being 
 	// marked as unsolvable at the cost of missing a possible solution.
 	const unsigned int magic_speed_number = 100000; // 100,000
 
 	// How many steps we should wait till we give the thread a puzzle with a new hint.
-	const unsigned long max_steps = (this->get_size() * this->get_size() - this->get_prefilled_cell_count()) * magic_speed_number;
+	const unsigned long max_steps = 
+		(this->get_size() * this->get_size() - this->get_prefilled_cell_count())
+		* magic_speed_number;
 	
-	// Check the status of the thread and react accordingly if the
-	// thread found a solution or found an unsolvable solution.
+	// Check the status of the thread and react accordingly if the thread found
+	// a solution or found an unsolvable solution.
 	while (true){
 		// If the first thread failed, stop all the other threads and indicate
 		// failure.
@@ -495,7 +494,8 @@ bool Sodoku::solve_puzzle(void){
 			return false;
 		}
 
-		// Also check if the first thread found a solution.
+		// If the first thread found a solution, copy it to *this and shut down
+		// all other threads.
 		if (sodokus_for_threads[0].is_complete()){
 			this->copy(sodokus_for_threads[0]);
 			this->shutdown_solving_threads(solving_threads, sodokus_for_threads);
@@ -532,14 +532,15 @@ bool Sodoku::solve_puzzle(void){
 
 				// And replace the old thread with a new thread using the
 				// new sodoku.
-				solving_threads[i] = std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
+				solving_threads[i] = 
+					std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
 			}
 
 			// Gives threads which have been going a long time a new sodoku
 			// with a new hint. My method of solving a sodoku reacts very well
 			// to good hints.
 			if (sodokus_for_threads[i].get_amount_of_steps() > max_steps) {
-				cout << "Thread " << i << " took too many steps, giving new work." << endl;
+				cout << "Thread " << i << " took too many steps, giving new work.\n";
 
 				// Get the thread back.
 				sodokus_for_threads[i].stop_solving = true;
@@ -551,7 +552,8 @@ bool Sodoku::solve_puzzle(void){
 
 				// And replace the old thread with a new thread using the
 				// new sodoku.
-				solving_threads[i] = std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
+				solving_threads[i] = 
+					std::thread(&Sodoku::solver_for_thread, &sodokus_for_threads[i]);
 			}
 		}
 			
