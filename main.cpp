@@ -118,8 +118,7 @@ using namespace std;
 
 // Homework implimentation. No command line arguments taken, added here for 
 // compliance though.
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	cout << "Running self tests ... \n";
 
 	// If we did not get a 0 then the tests failed.
@@ -134,19 +133,16 @@ int main(int argc, char *argv[])
 
 	// If the size was less than 1, then say that the size is bad and request
 	// a new size.
-	while(size < 1)
-	{
+	while(size < 1) {
 		cout << "Size selection was not valid, please type in a resonable size: ";
 		cin >> size;
 	}
 
-	if(size == 11)
-		cout << "You chose a somewhat large matrix. It could take a minute or "
-				"two to solve depending on how much backtracing is needed.";
-
-	if(size > 11)
+	// If the given size is expected to generate a puzzle which takes a long time
+	// to solve, warn user.
+	if(size >= 10)
 		cout << "You chose a somewhat large matrix. Go get a cup of coffee or "
-				"something because this will take a long time.";
+				"something because this might take a long time.";
 
 	// Makes a sodoku puzzle of the user specifed size.
 	Sodoku puzzle(size);
@@ -159,35 +155,23 @@ int main(int argc, char *argv[])
 
 	// Tell the user about the future loop.
 	cout << "\n\t NOTE:\n";
-	cout << "This partial fill does not guarantee to supply a valid puzzle.\n";
-	cout << "So, this loop will try to find a solvable partially filled\n";
-	cout << "puzzle by trying to actually solve it and if it can't solve\n";
-	cout << "it, then it partially fills it again.\n";
-	cout << "   Warning: If you set a large size(>7), this could take a while.\n\n";
+	cout << "Partial fill does not guarantee to supply a valid puzzle. This loop "
+	cout << "will try to\n find a solvable partially filled puzzle by trying to "
+	cout << "actually solve it and if it\n can't solve it, then it partially "
+	cout << "fills it again.\n"
 	puzzle.solve_puzzle_partially(0.25);
 
 	// This will hold what the puzzle looked like before it was solved.
 	Sodoku partially_filled_puzzle(size);
 	partially_filled_puzzle = puzzle;
 
-	// Since solve_puzzle_partially does not guarantee to give
-	// a solvable puzzle, lets do a loop till it finds a solvable
-	// partially solved puzzle if it is already unsolvable.
-	//
-	// For some reason sometimes there are massive groups of unsolvable
-	// puzzles. I think this is because the random number generator used
-	// for generating new coordinates and values during partial solving
-	// hasn't had time to change it's seed.
+	// Since partial solve does not guarantee to give a solvable puzzle, do a 
+	// loop till it finds a solvable partially solved puzzle
 	while(!puzzle.solve_puzzle())
 	{
-		// uncomment the display()'s to see how we try to find 
-		// a solvable puzzle.
 		cout << "Found an unsolvable puzzle, making a new one...\n";
-		// puzzle.display("before wipe");
 		puzzle.wipe();
-		// puzzle.display("after wipe");
 		puzzle.solve_puzzle_partially(0.25);
-		// puzzle.display("after partial_solve");
 		partially_filled_puzzle = puzzle;
 	}
 
@@ -197,8 +181,7 @@ int main(int argc, char *argv[])
 	// And now show the filled puzle!
 	puzzle.display("Solved puzzle");
 
-	// Show a heatmap which displays how many times we tried a 
-	// value in each cell.
+	// Show a heatmap which displays how many times we tried a value in each cell.
 	puzzle.display_heatmap("# of times a value was tried per cell.");
 
 	// And lastly show how many totall attempts there were to write to a cell.
