@@ -493,14 +493,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 0, 5);
 
-		WHEN("checking if there is a bad row") {
-			bool validity = puzzle.check_row_validity(0);
-
-			THEN("the return value should be false") {
-				REQUIRE(!validity);
-			}
-		}
-
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
 
@@ -514,14 +506,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
-
-		WHEN("checking if there is a bad row") {
-			bool validity = puzzle.check_row_validity(0);
-
-			THEN("the return value should be true") {
-				REQUIRE(validity);
-			}
-		}
 
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
@@ -537,14 +521,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(0, 1, 5);
 
-		WHEN("checking if there is a bad column") {
-			bool validity = puzzle.check_column_validity(0);
-
-			THEN("the return value should be false") {
-				REQUIRE(!validity);
-			}
-		}
-
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
 
@@ -558,14 +534,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
-
-		WHEN("checking if there is a bad column") {
-			bool validity = puzzle.check_column_validity(0);
-
-			THEN("the return value should be true") {
-				REQUIRE(validity);
-			}
-		}
 
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();

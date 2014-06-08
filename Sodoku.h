@@ -78,30 +78,6 @@ public:
 				  const int& new_value);
 
 	/**
-	 * @brief Checks if the row is valid as per the given sodoku rules.
-	 * 
-	 * @details Checks if there is a repeat of any number except the initial "unset"
-	 * number.
-	 * 
-	 * @param row What row to check.
-	 * 
-	 * @return True if row is valid, false if row is not valid.
-	 */
-	bool check_row_validity(const int& row);
-
-	/**
-	 * @brief Checks if the column is valid as per the given sodoku rules.
-	 * 
-	 * @details Checks if there is a repeat of any number except the initial "unset"
-	 * number.
-	 * 
-	 * @param column What column to check.
-	 * 
-	 * @return True if column is valid, false if column is not valid.
-	 */
-	bool check_column_validity(const int& column);
-
-	/**
 	 * @brief Checks if all the rows and columns of the puzzle follow the provided
 	 * rules.
 	 * 
@@ -277,6 +253,30 @@ private:
 	 * are no more possible values larger than the current cell which are valid.
 	 */
 	bool try_to_fill(const int &x, const int &y);
+
+	/**
+	 * @brief Checks if the row is valid as per the given sodoku rules.
+	 * 
+	 * @details Checks if there is a repeat of any number except the initial "unset"
+	 * number.
+	 * 
+	 * @param row What row to check.
+	 * 
+	 * @return True if row is valid, false if row is not valid.
+	 */
+	bool check_row_validity(const int& row);
+
+	/**
+	 * @brief Checks if the column is valid as per the given sodoku rules.
+	 * 
+	 * @details Checks if there is a repeat of any number except the initial "unset"
+	 * number.
+	 * 
+	 * @param column What column to check.
+	 * 
+	 * @return True if column is valid, false if column is not valid.
+	 */
+	bool check_column_validity(const int& column);
 
 	/**
 	 * @brief Actual sodoku solver running in solving threads.
