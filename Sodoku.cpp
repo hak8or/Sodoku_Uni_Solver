@@ -701,29 +701,30 @@ bool Sodoku::next_cell(void)
 bool Sodoku::back_cell(void){
 	// If currently on the last element of a row, but not the last element
 	// of the puzzle, go up one row and to the last column.
-	if (this->working_cell.x == 0 && this->working_cell.y != 0)
-	{
-		// Go to the last node of the above row..
+	if (this->working_cell.x == 0 && this->working_cell.y != 0) {
+		// Go to the last node of the above row.
 		this->working_cell.x = this->matrix.Get_Size() - 1; 
-		this->working_cell.y--; // Go to the next row.
+
+		// Go to the above row.
+		this->working_cell.y--; 
 	}
 	// If in the first (top left) cell, return false since we can't go further back.
 	else if (this->working_cell.x == 0 && this->working_cell.y == 0)
 		return false;
 
-	// If the not first element in the puzzle or row, just decrement the
-	// cell coordinates to one cell to the left.
+	// If not the first element in the puzzle or row, just decrement the cell
+	// coordinates to one cell to the left.
 	else
 		this->working_cell.x--;
 
-	// If the next cell is one of the const_cells, ones which we are not
+	// If the previous cell is one of the const_cells, ones which we are not
 	// allowed to modify because they were filled using partial fill, then
 	// call back_cell again so we can skip over the const_cell.
 	if (this->can_set(this->working_cell.x, this->working_cell.y))
 		return true; // If we got here, the node coordinates were succesfully
 					 // incremented, so return a true.
 	else
-		this->back_cell(); // If the next cell was non writable, recursevly
+		this->back_cell(); // If the previous cell was non writable, recursevly
 						   // call this function to skip the cell.
 }
 
