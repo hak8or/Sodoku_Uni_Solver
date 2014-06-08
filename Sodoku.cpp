@@ -402,12 +402,13 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
  * @param percentage Number of cells to fill.
  */
 void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
+	// How many fills we need to fill by adding the intended additional cells
+	// to fill.
 	trying_to_fill = trying_to_fill + this->count_filled_cells();
 
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
-	while (count_filled_cells() <= trying_to_fill)
-	{
+	while (count_filled_cells() <= trying_to_fill) {
 		// Kept for debugging.
 		/*cout << std::to_string(this->count_filled_cells()) + " out of "
 		+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size())
@@ -422,15 +423,13 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 		if (!can_set(x_coordinate, y_coordinate))
 			continue;
 
-		// Write the cell.
+		// Write the cell with the new value.
 		this->set_cell(x_coordinate, y_coordinate, var);
 
 		// Check if the changes are valid, if not then reverse the changes,
 		// if they are good then add them into the const_cells entry.
 		if (this->check_sodoku_validity())
 			this->writable.Set_Elem(0, x_coordinate, y_coordinate);
-		// If the new cell is not valid, reset that cell back to its original
-		// state.
 		else
 			this->set_cell(x_coordinate, y_coordinate, -1);
 	}
