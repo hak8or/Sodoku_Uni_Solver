@@ -9,7 +9,11 @@
 
 using namespace std;
 
-// Constructor for the sodoku object.
+/**
+ * @brief Creates a puzzle of size 2.
+ * 
+ * @details Also intitilizes a seed for srand.
+ */
 Sodoku::Sodoku(void){
 	// The actual puzzle itself.
 	this->matrix.Set_Size(2);
@@ -41,8 +45,13 @@ Sodoku::Sodoku(void){
 	srand(time(NULL));
 }
 
-// Overloaded constructor for the Soduku object with a configurable size. If a
-// negative size is given, the size will be set to 0.
+/**
+ * @brief Creates a puzzle of size size.
+ * 
+ * @details Also intitilizes a seed for srand.
+ * 
+ * @param size size of the sodoku puzzle to create.
+ */
 Sodoku::Sodoku(int size){
 	// The actual puzzle itself.
 	this->matrix.Set_Size(size);
@@ -56,7 +65,7 @@ Sodoku::Sodoku(int size){
 	this->writable.Set_Size(size);
 	this->writable.fill(1);
 
-	// Keeps track of how many attempts or tries there were for cells.
+	// Keeps track of how many total attempts or tries there were for cells.
 	this->amount_of_steps = 0;
 
 	// Resets the current cell we are working on. While this is set when needed
@@ -74,8 +83,14 @@ Sodoku::Sodoku(int size){
 	srand(time(NULL));
 }
 
-// Copies the contents of the other sodoku into this sodoku. Very similar to 
-// a copy constructor.
+/**
+ * @brief Overwrites the *this sodoku with the other sodoku.
+ * 
+ * @details Copies all the attributes of the other sodoku into this once,
+ * overwriting all contents of the *this sodoku.
+ * 
+ * @param other The other sodoku object we will be copying from.
+ */
 void Sodoku::copy(const Sodoku &other){
 	// The actual puzzle itself.
 	this->matrix = other.matrix;
@@ -99,8 +114,11 @@ void Sodoku::copy(const Sodoku &other){
 	this->stop_solving = other.stop_solving;
 }
 
-// Wipe the contents of the puzzle. This is used when resetting the
-// puzzle. Everything but the size of the puzzle is reset.
+/**
+ * @brief Wipe the contents of the puzzle.
+ * 
+ * @details Resets everything in the puzzle except the size.
+ */
 void Sodoku::wipe(void){
 	// Holds the only object member which is not swapped,
 	// the size of the puzzle.
@@ -136,14 +154,28 @@ void Sodoku::wipe(void){
 	srand(time(NULL));
 }
 
+/**
+ * @brief Returns the size of the puzzle.
+ * 
+ * @details The size returned is not the total amount of cells, just the length
+ * of an edge, so for a matrix of size n x n, the return is n.
+ * 
+ * @return Size of the edge of the matrix. Not totall amount of cells!
+ */
 int Sodoku::get_size(void){
 	return this->matrix.Get_Size();
 }
 
-// Throws out the current sodoku puzzle contents by going row through row, and
-// adding spacing between each cells contents for making it easier to read.
-// Takes an input string to display on top of the puzzle, and if no message was
-// given then don't display a message.
+
+/**
+ * @brief Displays the contents of the sodoku puzzle in a graphically friendly way.
+ * It also takes an input string and displays the string on the top of the puzzle.
+ * 
+ * @details Uses cout to display both the contents of the matrix with appropriate
+ * spacing and the string on top.
+ * 
+ * @param input_string String we will display.
+ */
 void Sodoku::display(std::string input_string){
 	// Will hold the current row.
 	vector<int> row_contents;
@@ -162,8 +194,7 @@ void Sodoku::display(std::string input_string){
 		padding = 2; // Since we need two spaces for numbers over nine.
 
 	// Go through each row.
-	for (int row = 0; row < this->matrix.Get_Size(); ++row)
-	{
+	for (int row = 0; row < this->matrix.Get_Size(); ++row) {
 		// Copies the row into a vector.
 		row_contents = this->matrix.Get_Row(row);
 
@@ -171,8 +202,7 @@ void Sodoku::display(std::string input_string){
 		cout << "| ";
 
 		// Displays the contents of each cell of the row with spacing between cells.
-		for (int cell_count = 0; cell_count < this->matrix.Get_Size(); ++cell_count)
-		{
+		for (int cell_count = 0; cell_count < this->matrix.Get_Size(); ++cell_count) {
 			// Sets up padding for the cell output.
 			cout.width(padding);
 
@@ -190,13 +220,30 @@ void Sodoku::display(std::string input_string){
 	cout << endl;
 }
 
-// Returns the contents of the cell at the X and Y coordinates. If out of bounds,
-// returns a 0, of which the behavior is implemented in the Square_Matrix lib.
+/**
+ * @brief Returns the contents of the cell at the X and Y coordinates.
+ * @details If coordinates are out of bounds, returns 0.
+ * 
+ * @param x x position of the cell
+ * @param y y position of the cell
+ * 
+ * @return The contents of the cell.
+ */
 int Sodoku::get_cell(const int &x, const int &y){
 	return this->matrix.Get_Elem(x, y);
 }
 
-// Sets a cell at x and y coordinates to some value. If out of bounds, returns false.
+/**
+ * @brief Sets a cell at x and y coordinates to some value. 
+ * 
+ * @details If out of bounds, returns false.
+ * 
+ * @param x x position of the cell
+ * @param y y position of the cell
+ * @param val Value written to cell
+ * 
+ * @return True if coordinates were in bounds. False if otherwise.
+ */
 bool Sodoku::set_cell(const int& x, const int& y, const int& val){
 	// Each write to a cell is considered an attempt or try.
 	this->amount_of_steps++;
@@ -217,9 +264,16 @@ bool Sodoku::set_cell(const int& x, const int& y, const int& val){
 	return true;
 }
 
-// Checks if the row is valid, meaning if there are multiples if a number.
-// This goes through each element in the row and checks if that element exists 
-// elsewhere in the row.
+/**
+ * @brief Checks if the row is valid as per the given sodoku rules.
+ * 
+ * @details Checks if there is a repeat of any number except the initial "unset"
+ * number.
+ * 
+ * @param row What row to check.
+ * 
+ * @return True if row is valid, false if row is not valid.
+ */
 bool Sodoku::check_row_validity(const int& row){
 	// Go through each row.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i){
@@ -236,9 +290,16 @@ bool Sodoku::check_row_validity(const int& row){
 	return true;
 }
 
-// Checks if column is valid, meaning if there are multiples if a number.
-// This goes through each element in the column and checks if that element exists 
-// elsewhere in the column.
+/**
+ * @brief Checks if the column is valid as per the given sodoku rules.
+ * 
+ * @details Checks if there is a repeat of any number except the initial "unset"
+ * number.
+ * 
+ * @param column What column to check.
+ * 
+ * @return True if column is valid, false if column is not valid.
+ */
 bool Sodoku::check_column_validity(const int& column){
 	// Go through each column.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i){
@@ -255,10 +316,15 @@ bool Sodoku::check_column_validity(const int& column){
 	return true;
 }
 
-// Checks if the entire Sodoku puzzle is correct, combines checking each row
-// and column into just one function call. This ignores cells which are unset.
+/**
+ * @brief Checks if all the rows and columns of the puzzle follow the provided
+ * rules.
+ * 
+ * @details Ignores any still unfilled variables.
+ * 
+ * @return True if sodoku follows rules, false if otherwise.
+ */
 bool Sodoku::check_sodoku_validity(void){
-
 	// Since this is a square, we can check rows and columns in one for loop.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 	{
@@ -273,28 +339,21 @@ bool Sodoku::check_sodoku_validity(void){
 	return true;
 }
 
-// Fill in a a percentage of cells with at least one filled. Also adds the cells
-// coordinates into a vector which is used to differentiate between nodes which
-// can and can't be changed when attempting to solve the puzzle.
-//
-// This is a heavily modified version of solve_puzzle with the addition of 
-// adding the coordinates to const_cells vector, randomly choosing the cells 
-// to fill in, and randomly choosing the data to fill it with.
-//
-// No backtracking or recursion though, as that would be difficult considering
-// I need to non serially fill the data which would require a list of attempted
-// cells with attempted contents to prevent multiple redundant attempts.
-//
-// This means that you shouldn't be using this for larger percentages since
-// this is a randomized brute force method which is extremely ineficiant. It
-// will eventually probably find a puzzle with such a high percentage, but don't
-// count on it happening while you still remember you even set it.
-//
-// It was chosen to be done this way for simplicities sake, as explained
-// in the previous paragraph.
-//
-// NOTE: 
-//		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
+/**
+ * @brief Solves a percentage of the puzzle with at least 1 cell.
+ * 
+ * @details Randomized fill of the puzzle instead of backtrack, so this is a very
+ * inefficiant way to fill a puzzle. This means that you shouldn't be using this
+ * for larger percentages since this is a randomized brute force method which is
+ * extremely ineficiant. It will eventually probably find a puzzle with such a 
+ * high percentage, but don't count on it happening while you still remember you
+ * even set it.
+ * 
+ * NOTE:
+ * 		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
+ * 		
+ * @param percentage Percentage of how much to fill, from 0 to 1.0
+ */
 void Sodoku::solve_puzzle_partially(const float& percentage){
 	// First we need to find out how many cells to fill.
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
@@ -338,16 +397,21 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 	this->heatmap.fill(0);
 }
 
-// Fill in a selected amount of cells with at least one filled. Also adds the cells
-// coordinates into a vector which is used to differentiate between nodes which
-// can and can't be changed when attempting to solve the puzzle.
-//
-// This is a heavily modified version of solve_puzzle with the addition of 
-// adding the coordinates to const_cells vector, randomly choosing the cells 
-// to fill in, and randomly choosing the data to fill it with.
-//
-// Don't use this for a large portion of the array, since it randomly
-// tries to solve it instead of backtracking or any other smarter way.
+/**
+ * @brief Solves a number of cells of the puzzle.
+ * 
+ * @details Randomized fill of the puzzle instead of backtrack, so this is a very
+ * inefficiant way to fill a puzzle. This means that you shouldn't be using this
+ * for larger percentages since this is a randomized brute force method which is
+ * extremely ineficiant. It will eventually probably find a puzzle with such a 
+ * high percentage, but don't count on it happening while you still remember you
+ * even set it.
+ * 
+ * NOTE:
+ * 		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
+ * 		
+ * @param percentage Number of cells to fill.
+ */
 void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	trying_to_fill = trying_to_fill + this->count_filled_cells();
 
@@ -386,13 +450,20 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	this->heatmap.fill(0);
 }
 
-// This is the main function for solving the sodoku puzzle.
-// 1) Sets the current cell we are trying to solve to the origin cell, 0,0.
-// 2) Solves the first cell if it is not unset.
-// 3) Goes to the next writable cell and tries to fill it with a valid entry.
-// 4) Repeat step 3 until either we reach the last cell and solve it. 
-//		If we return to the first writable cell and still can't find a solution 
-//		then consider the puzzle unsolvable with the current unwritable cells.
+/**
+ * @brief Solve the puzzle using multithreading.
+ * 
+ * @details Generates the same number of threads as cores detected, with the first
+ * thread being the initial puzzle, and the remainder having a hint added. Some
+ * puzzles can be solved in a very small number of steps if a good hint is given,
+ * so my implimentation heavily favors situations when more hints can be supplied
+ * via more threads and therefore cores. A max amount of steps for the non initial
+ * thread are intended to exploit that hint capability, so once a thread hits more
+ * than a number of steps, it is given the puzzle but with a new hint.
+ * 
+ * @return True if a solution has been found, False if tried all permutations with
+ * no found solution.
+ */
 bool Sodoku::solve_puzzle(void){
 	// Set the working_cell to -1,-1 when starting to solve the puzzle. Surprisingly,
 	// I didn't need to do this in visual studio since it started at 0,0 but in
@@ -456,8 +527,8 @@ bool Sodoku::solve_puzzle(void){
 			return true;
 		}
 
-		// Loop through all the threads except the initial one and check if
-		// and threads found a solution, give new work to threads which failed
+		// Loop through all the threads except the initial one and check if and
+		// threads found a solution, give new work to threads which either failed
 		// to find a solution after some steps or found out there is no solution.
 		for (int i = 1; i < solving_threads.size(); i++){
 			// If the thread found a solution, copy the contents of the
@@ -515,7 +586,20 @@ bool Sodoku::solve_puzzle(void){
 	}
 }
 
+
+/**
+ * @brief Actual sodoku solver running in solving threads.
+ * 
+ * @details Utilizes backtracking to find a solution for the puzzle.
+ */
 void Sodoku::solver_for_thread(void){
+	// 1) Sets the current cell we are trying to solve to the origin cell, 0,0.
+	// 2) Solves the first cell if it is not unset.
+	// 3) Goes to the next writable cell and tries to fill it with a valid entry.
+	// 4) Repeat step 3 until either we reach the last cell and solve it. 
+	//    If we return to the first writable cell and still can't find a solution 
+	//    then consider the puzzle unsolvable with the current unwritable cells.
+
 	// While the puzzle is not solved, keep tring to solve it. stop_solving
 	// is for multithreaded purposes, a way to request the thread to stop.
 	while (!this->failed_solve & !this->stop_solving){
@@ -529,7 +613,7 @@ void Sodoku::solver_for_thread(void){
 			// If are at the last cell and trying to keep going to the next
 			// cell, then the puzzle should be considered unsolvable.
 			if (!this->next_cell()){
-				failed_solve = true;
+				this->failed_solve = true;
 				break;
 			}
 		}
@@ -537,7 +621,7 @@ void Sodoku::solver_for_thread(void){
 			// If going back a a cell failed, then it means we can't go further
 			// back, so the puzzle is unsolvable.
 			if (!this->back_cell()){
-				failed_solve = true;
+				this->failed_solve = true;
 				break;
 			}
 		}
@@ -549,8 +633,16 @@ void Sodoku::solver_for_thread(void){
 	}
 }
 
-// Tries to fill the specified cell with valid data. Does not check if the
-// cell is already valid or not.
+/**
+ * @brief Tries to fill the cell with a value that follows sodoku rules.
+ * @details Increments the cell from its current value to a valid value.
+ * 
+ * @param x X value of cell
+ * @param y Y value of cell
+ * 
+ * @return True if was able to find a next cell that is valid, false if there
+ * are no more possible values larger than the current cell which are valid.
+ */
 bool Sodoku::try_to_fill(const int& x, const int& y){
 	// While the cell is not at its maximum value and therefore
 	// not all possible values have been tried, keep trying higher values.
@@ -573,10 +665,18 @@ bool Sodoku::try_to_fill(const int& x, const int& y){
 	return false;
 }
 
-// Increments what the current cell we are trying to fill by changing working_cell
-// within the sodoku object to the next writable and valid one.
-// Starts on the top left of the puzzle to the top right, then down a row from
-// left to right, and repeats to the end.
+/**
+ * @brief Goes to the next writable cell.
+ * 
+ * @details 
+ * Path taken:
+ * 			-----\
+ * 			/----/
+ * 			\-----
+ * 			
+ * @return True if we were able to go forwards to a writable cell. False if unable
+ * to do so, signaling there are no writable cells ahead the current one.
+ */
 bool Sodoku::next_cell(void)
 {
 	// If currently on the last element of a row, but not the last element
@@ -614,16 +714,19 @@ bool Sodoku::next_cell(void)
 						   // call this function to skip the cell.
 }
 
-// Decrements what the current cell we are trying to fill by changing working_cell
-// within the sodoku object to the closest writable and valid one behind this one.
-bool Sodoku::back_cell(void)
-{
-	if ((this->get_cell(2, 8) == 6) && (this->get_cell(6, 7) == 0) && (this->get_cell(8, 6) == 5))
-	{
-		// This is really useful for debugging, so leave this in.
-		//this->display("Went back at [" + std::to_string(this->working_cell.x) + ", " + std::to_string(this->working_cell.y) + "] \n");
-	}
-
+/**
+ * @brief Tries to go back to a cell that is writable.
+ * 
+ * @details 
+ * Path taken:
+ * 			-----\
+ * 			/----/
+ * 			\-----
+ * 			
+ * @return True if we were able to go back to a writable cell. False if unable
+ * to do so, signaling there are no writable cells behind the current one.
+ */
+bool Sodoku::back_cell(void){
 	// If currently on the last element of a row, but not the last element
 	// of the puzzle, go up one row and to the last column.
 	if (this->working_cell.x == 0 && this->working_cell.y != 0)
@@ -632,9 +735,7 @@ bool Sodoku::back_cell(void)
 		this->working_cell.x = this->matrix.Get_Size() - 1; 
 		this->working_cell.y--; // Go to the next row.
 	}
-	// If currently on the first element of a row and in the first row, then
-	// the node is the first node in the puzzle. Return a false because there
-	// are no other nodes to go to.
+	// If in the first (top left) cell, return false since we can't go further back.
 	else if (this->working_cell.x == 0 && this->working_cell.y == 0)
 		return false;
 
@@ -654,10 +755,15 @@ bool Sodoku::back_cell(void)
 						   // call this function to skip the cell.
 }
 
-// Increments the cell by one. This is quicker than having to get the cell
-// and then set the cell using two LOC, or three if you want it to look nice.
-// Returns a zero if the new value will be out of bounds or if you can't write
-// to that cell because it is a constant.
+/**
+ * @brief Increments the cells contents by one.
+ * 
+ * @param column X value of cell
+ * @param row Y value of cell
+ * 
+ * @return True if the new value is within bounds and the cell is writable, false
+ * if otherwise.
+ */
 bool Sodoku::increment_cell_contents(const int& column, const int& row){
 	// Check if we can write to the cell.
 	if ( !this->can_set(column, row) )
@@ -680,8 +786,12 @@ bool Sodoku::increment_cell_contents(const int& column, const int& row){
 	return true;
 }
 
-// Checks if the sodoku puzzle is complete, meaning if it is valid and every
-// cell is filled. This does not ignore cells which are unset.
+/**
+ * @brief Checks if the sodoku puzzle is complete, with all cells filled and the
+ * contents following the rules given for a Sodoku puzzle.
+ * 
+ * @return True if the puzzle is completed, false if otherwise.
+ */
 bool Sodoku::is_complete(void){
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
@@ -695,7 +805,11 @@ bool Sodoku::is_complete(void){
 	return true;
 }
 
-// Counts how many cells have been filled already.
+/**
+ * @brief Counts how many cells have been filled with some value.
+ * 
+ * @return How many cells have been filled with some value.
+ */
 int Sodoku::count_filled_cells(void){
 	// Holds the counter for how many cells have been set.
 	int filled_cell_count = 0;
@@ -716,8 +830,14 @@ int Sodoku::count_filled_cells(void){
 	return filled_cell_count;
 }
 
-// Checks if the input coordinates exist in the vector of coordinates for cells 
-// which we are not allowed to modify. Also, if out of bounds return false.
+/**
+ * @brief Checks if the cell is writable and in bounds.
+ * 
+ * @param x_coordinate X value of cell
+ * @param y_coordinate Y value of cell
+ * 
+ * @return True if writable and in bounds, false if otherwise.
+ */
 bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 	// First check if the coordinates are out of bounds.
 	if ((x_coordinate < 0) || (y_coordinate < 0) ||
@@ -738,7 +858,12 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 	return true;
 }
 
-// Returns an idea of how "hard" it was to find the solution.
+/**
+ * @brief Gets the amount of steps taken, which can be considered how difficult
+ * it was, to solve the puzzle.
+ * 
+ * @return Amount of steps taken to solve.
+ */
 int Sodoku::get_amount_of_steps(void)
 {
 	int temp = 0;
@@ -750,9 +875,16 @@ int Sodoku::get_amount_of_steps(void)
 	return temp;
 }
 
-// Transfers all the contents of the other sodoku puzzle into
-// this one, including the current heatmap, matrix, steps, and
-// writable cells.
+/**
+ * @brief Copies the sodoku puzzle into *this one.
+ * 
+ * @details Copies all the contents of the other sodoku puzzle into this one,
+ * including the current heatmap, matrix, steps, and  writable cells.
+ * 
+ * @param other_matrix The matrix we are copying from.
+ * 
+ * @return The sodoku.
+ */
 Sodoku Sodoku::operator&=(const Sodoku other_matrix){
 	// Gotta check self assignment first!
 	if (this == &other_matrix)
@@ -770,8 +902,17 @@ Sodoku Sodoku::operator&=(const Sodoku other_matrix){
 	this->working_cell = other_matrix.working_cell;
 }
 
-// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
-// Not in private because then it couldn't be accessed by the unit tests.
+/**
+ * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+ * 
+ * @details Not in private because then it couldn't be accessed by the unit tests.
+ * Sets the element to the value and marks that element as non writable. Meant
+ * to emulate partial_solve for unit tests.
+ * 
+ * @param x X value of cell
+ * @param y Y value of cell
+ * @param value value we will write to the cell.
+ */
 void Sodoku::set_const_cell( int x, int y, int value){
 	this->matrix.Set_Elem(value, x, y);
 
@@ -779,9 +920,12 @@ void Sodoku::set_const_cell( int x, int y, int value){
 	this->writable.Set_Elem(0, x, y);
 }
 
-
-// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
-// Not in private because then it couldn't be accessed by the unit tests.
+/**
+ * @brief Displays how many steps were taken to solve the puzzle for each cell
+ * using cout. Also puts a provided string on the top of the heatmap.
+ * 
+ * @param input_string string to display.
+ */
 void Sodoku::display_heatmap(string input_string){
 	// Will hold the current row.
 	vector<int> row_contents;
@@ -836,8 +980,15 @@ void Sodoku::display_heatmap(string input_string){
 	cout << endl;
 }
 
-// THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
-// Not in private because then it couldn't be accessed by the unit tests.
+/**
+ * @brief THIS IS FOR UNIT TESTING ONLY! DON'T USE ME!!
+ * 
+ * @details Not in private because then it couldn't be accessed by the unit tests.
+ * Shows a chart showing what cells are and aren't writable. Also puts a provided
+ * string on the top of the heatmap.
+ * 
+ * @param input_string String to display.
+ */
 void Sodoku::display_writable(string input_string){
 	// Will hold the current row.
 	vector<int> row_contents;
@@ -879,8 +1030,15 @@ void Sodoku::display_writable(string input_string){
 	cout << endl;
 }
 
-// Shut down all the current solving threads. This is a blocking function!
-void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads, vector<Sodoku> &sodokus_for_threads){
+/**
+ * @brief Signals all threads to shut down and then waits for them to stop.
+ * 
+ * @details This is a blocking function!
+ * 
+ * @param sodokus_for_threads A vector of threads and the sodoku each thread is working on.
+ */
+void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads, 
+	vector<Sodoku> &sodokus_for_threads){
 	// The signaling of the thread to shut down and doing .join() are seperated
 	// to give the thread time to shut down so we don't waste time waiting.
 	for (Sodoku &sodoku : sodokus_for_threads)
@@ -891,7 +1049,13 @@ void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads, vect
 		solving_thread.join();
 }
 
-// Returns how many cells were filled with partial_solve.
+/**
+ * @brief Counts how many fills were made via partial_fill.
+ * 
+ * @details Set was generated by partial fill if is not writable.
+ * 
+ * @return Count of pre filled cells.
+ */
 int Sodoku::get_prefilled_cell_count(void)
 {
 	int temp = 0;
