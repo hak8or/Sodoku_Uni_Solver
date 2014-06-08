@@ -163,14 +163,7 @@ void Square_Matrix::Set_Elem(const int &new_value, const int &num_column,
  * @return Contents of the cell.
  */
 int Square_Matrix::Get_Elem(const int &num_column, const int &num_row) {
-	// Don't really know what I should do here. Returning 0 seems to be the
-	// gentlest way to avoid a seg fault.
-	if (num_row > size - 1 || num_column > size - 1)
-		return 0;
-
-	int foo = matrix[num_column][num_row];
-
-	return foo;
+	return  matrix[num_column][num_row];
 }
 
 /**
