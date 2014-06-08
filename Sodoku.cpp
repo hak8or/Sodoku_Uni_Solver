@@ -409,11 +409,6 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
 	while (count_filled_cells() <= trying_to_fill) {
-		// Kept for debugging.
-		/*cout << std::to_string(this->count_filled_cells()) + " out of "
-		+ std::to_string(this->matrix.Get_Size() * this->matrix.Get_Size())
-		+ " are filled.\n";*/
-
 		// Make a random set of coordinates and a random int.
 		int var = rand() % (this->matrix.Get_Size() - 1);
 		int x_coordinate = rand() % (this->matrix.Get_Size());
