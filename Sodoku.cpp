@@ -815,7 +815,7 @@ bool Sodoku::can_set(int x_coordinate, int y_coordinate){
 	}
 
 	// Returns the writable state of the cell.
-	return this->writable.Get_Elem(x_coordinate, y_coordinate;
+	return this->writable.Get_Elem(x_coordinate, y_coordinate);
 }
 
 /**
