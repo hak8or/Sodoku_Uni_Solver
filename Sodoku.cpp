@@ -77,17 +77,26 @@ Sodoku::Sodoku(int size){
 // Copies the contents of the other sodoku into this sodoku. Very similar to 
 // a copy constructor.
 void Sodoku::copy(const Sodoku &other){
-	// Copy all the guys into this. Similar to assignment operator.
-	this->heatmap = other.heatmap;
-	this->writable = other.writable;
+	// The actual puzzle itself.
 	this->matrix = other.matrix;
-	this->working_cell = other.working_cell;
-	this->amount_of_steps = other.amount_of_steps;
-	this->failed_solve = other.failed_solve;
-	this->working_cell = other.working_cell;
-	this->stop_solving = other.stop_solving;
-}
 
+	// How many times each cell was written too.
+	this->heatmap = other.heatmap;
+
+	// If the cells are allowed to be changed.
+	this->writable = other.writable;
+
+	// The current cell that is trying to be filled.
+	this->working_cell = other.working_cell;
+
+	// Keeps track of how many total attempts or tries there were for cells.
+	this->amount_of_steps = other.amount_of_steps;
+
+	// Flag indicating the given sodoku puzzle is not solvable.
+	this->failed_solve = other.failed_solve;
+
+	// Indicates if the current solving attempt should stop.
+	this->stop_solving = other.stop_solving;
 }
 
 // Wipe the contents of the puzzle. This is used when resetting the
