@@ -788,16 +788,11 @@ int Sodoku::count_filled_cells(void){
 
 	// Go through each column.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
-	{
-		// Check if more than 1 of that int exists in the column.
+		// And each row.
 		for (int j = 0; j < this->matrix.Get_Size(); ++j)
-		{
-			// If the number appears twice and it is not an unset cell and it is
-			// not checking itself, then that column is invalid.
+			// If the number is not unset, count it as a filled cell.
 			if (this->matrix.Get_Elem(i, j) >= 0)
 				filled_cell_count++;
-		}
-	}
 
 	return filled_cell_count;
 }
