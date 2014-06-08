@@ -57,11 +57,11 @@ int main(int argc, char *argv[]) {
 	cout << "Lets fill 25% of it with some random yet valid starting cells.\n";
 
 	// Tell the user about the future loop.
-	cout << "\n\t NOTE:\n";
-	cout << "Partial fill does not guarantee to supply a valid puzzle. This loop "
-	cout << "will try to\n find a solvable partially filled puzzle by trying to "
-	cout << "actually solve it and if it\n can't solve it, then it partially "
-	cout << "fills it again.\n"
+	cout << "\n\t NOTE:\n"
+		 << "Partial fill does not guarantee to supply a valid puzzle. This loop "
+		 << "will try to\n find a solvable partially filled puzzle by trying to "
+		 << "actually solve it and if it\n can't solve it, then it partially "
+		 << "fills it again.\n \n";
 	puzzle.solve_puzzle_partially(0.25);
 
 	// This will hold what the puzzle looked like before it was solved.
