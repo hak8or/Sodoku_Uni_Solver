@@ -149,16 +149,9 @@ int Square_Matrix::Get_Size(void) { return size; }
  * @param num_column Column of the cell.
  * @param num_row Row of the cell.
  */
-void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, const int &num_row) {
-	// Don't really know what I should do here. I guess return makes most
-	// sense.
-	if (num_row > size - 1 || num_column > size - 1)
-		return;
-
-	// I don't think I need to check if new_value is out of range of int
-	// since the compiler should complain in that case.
-
-	matrix[num_column][num_row] = new_value;
+void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, 
+							 const int &num_row) {
+	this->matrix[num_column][num_row] = new_value;
 }
 
 /**

@@ -50,52 +50,6 @@ SCENARIO("Check to see if I got shifted into an alternate reality")
 }
 
 SCENARIO("Changing components of a matrix"){
-	GIVEN("an empty matrix"){
-		Square_Matrix my_matrix;
-
-		WHEN("checking it's contents"){
-			THEN("it should not have any data")
-				REQUIRE(my_matrix.Get_Elem(0,0) == 0);
-
-			THEN("it should not have any data using Get_Row"){
-				vector<int> temp = my_matrix.Get_Row(0);
-				bool empty = true;
-
-				for (int i = 0; i < my_matrix.Get_Size(); ++i)
-					if(temp[i] != 0){
-						bool empty = false;
-						break;
-					}
-
-				REQUIRE(empty);
-			}
-
-			THEN("it should not have any data using Get_Column"){
-				vector<int> temp = my_matrix.Get_Column(0);
-				bool empty = true;
-
-				for (int i = 0; i < my_matrix.Get_Size(); ++i)
-					if(temp[i] != 0){
-						bool empty = false;
-						break;
-					}
-
-				REQUIRE(empty);
-			}
-
-
-			THEN("it should have 0 size")
-				REQUIRE(my_matrix.Get_Size() == 0);
-		}
-
-		WHEN("adding in data"){
-		my_matrix.Set_Elem(100, 0, 0);
-
-			THEN("nothing should change")
-				REQUIRE(my_matrix.Get_Elem(0,0) == 0);
-		}
-	}
-
 	GIVEN("a 2x2 matrix"){
 		Square_Matrix my_matrix;
 		my_matrix.Set_Size(2);
@@ -113,13 +67,6 @@ SCENARIO("Changing components of a matrix"){
 
 			THEN("data should be changed")
 				REQUIRE(my_matrix.Get_Elem(0,0) == 100);
-		}
-
-		WHEN("Changing out of bounds data"){
-		my_matrix.Set_Elem(100, 5, 5);
-
-			THEN("should return zero'd data")
-				REQUIRE(my_matrix.Get_Elem(5,5) == 0);
 		}
 
 		WHEN("filling it with a number"){
@@ -161,12 +108,6 @@ SCENARIO("Changing components of a matrix"){
 				my_matrix.Set_Elem(101, 0, 0);
 				REQUIRE(my_matrix.Get_Elem(0,0) == 101);
 			}
-
-			THEN("out of bound data changes take no effect")
-			{
-				my_matrix.Set_Elem(101, 1, 1);
-				REQUIRE(my_matrix.Get_Elem(5,5) == 0);
-			}
 		}
 	}
 }
@@ -185,54 +126,6 @@ SCENARIO("Given a negative size matrix, things should not explode"){
 
 			THEN("things should not blow up") {
 				REQUIRE(m.sanity_check() == 2014);
-			}
-		}
-
-		WHEN("An element is requested") {
-			int my_element = m.Get_Elem(5, 5);
-
-			THEN("The element is returned") {
-				REQUIRE(my_element == 0);
-			}
-		}
-
-		WHEN("An out of range element is requested") {
-			int my_element = m.Get_Elem(15, 15);
-
-			THEN("The out of range response is recieved") {
-				REQUIRE(my_element == 0);
-			}
-		}
-
-		WHEN("An element is set") {
-			// Set cell 5,6 to the value 3
-			m.Set_Elem(3, 5, 6);
-
-			THEN("The element should not be changed") {
-				REQUIRE(m.Get_Elem(5, 6) == 0);
-			}
-		}
-
-		WHEN("An out of range element is set") {
-			// Set cell 5,6 to the value 3
-			m.Set_Elem(3, 15, 15);
-
-			THEN("Things should not blow up") {
-				// I guess a segfault should have happened by now which
-				// would have shown the tester things went wrong anyways.
-				// If allowed to return an int, then can check return code.
-				REQUIRE(m.sanity_check() == 2014);
-			}
-		}
-
-		WHEN("the size is reset with old data") {
-			// Set cell 6,7 to the value 2
-			m.Set_Elem(2, 6, 7);
-
-			m.Set_Size(12);
-
-			THEN("the data should be lost") {
-				REQUIRE(m.Get_Elem(6, 7) == 0);
 			}
 		}
 	}
