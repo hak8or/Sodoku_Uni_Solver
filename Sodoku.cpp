@@ -52,7 +52,7 @@ Sodoku::Sodoku(void){
  * 
  * @param size size of the sodoku puzzle to create.
  */
-Sodoku::Sodoku(int size){
+Sodoku::Sodoku(const int &size){
 	// The actual puzzle itself.
 	this->matrix.Set_Size(size);
 	this->matrix.fill(-1);

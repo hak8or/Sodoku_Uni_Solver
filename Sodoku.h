@@ -29,7 +29,7 @@ public:
 	 * 
 	 * @param size size of the sodoku puzzle to create.
 	 */
-	Sodoku(int size);
+	Sodoku(const int &size);
 
 	/**
 	 * @brief Wipe the contents of the puzzle.
