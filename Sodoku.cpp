@@ -786,12 +786,10 @@ int Sodoku::count_filled_cells(void){
 	// Holds the counter for how many cells have been set.
 	int filled_cell_count = 0;
 
-	// Go through each column.
-	for (int i = 0; i < this->matrix.Get_Size(); ++i)
-		// And each row.
-		for (int j = 0; j < this->matrix.Get_Size(); ++j)
-			// If the number is not unset, count it as a filled cell.
-			if (this->matrix.Get_Elem(i, j) >= 0)
+	// Increments counter for every filled cell.
+	for (int x = 0; x < this->matrix.Get_Size(); ++x)
+		for (int y = 0; y < this->matrix.Get_Size(); ++y)
+			if (this->matrix.Get_Elem(x, y) >= 0)
 				filled_cell_count++;
 
 	return filled_cell_count;
