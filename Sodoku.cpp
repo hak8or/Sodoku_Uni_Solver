@@ -741,14 +741,9 @@ bool Sodoku::back_cell(void){
  * @param x X value of cell
  * @param x Y value of cell
  * 
- * @return True if the new value is within bounds and the cell is writable, false
- * if otherwise.
+ * @return True if the new value is within bounds, false if otherwise.
  */
 bool Sodoku::increment_cell_contents(const int& x, const int& y){
-	// Check if we can write to the cell.
-	if ( !this->can_set(x, y) )
-		return false;
-
 	// Check if the new value will be larger than allowed in a sodoku puzzle.
 	if ( this->matrix.Get_Elem(x, y) + 1 >= this->matrix.Get_Size() )
 		return false;

@@ -235,8 +235,7 @@ private:
 	 * @param x X value of cell
 	 * @param y Y value of cell
 	 * 
-	 * @return True if the new value is within bounds and the cell is writable, false
-	 * if otherwise.
+	 * @return True if the new value is within bounds, false if otherwise.
 	 */
 	bool increment_cell_contents(const int& x, const int& y);
 
