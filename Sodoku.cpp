@@ -946,12 +946,12 @@ void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads,
  * @return Count of pre filled cells.
  */
 int Sodoku::get_prefilled_cell_count(void){
-	int temp = 0;
+	int prefilled_cell_count = 0;
 
-	for (int column = 0; column < this->matrix.Get_Size(); column++)
-		for (int row = 0; row < this->matrix.Get_Size(); row++)
-			if (this->writable.Get_Elem(column, row) == 0)
-				temp++;
+	for (int x = 0; x < this->matrix.Get_Size(); x++)
+		for (int y = 0; y < this->matrix.Get_Size(); y++)
+			if (this->writable.Get_Elem(x, y) == 0)
+				prefilled_cell_count++;
 
-	return temp;
+	return prefilled_cell_count;
 }
