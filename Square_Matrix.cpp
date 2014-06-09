@@ -184,8 +184,8 @@ std::vector<int> Square_Matrix::Get_Column(const int &num_column) {
 		for (int i = 0; i < this->size; ++i)
 			column.push_back(0);
 	else
-		for (int i = 0; i < this->size; ++i)
-			column.push_back(this->matrix[num_column][i]);
+		for (int y = 0; y < this->size; ++y)
+			column.push_back(this->matrix[num_column][y]);
 
 	return column;
 }
@@ -208,8 +208,8 @@ std::vector<int> Square_Matrix::Get_Row(const int &num_row) {
 		for (int i = 0; i < this->size; ++i)
 			row.push_back(0);
 	else
-		for (int i = 0; i < this->size; ++i)
-			row.push_back(this->matrix[i][num_row]);
+		for (int x = 0; x < this->size; ++x)
+			row.push_back(this->matrix[x][num_row]);
 
 	return row;
 }
