@@ -271,10 +271,10 @@ Square_Matrix &Square_Matrix::operator+(const Square_Matrix &other_matrix) {
 
 	temp_matrix->Set_Size(other_matrix.size);
 
-	for (int i = 0; i < size; ++i)
-		for (int j = 0; j < size; ++j) {
-			int val = this->matrix[i][j] + other_matrix.matrix[i][j];
-			temp_matrix->matrix[i][j] = val;
+	for (int x = 0; x < size; ++x)
+		for (int y = 0; y < size; ++y) {
+			int val = this->matrix[x][y] + other_matrix.matrix[x][y];
+			temp_matrix->matrix[x][y] = val;
 		}
 
 	return *temp_matrix;
