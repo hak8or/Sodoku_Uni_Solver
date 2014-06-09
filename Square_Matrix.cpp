@@ -222,9 +222,9 @@ std::vector<int> Square_Matrix::Get_Row(const int &num_row) {
 void Square_Matrix::fill(const int &value) {
 	// Goes through the entire matrix and one by one sets each element
 	// to the val.
-	for (int i = 0; i < size; ++i)
-		for (int j = 0; j < size; ++j)
-			matrix[i][j] = value;
+	for (int x = 0; x < size; ++x)
+		for (int y = 0; y < size; ++y)
+			matrix[x][y] = value;
 }
 
 /**
