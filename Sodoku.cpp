@@ -162,7 +162,7 @@ void Sodoku::wipe(void){
  * 
  * @return Size of the edge of the matrix. Not totall amount of cells!
  */
-int Sodoku::get_size(void){
+int Sodoku::get_size(void) const{
 	return this->matrix.Get_Size();
 }
 
@@ -171,7 +171,7 @@ int Sodoku::get_size(void){
  * 
  * @details Uses cout to display the contents of the matrix with appropriate spacing.
  */
-void Sodoku::display(void){
+void Sodoku::display(void) const{
 	// Will hold the current row.
 	vector<int> row_contents;
 
@@ -220,7 +220,7 @@ void Sodoku::display(void){
  * 
  * @return The contents of the cell.
  */
-int Sodoku::get_cell(const int &x, const int &y){
+int Sodoku::get_cell(const int &x, const int &y) const{
 	return this->matrix.Get_Elem(x, y);
 }
 
@@ -265,7 +265,7 @@ bool Sodoku::set_cell(const int& x, const int& y, const int& val){
  * 
  * @return True if row is valid, false if row is not valid.
  */
-bool Sodoku::check_row_validity(const int& row){
+bool Sodoku::check_row_validity(const int& row) const{
 	// Go through each member of the row.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 		// Check if more than 1 of that member exists in the row.
@@ -289,7 +289,7 @@ bool Sodoku::check_row_validity(const int& row){
  * 
  * @return True if column is valid, false if column is not valid.
  */
-bool Sodoku::check_column_validity(const int& column){
+bool Sodoku::check_column_validity(const int& column) const{
 	// Go through each member of the column.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 		// Check if more than 1 of that member exists in the column.
@@ -311,7 +311,7 @@ bool Sodoku::check_column_validity(const int& column){
  * 
  * @return True if sodoku follows rules, false if otherwise.
  */
-bool Sodoku::check_sodoku_validity(void){
+bool Sodoku::check_sodoku_validity(void) const {
 	// Since this is a square, we can check rows and columns in one for loop like this.
 	for (int i = 0; i < this->matrix.Get_Size(); ++i)
 		if ( !this->check_row_validity(i) | !this->check_column_validity(i) )
@@ -757,7 +757,7 @@ bool Sodoku::increment_cell_contents(const int& x, const int& y){
  * 
  * @return True if the puzzle is completed, false if otherwise.
  */
-bool Sodoku::is_complete(void){
+bool Sodoku::is_complete(void) const{
 	// First we see if every cell is filled.
 	if ( this->count_filled_cells() != (this->matrix.Get_Size() * this->matrix.Get_Size()) )
 		return false;
@@ -775,7 +775,7 @@ bool Sodoku::is_complete(void){
  * 
  * @return How many cells have been filled with some value.
  */
-int Sodoku::count_filled_cells(void){
+int Sodoku::count_filled_cells(void) const {
 	// Holds the counter for how many cells have been set.
 	int filled_cell_count = 0;
 
@@ -938,7 +938,7 @@ void Sodoku::shutdown_solving_threads(vector<std::thread> &solving_threads,
  * 
  * @return Count of pre filled cells.
  */
-int Sodoku::get_prefilled_cell_count(void){
+int Sodoku::get_prefilled_cell_count(void) const{
 	int prefilled_cell_count = 0;
 
 	for (int x = 0; x < this->matrix.Get_Size(); x++)

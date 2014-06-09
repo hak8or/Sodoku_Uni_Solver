@@ -43,7 +43,7 @@ public:
 	 * 
 	 * @details Uses cout to display the contents of the matrix with appropriate spacing.
 	 */
-	void display(void);
+	void display(void) const;
 
 	/**
 	 * @brief Returns the size of the puzzle.
@@ -53,7 +53,7 @@ public:
 	 * 
 	 * @return Size of the edge of the matrix. Not totall amount of cells!
 	 */
-	int get_size(void);
+	int get_size(void) const;
 
 	/**
 	 * @brief Returns the contents of the cell at the X and Y coordinates.
@@ -64,7 +64,7 @@ public:
 	 * 
 	 * @return The contents of the cell.
 	 */
-	int get_cell(const int& x_coordinate, const int& y_coordinate);
+	int get_cell(const int& x_coordinate, const int& y_coordinate) const;
 
 	/**
 	 * @brief Sets a cell at x and y coordinates to some value. 
@@ -89,7 +89,7 @@ public:
 	 * 
 	 * @return True if sodoku follows rules, false if otherwise.
 	 */
-	bool check_sodoku_validity(void);
+	bool check_sodoku_validity(void) const;
 
 	/**
 	 * @brief Solves a percentage of the puzzle with at least 1 cell.
@@ -133,7 +133,7 @@ public:
 	 * 
 	 * @return True if the puzzle is completed, false if otherwise.
 	 */
-	bool is_complete(void);
+	bool is_complete(void) const;
 
 	/**
 	 * @brief Solve the puzzle using multithreading.
@@ -194,7 +194,7 @@ private:
 	 * 
 	 * @return How many cells have been filled with some value.
 	 */
-	int count_filled_cells(void);
+	int count_filled_cells(void) const;
 
 	/**
 	 * @brief Goes to the next writable cell.
@@ -267,7 +267,7 @@ private:
 	 * 
 	 * @return True if row is valid, false if row is not valid.
 	 */
-	bool check_row_validity(const int& row);
+	bool check_row_validity(const int& row) const;
 
 	/**
 	 * @brief Checks if the column is valid as per the given sodoku rules.
@@ -279,7 +279,7 @@ private:
 	 * 
 	 * @return True if column is valid, false if column is not valid.
 	 */
-	bool check_column_validity(const int& column);
+	bool check_column_validity(const int& column) const;
 
 	/**
 	 * @brief Actual sodoku solver running in solving threads.
@@ -305,7 +305,7 @@ private:
 	 * 
 	 * @return Count of pre filled cells.
 	 */
-	int get_prefilled_cell_count(void);
+	int get_prefilled_cell_count(void) const;
 
 	/**
 	 * @brief Signals all threads to shut down and then waits for them to stop.
