@@ -319,11 +319,11 @@ Square_Matrix &Square_Matrix::operator=(const Square_Matrix &other_matrix) {
 	this->size = other_matrix.size;
 
 	// Fill the rows with new data.
-	for (int i = 0; i < other_matrix.size; ++i) {
-		this->matrix[i] = new int[other_matrix.size];
+	for (int x = 0; x < other_matrix.size; ++x) {
+		this->matrix[x] = new int[other_matrix.size];
 
-		for (int j = 0; j < other_matrix.size; ++j)
-			this->matrix[i][j] = other_matrix.matrix[i][j];
+		for (int y = 0; y < other_matrix.size; ++y)
+			this->matrix[x][y] = other_matrix.matrix[x][y];
 	}
 
 	return *this;
