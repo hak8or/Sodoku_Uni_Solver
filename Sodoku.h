@@ -108,7 +108,7 @@ public:
 	 * 		
 	 * @param percentage Percentage of how much to fill, from 0 to 1.0
 	 */
-	void solve_puzzle_partially(const float&);
+	void solve_puzzle_partially(const float& percentage);
 
 	/**
 	 * @brief Solves a number of cells of the puzzle.
