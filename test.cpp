@@ -348,14 +348,6 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 			}
 		}
 
-		WHEN("writing to an out of bounds cell") {
-			bool successful_write = puzzle.set_cell(98, 99, 5);
-
-			THEN("the return value should be false") {
-				REQUIRE(!successful_write);
-			}
-		}
-
 		WHEN("writing to an in bounds cell") {
 			bool successful_write = puzzle.set_cell(0, 1, 5);
 
