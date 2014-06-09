@@ -343,12 +343,20 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
 	int total_cell_count = this->matrix.Get_Size() * this->matrix.Get_Size();
 	int trying_to_fill = total_cell_count * percentage;
 
+	// Rand does not handle zero's too well, so manually set the contents to zero.
+	if (this->get_size() == 1){
+		this->set_cell(0, 0, 0);
+		this->writable.Set_Elem(0, 0, 0);
+		this->heatmap.fill(0);
+		return;
+	}
+
 	// Make sure to fill at least one partially filled cell for small puzzles.
 	if ( trying_to_fill < 1 ) { trying_to_fill = 1; }
 
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
-	while (count_filled_cells() != trying_to_fill) {
+	while (count_filled_cells() < trying_to_fill) {
 		// Make a random set of coordinates and a random int.
 		int var = rand() % (this->matrix.Get_Size() - 1);
 		int x_coordinate = rand() % (this->matrix.Get_Size());
@@ -393,12 +401,13 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	if (this->get_size() == 1){
 		this->set_cell(0, 0, 0);
 		this->writable.Set_Elem(0, 0, 0);
+		this->heatmap.fill(0);
 		return;
 	}
 
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
-	while (count_filled_cells() <= trying_to_fill) {
+	while (count_filled_cells() < trying_to_fill) {
 		// Make a random set of coordinates and a random int.
 		int var = rand() % (this->matrix.Get_Size() - 1);
 		int x_coordinate = rand() % (this->matrix.Get_Size());
@@ -443,10 +452,9 @@ bool Sodoku::solve_puzzle(void){
 	this->working_cell.x = -1;
 	this->working_cell.y = -1;
 
-	// Just for when the first cell is not writable. Also checks if there are any
-	// writable cells in the first place.
+	// If there are no writable cells, return weather the puzzle is solved or not.
 	if (!this->next_cell())
-		return false;
+		return this->is_complete();
 
 	// Get how many threads we should run based on cores available.
 	int threads = thread::hardware_concurrency() - 1;
