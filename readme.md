@@ -77,37 +77,59 @@ The -std=c++0x flag was added due to a bug for converting int to string from the
 standard library. 
 http://stackoverflow.com/questions/12975341/to-string-is-not-a-member-of-std-says-so-g
 
-## Now
-
 ## Todo
-- [ ] Allow entering of coordinates via a vector or string to make setting up puzzles for testing quicker.
+- [ ] Allow entering of coordinates via a vector or string to make setting up puzzles for testing quicker. Don't forget to take out set_const_cell!
 - [ ] Add in terminal GUI or use QT.
 - [ ] Addd support for Travis CI
 	- [ ] Test mode
+- [ ] Consider adding [] element access operator to sodoku and matrix.
+- [ ] Change writable_state to bools.
+- [ ] Consider instead of using hints, to start solving the puzzle in diffirent locations (or both!).
+- [ ] Add where bound checking occurs.
+- [ ] Remove sanity check from Square_Matrix.
+- [ ] Take out working_cell from class variable into approriate functions.
 
 ## Complete
-- [x] Shut down threads when we found a thread with a solution.
-- [x] Update compilation instructions.
-- [x] Change test.cpp to main.cpp (kept test.cpp, made main.cpp)
-- [x] Say if using backtrack or recusrion in program start.
-- [x] Display num_steps
-- [x] Change partial fill to use the backtracking algo but somehow limited.
-- [x] Change names for increment decrement cell to indicate we are changing contents.
-- [x] Use matrix.Get/Set and Soduku.Get/Set correctly. In class use matrix only.
-- [x] set_const_cell needs info for it not being used for anything but unit tests.
-- [x] Fix upper and lower case diffirences.
-- [x] Add warning if trying to fill more than 9 cells to indicate solving could take a while.
-- [x] Fix description for solve_puzzle when taking away solve_Status.
-- [x] Change can_set description
-- [x] Prompt user for puzzle size.
-- [x] User defines size of sodoku puzzle
-- [x] Remove Attempted Cells
-- [x] Remove solve Status.
-- [x] Add test and fix for when the first cell is unset.
-- [x] Have display() output an input string.
-- [x] Have the tests run before the the main program.
-- [x] Use an "unset" var of -1
-- [x] When using display, display nothing for unset var's
-- [x] Impliment row + column check taking into account unset vars
-- [x] Fill in some cells by dividing size by filling in 15% with at least 1 cell.
-- [x] Add padding to display depending on if 1 digit ints or 2 digit ints.
+- [Y] Make functions const and function parameters const ref's where approriate
+- [Y] Remove can_set check from increment cell contents for preformance.
+- [Y] Solving a puzzle of size 1, 2 causes a crash or hang.
+- [Y] Rename columns to x and rows to y.
+- [Y] Check what's up with missing documentation in doxygen terminal output.
+- [Y] Document Sodoku object.
+- [Y] Remove bounds check in Square matrix for preformance.
+- [Y] Consider taking out out of bounds check for can_set for speed increase.
+- [Y] Consider taking out display_writable.
+- [Y] Move check column + row into private section of class.
+- [Y] Get rid of big working_cell undefined comment in solve_puzzle.
+- [Y] Clean check_sodoku_validity.
+- [Y] Take out messege capability for displaying the heatmap and writable
+- [Y] Clean up {'s so they start on the same line where needed.
+- [Y] Take out kept for debugging nonsense.
+- [Y] Set_cell bounds check should be changed >=, not > something - 1.
+- [Y] Get rid of word constructor for description of constructor.
+- [Y] Spaces between briefs and details and params and returns.
+- [Y] Shut down threads when we found a thread with a solution.
+- [Y] Update compilation instructions.
+- [Y] Change test.cpp to main.cpp (kept test.cpp, made main.cpp)
+- [Y] Say if using backtrack or recusrion in program start.
+- [Y] Display num_steps
+- [Y] Change partial fill to use the backtracking algo but somehow limited.
+- [Y] Change names for increment decrement cell to indicate we are changing contents.
+- [Y] Use matrix.Get/Set and Soduku.Get/Set correctly. In class use matrix only.
+- [Y] set_const_cell needs info for it not being used for anything but unit tests.
+- [Y] Fix upper and lower case diffirences.
+- [Y] Add warning if trying to fill more than 9 cells to indicate solving could take a while.
+- [Y] Fix description for solve_puzzle when taking away solve_Status.
+- [Y] Change can_set description
+- [Y] Prompt user for puzzle size.
+- [Y] User defines size of sodoku puzzle
+- [Y] Remove Attempted Cells
+- [Y] Remove solve Status.
+- [Y] Add test and fix for when the first cell is unset.
+- [Y] Have display() output an input string.
+- [Y] Have the tests run before the the main program.
+- [Y] Use an "unset" var of -1
+- [Y] When using display, display nothing for unset var's
+- [Y] Impliment row + column check taking into account unset vars
+- [Y] Fill in some cells by dividing size by filling in 15% with at least 1 cell.
+- [Y] Add padding to display depending on if 1 digit ints or 2 digit ints.
