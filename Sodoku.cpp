@@ -873,8 +873,6 @@ void Sodoku::set_const_cell( int x, int y, int value){
 /**
  * @brief Displays how many steps were taken to solve the puzzle for each cell
  * using cout.
- * 
- * @param input_string string to display.
  */
 void Sodoku::display_heatmap(void){
 	// Will hold the current row.
