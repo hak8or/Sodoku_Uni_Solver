@@ -798,13 +798,13 @@ int Sodoku::count_filled_cells(void){
 /**
  * @brief Checks if the cell is writable.
  * 
- * @param x_coordinate X value of cell
- * @param y_coordinate Y value of cell
+ * @param x X value of cell
+ * @param y Y value of cell
  * 
  * @return True if writable, false if otherwise.
  */
-bool inline Sodoku::can_set(int x_coordinate, int y_coordinate){
-	return this->writable.Get_Elem(x_coordinate, y_coordinate);
+bool inline Sodoku::can_set(int x, int y){
+	return this->writable.Get_Elem(x, y);
 }
 
 /**

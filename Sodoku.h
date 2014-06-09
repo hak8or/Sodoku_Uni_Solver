@@ -243,8 +243,8 @@ private:
 	/**
 	 * @brief Checks if the cell is writable.
 	 * 
-	 * @param x_coordinate X value of cell
-	 * @param y_coordinate Y value of cell
+	 * @param x X value of cell
+	 * @param y Y value of cell
 	 * 
 	 * @return True if writable, false if otherwise.
 	 */
