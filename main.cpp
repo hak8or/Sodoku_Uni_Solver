@@ -3,10 +3,12 @@
  *	Class: CSCI 235 Descrete Analysis 2
  *
  *	Compilation Instructions: 
- *	To compile: make
- *	To clean: make clean
- *	To run: ./Sodoku
- *	To do it all: make clean && make && ./Sodoku
+ *		To compile: make
+ *		To clean: make clean
+ *		To run: ./Sodoku
+ *		To test: make test
+ *		To generate docs: make docs
+ *		To do it all: make clean && make && make docs && make test
  */
 
 #include <iostream>

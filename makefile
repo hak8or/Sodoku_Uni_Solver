@@ -16,5 +16,8 @@ $(EXECUTABLE): $(OBJECTS)
 test:
 	./$(EXECUTABLE)
 
+docs:
+	doxygen Sodoku_docs
+
 clean:
 	rm -f $(EXECUTABLE) $(OBJECTS)
