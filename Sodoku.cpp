@@ -731,25 +731,25 @@ bool Sodoku::back_cell(void){
 /**
  * @brief Increments the cells contents by one.
  * 
- * @param column X value of cell
- * @param row Y value of cell
+ * @param x X value of cell
+ * @param x Y value of cell
  * 
  * @return True if the new value is within bounds and the cell is writable, false
  * if otherwise.
  */
-bool Sodoku::increment_cell_contents(const int& column, const int& row){
+bool Sodoku::increment_cell_contents(const int& x, const int& y){
 	// Check if we can write to the cell.
-	if ( !this->can_set(column, row) )
+	if ( !this->can_set(x, y) )
 		return false;
 
 	// Check if the new value will be larger than allowed in a sodoku puzzle.
-	if ( this->matrix.Get_Elem(column, row) + 1 >= this->matrix.Get_Size() )
+	if ( this->matrix.Get_Elem(x, y) + 1 >= this->matrix.Get_Size() )
 		return false;
 
 	// Save the contents + 1 into the cell.
-	this->set_cell(column, row,  this->matrix.Get_Elem(column, row) + 1 );
+	this->set_cell(x, y,  this->matrix.Get_Elem(x, y) + 1 );
 
-	// this->matrix.Get_Elem(column, row) is not an int and instead done this
+	// this->matrix.Get_Elem(x, y) is not an int and instead done this
 	// way in hopes of it being faster due to not needing to allocate an int.
 	// Not sure how much of a boost this gives, if any, and I am still learning
 	// how to use a profiler correctly, so this is left like this.

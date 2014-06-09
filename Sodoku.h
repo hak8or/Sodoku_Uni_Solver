@@ -232,8 +232,8 @@ private:
 	/**
 	 * @brief Increments the cells contents by one.
 	 * 
-	 * @param column X value of cell
-	 * @param row Y value of cell
+	 * @param x X value of cell
+	 * @param y Y value of cell
 	 * 
 	 * @return True if the new value is within bounds and the cell is writable, false
 	 * if otherwise.
