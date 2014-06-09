@@ -140,7 +140,7 @@ void Square_Matrix::Set_Size(const int &new_size) {
  * 
  * @return The size of an edge of the matrix.
  */
-int Square_Matrix::Get_Size(void) { return size; }
+int Square_Matrix::Get_Size(void) const { return size; }
 
 /**
  * @brief Sets an element of the matrix to the given value.
@@ -162,7 +162,7 @@ void Square_Matrix::Set_Elem(const int &new_value, const int &x,
  * 
  * @return Contents of the cell.
  */
-int Square_Matrix::Get_Elem(const int &x, const int &y) {
+int Square_Matrix::Get_Elem(const int &x, const int &y) const {
 	return  matrix[x][y];
 }
 
@@ -175,7 +175,7 @@ int Square_Matrix::Get_Elem(const int &x, const int &y) {
  * 
  * @return Contents of column as a vector of int's.
  */
-std::vector<int> Square_Matrix::Get_Column(const int &num_column) {
+std::vector<int> Square_Matrix::Get_Column(const int &num_column) const {
 	vector<int> column;
 
 	// If the column is out of range, return a vector containing
@@ -199,7 +199,7 @@ std::vector<int> Square_Matrix::Get_Column(const int &num_column) {
  * 
  * @return Contents of row as a vector of int's.
  */
-std::vector<int> Square_Matrix::Get_Row(const int &num_row) {
+std::vector<int> Square_Matrix::Get_Row(const int &num_row) const {
 	vector<int> row;
 
 	// If the row is out of range, return a vector containing
@@ -234,7 +234,7 @@ void Square_Matrix::fill(const int &value) {
  * 
  * @return True if the same, false if otherwise.
  */
-bool Square_Matrix::operator==(const Square_Matrix &other_matrix) {
+bool Square_Matrix::operator==(const Square_Matrix &other_matrix) const {
 	if (this == &other_matrix)
 		return 1;
 

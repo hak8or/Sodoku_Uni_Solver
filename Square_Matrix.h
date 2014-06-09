@@ -48,7 +48,7 @@ public:
 	 * 
 	 * @return The size of an edge of the matrix.
 	 */
-	int Get_Size(void);
+	int Get_Size(void) const;
 
 	/**
 	 * @brief Sets an element of the matrix to the given value.
@@ -67,7 +67,7 @@ public:
 	 * 
 	 * @return Contents of the cell.
 	 */
-	int Get_Elem (const int &x, const int &y);
+	int Get_Elem (const int &x, const int &y) const;
 
 	/**
 	 * @brief Returns the contents of a row.
@@ -78,7 +78,7 @@ public:
 	 * 
 	 * @return Contents of row as a vector of int's.
 	 */
-	std::vector<int> Get_Row(const int &num_row);
+	std::vector<int> Get_Row(const int &num_row) const;
 
 	/**
 	 * @brief Returns the contents of a column.
@@ -89,7 +89,7 @@ public:
 	 * 
 	 * @return Contents of column as a vector of int's.
 	 */
-	std::vector<int> Get_Column(const int &num_column);
+	std::vector<int> Get_Column(const int &num_column) const;
 
 	/**
 	 * @brief Fills an entire matrix with a value.
@@ -103,7 +103,7 @@ public:
 	 * 
 	 * @return 2014 as an int
 	 */
-	int inline sanity_check(void) {return 2014;}
+	int inline sanity_check(void) const {return 2014;}
 
 	/**
 	 * @brief Comparison of size and contents of the other matrix.
@@ -112,7 +112,7 @@ public:
 	 * 
 	 * @return True if the same, false if otherwise.
 	 */
-	bool operator==(const Square_Matrix &other_matrix);
+	bool operator==(const Square_Matrix &other_matrix) const;
 
 	/**
 	 * @brief Adds the contents of a same sized matrix to *this. 
