@@ -383,15 +383,15 @@ void Sodoku::solve_puzzle_partially(const float& percentage){
  * 
  * @details Randomized fill of the puzzle instead of backtrack, so this is a very
  * inefficiant way to fill a puzzle. This means that you shouldn't be using this
- * for larger percentages since this is a randomized brute force method which is
- * extremely ineficiant. It will eventually probably find a puzzle with such a 
- * high percentage, but don't count on it happening while you still remember you
+ * for larger portion since this is a randomized brute force method which is
+ * extremely ineficiant. It will eventually probably find a puzzle with a high 
+ * prefill count, but don't count on it happening while you still remember you
  * even set it.
  * 
  * NOTE:
  * 		THIS DOES NOT GUARANTEE TO GIVE US A SOLVABLE PUZZLE!!
  * 		
- * @param percentage Number of cells to fill.
+ * @param trying_to_fill Number of cells to fill.
  */
 void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	// How many fills we need to fill by adding the intended additional cells
