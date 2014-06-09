@@ -706,7 +706,17 @@ SCENARIO("Solve a few small matrices from scratch.") {
 	GIVEN("A sodoku of size 1") {
 		Sodoku puzzle(1);
 
-			WHEN("trying to auto solve it.") {
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
@@ -719,7 +729,17 @@ SCENARIO("Solve a few small matrices from scratch.") {
 	GIVEN("A sodoku of size 2") {
 		Sodoku puzzle(2);
 
-			WHEN("trying to auto solve it.") {
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
@@ -732,7 +752,17 @@ SCENARIO("Solve a few small matrices from scratch.") {
 	GIVEN("A sodoku of size 3") {
 		Sodoku puzzle(3);
 
-			WHEN("trying to auto solve it.") {
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
 			bool solved = puzzle.solve_puzzle();
 
 			THEN("it should be solved.") {
