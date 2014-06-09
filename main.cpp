@@ -45,13 +45,14 @@ int main(int argc, char *argv[]) {
 	// to solve, warn user.
 	if(size >= 10)
 		cout << "You chose a somewhat large matrix. Go get a cup of coffee or "
-				"something because this might take a long time.";
+				"something because this might take a long time." << endl;
 
 	// Makes a sodoku puzzle of the user specifed size.
 	Sodoku puzzle(size);
 
 	// Display the empty puzzle.
-	puzzle.display("\nThis is your empty sodoku puzzle.");
+	cout << "This is your empty sodoku puzzle." << endl;
+	puzzle.display();
 
 	// Fills some randomly selected yet valid starting cells.
 	cout << "Lets fill 25% of it with some random yet valid starting cells.\n";

@@ -40,14 +40,10 @@ public:
 
 	/**
 	 * @brief Displays the contents of the sodoku puzzle in a graphically friendly way.
-	 * It also takes an input string and displays the string on the top of the puzzle.
 	 * 
-	 * @details Uses cout to display both the contents of the matrix with appropriate
-	 * spacing and the string on top.
-	 * 
-	 * @param input_string String we will display.
+	 * @details Uses cout to display the contents of the matrix with appropriate spacing.
 	 */
-	void display(std::string input_string = "");
+	void display(void);
 
 	/**
 	 * @brief Returns the size of the puzzle.
