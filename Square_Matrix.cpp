@@ -247,10 +247,10 @@ bool Square_Matrix::operator==(const Square_Matrix &other_matrix) {
 		return 1;
 
 	// Goes through entire matrices and compares.
-	for (int i = 0; i < size; ++i)
-	for (int j = 0; j < size; ++j)
-	if (matrix[i][j] != other_matrix.matrix[i][j])
-		return 0;
+	for (int x = 0; x < size; ++x)
+		for (int y = 0; y < size; ++y)
+			if (matrix[x][y] != other_matrix.matrix[x][y])
+				return 0;
 
 	// We got this far, so that means they are the same size and/or equal to
 	// zero, and have the same contents.
