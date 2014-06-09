@@ -243,7 +243,7 @@ private:
 	 * 
 	 * @return True if writable, false if otherwise.
 	 */
-	bool inline can_set(int x, int y);
+	bool inline can_set(const int &x, const int &y);
 
 	/**
 	 * @brief Tries to fill the cell with a value that follows sodoku rules.

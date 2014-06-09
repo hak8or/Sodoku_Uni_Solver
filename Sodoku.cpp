@@ -796,7 +796,7 @@ int Sodoku::count_filled_cells(void){
  * 
  * @return True if writable, false if otherwise.
  */
-bool inline Sodoku::can_set(int x, int y){
+bool inline Sodoku::can_set(const int &x, const int &y){
 	return this->writable.Get_Elem(x, y);
 }
 
