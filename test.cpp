@@ -702,6 +702,46 @@ SCENARIO("Trying to solve an unsolvable sodoku will fail"){
 	}
 }
 
+SCENARIO("Solve a few small matrices from scratch.") {
+	GIVEN("A sodoku of size 1") {
+		Sodoku puzzle(1);
+
+			WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+
+	GIVEN("A sodoku of size 2") {
+		Sodoku puzzle(2);
+
+			WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+
+	GIVEN("A sodoku of size 3") {
+		Sodoku puzzle(3);
+
+			WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
 
 // This is an example of a sodoku puzzle which I can't even check if I
 // can solve solely based on how large it is, using my algo.

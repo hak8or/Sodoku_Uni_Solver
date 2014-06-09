@@ -398,6 +398,13 @@ void Sodoku::solve_puzzle_partially_count(int trying_to_fill){
 	// to fill.
 	trying_to_fill = trying_to_fill + this->count_filled_cells();
 
+	// Rand does not handle zero's too well, so manually set the contents to zero.
+	if (this->get_size() == 1){
+		this->set_cell(0, 0, 0);
+		this->writable.Set_Elem(0, 0, 0);
+		return;
+	}
+
 	// While the filled cells is less than the amount of cells we are trying to
 	// fill, keep this loop going.
 	while (count_filled_cells() <= trying_to_fill) {
