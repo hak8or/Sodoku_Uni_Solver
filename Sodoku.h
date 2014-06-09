@@ -238,7 +238,7 @@ private:
 	 * @return True if the new value is within bounds and the cell is writable, false
 	 * if otherwise.
 	 */
-	bool increment_cell_contents(const int& column, const int& row);
+	bool increment_cell_contents(const int& x, const int& y);
 
 	/**
 	 * @brief Checks if the cell is writable.
