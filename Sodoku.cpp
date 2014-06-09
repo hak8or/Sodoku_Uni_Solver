@@ -814,13 +814,14 @@ bool inline Sodoku::can_set(int x, int y){
  * @return Amount of steps taken to solve.
  */
 int Sodoku::get_amount_of_steps(void){
-	int temp = 0;
+	int steps = 0;
 
-	for (int column = 0; column < this->matrix.Get_Size(); column++)
-		for (int row = 0; row < this->matrix.Get_Size(); row++)
-			temp = temp + this->heatmap.Get_Elem(column, row);
+	// Increments counter for every filled cell.
+	for (int x = 0; x < this->matrix.Get_Size(); x++)
+		for (int y = 0; y < this->matrix.Get_Size(); y++)
+			steps = steps + this->heatmap.Get_Elem(x, y);
 
-	return temp;
+	return steps;
 }
 
 /**
