@@ -162,7 +162,7 @@ public:
 	 * @param y Y value of cell
 	 * @param value value we will write to the cell.
 	 */
-	void set_const_cell(int x, int y, int value);
+	void set_const_cell(const int &x, const int &y, const int &value);
 
 	/**
 	 * @brief Gets the amount of steps taken, which can be considered how difficult

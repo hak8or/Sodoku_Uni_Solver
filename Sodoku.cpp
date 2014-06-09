@@ -855,7 +855,7 @@ Sodoku Sodoku::operator&=(const Sodoku other_matrix){
  * @param y Y value of cell
  * @param value value we will write to the cell.
  */
-void Sodoku::set_const_cell( int x, int y, int value){
+void Sodoku::set_const_cell(const int &x, const int &y, const int &value){
 	this->matrix.Set_Elem(value, x, y);
 
 	// Indicate that this cell is not writable.
