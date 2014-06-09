@@ -54,20 +54,20 @@ public:
 	 * @brief Sets an element of the matrix to the given value.
 	 * 
 	 * @param new_value Value we change the element to.
-	 * @param num_column Column of the cell.
-	 * @param num_row Row of the cell.
+	 * @param x X position of the cell.
+	 * @param y Y position of the cell.
 	 */
-	void Set_Elem (const int &new_value, const int &num_column, const int &num_row);
+	void Set_Elem (const int &new_value, const int &x, const int &y);
 
 	/**
 	 * @brief Returns the contents of a cell at the specified row and column.
 	 * 
-	 * @param num_column Column of the cell.
-	 * @param num_row Row of the cell.
+	 * @param x X position of the cell.
+	 * @param y Y position of the cell.
 	 * 
 	 * @return Contents of the cell.
 	 */
-	int Get_Elem (const int &num_column, const int &num_row);
+	int Get_Elem (const int &x, const int &y);
 
 	/**
 	 * @brief Returns the contents of a row.

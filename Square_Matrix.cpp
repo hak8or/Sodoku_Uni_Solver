@@ -146,24 +146,24 @@ int Square_Matrix::Get_Size(void) { return size; }
  * @brief Sets an element of the matrix to the given value.
  * 
  * @param new_value Value we change the element to.
- * @param num_column Column of the cell.
- * @param num_row Row of the cell.
+ * @param x X position of the cell.
+ * @param y Y position of the cell.
  */
-void Square_Matrix::Set_Elem(const int &new_value, const int &num_column, 
-							 const int &num_row) {
-	this->matrix[num_column][num_row] = new_value;
+void Square_Matrix::Set_Elem(const int &new_value, const int &x, 
+							 const int &y) {
+	this->matrix[x][y] = new_value;
 }
 
 /**
  * @brief Returns the contents of a cell at the specified row and column.
  * 
- * @param num_column Column of the cell.
- * @param num_row Row of the cell.
+ * @param x X position of the cell.
+ * @param y Y position of the cell.
  * 
  * @return Contents of the cell.
  */
-int Square_Matrix::Get_Elem(const int &num_column, const int &num_row) {
-	return  matrix[num_column][num_row];
+int Square_Matrix::Get_Elem(const int &x, const int &y) {
+	return  matrix[x][y];
 }
 
 /**
