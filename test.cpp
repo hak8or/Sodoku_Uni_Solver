@@ -1,22 +1,9 @@
 /*
-Author: Marcin Ziemianowicz
-Class: CSCI 235 (Descrete Analysis 2) Section 01
-Professor: Pavel Shostak
-
-To compile tests: make
-To run tests: make test
-To clean: make clean
-To do it all: make clean && make && make test
-
-All tests should be passing!
-
-Notes:
-Shouldn't both Set_Size and Set_Elem return an int so the user
-knows if they executed correctly via a return vode?
+Author: Hak8or
+Class: CSCI 235
 
 For Myself:
-No idea how to test if memory management is done correctly using
-chase.
+No idea how to test if memory management is done correctly using chase.
 */
 
 #include <iostream>
@@ -63,52 +50,6 @@ SCENARIO("Check to see if I got shifted into an alternate reality")
 }
 
 SCENARIO("Changing components of a matrix"){
-	GIVEN("an empty matrix"){
-		Square_Matrix my_matrix;
-
-		WHEN("checking it's contents"){
-			THEN("it should not have any data")
-				REQUIRE(my_matrix.Get_Elem(0,0) == 0);
-
-			THEN("it should not have any data using Get_Row"){
-				vector<int> temp = my_matrix.Get_Row(0);
-				bool empty = true;
-
-				for (int i = 0; i < my_matrix.Get_Size(); ++i)
-					if(temp[i] != 0){
-						bool empty = false;
-						break;
-					}
-
-				REQUIRE(empty);
-			}
-
-			THEN("it should not have any data using Get_Column"){
-				vector<int> temp = my_matrix.Get_Column(0);
-				bool empty = true;
-
-				for (int i = 0; i < my_matrix.Get_Size(); ++i)
-					if(temp[i] != 0){
-						bool empty = false;
-						break;
-					}
-
-				REQUIRE(empty);
-			}
-
-
-			THEN("it should have 0 size")
-				REQUIRE(my_matrix.Get_Size() == 0);
-		}
-
-		WHEN("adding in data"){
-		my_matrix.Set_Elem(100, 0, 0);
-
-			THEN("nothing should change")
-				REQUIRE(my_matrix.Get_Elem(0,0) == 0);
-		}
-	}
-
 	GIVEN("a 2x2 matrix"){
 		Square_Matrix my_matrix;
 		my_matrix.Set_Size(2);
@@ -126,13 +67,6 @@ SCENARIO("Changing components of a matrix"){
 
 			THEN("data should be changed")
 				REQUIRE(my_matrix.Get_Elem(0,0) == 100);
-		}
-
-		WHEN("Changing out of bounds data"){
-		my_matrix.Set_Elem(100, 5, 5);
-
-			THEN("should return zero'd data")
-				REQUIRE(my_matrix.Get_Elem(5,5) == 0);
 		}
 
 		WHEN("filling it with a number"){
@@ -174,12 +108,6 @@ SCENARIO("Changing components of a matrix"){
 				my_matrix.Set_Elem(101, 0, 0);
 				REQUIRE(my_matrix.Get_Elem(0,0) == 101);
 			}
-
-			THEN("out of bound data changes take no effect")
-			{
-				my_matrix.Set_Elem(101, 1, 1);
-				REQUIRE(my_matrix.Get_Elem(5,5) == 0);
-			}
 		}
 	}
 }
@@ -198,54 +126,6 @@ SCENARIO("Given a negative size matrix, things should not explode"){
 
 			THEN("things should not blow up") {
 				REQUIRE(m.sanity_check() == 2014);
-			}
-		}
-
-		WHEN("An element is requested") {
-			int my_element = m.Get_Elem(5, 5);
-
-			THEN("The element is returned") {
-				REQUIRE(my_element == 0);
-			}
-		}
-
-		WHEN("An out of range element is requested") {
-			int my_element = m.Get_Elem(15, 15);
-
-			THEN("The out of range response is recieved") {
-				REQUIRE(my_element == 0);
-			}
-		}
-
-		WHEN("An element is set") {
-			// Set cell 5,6 to the value 3
-			m.Set_Elem(3, 5, 6);
-
-			THEN("The element should not be changed") {
-				REQUIRE(m.Get_Elem(5, 6) == 0);
-			}
-		}
-
-		WHEN("An out of range element is set") {
-			// Set cell 5,6 to the value 3
-			m.Set_Elem(3, 15, 15);
-
-			THEN("Things should not blow up") {
-				// I guess a segfault should have happened by now which
-				// would have shown the tester things went wrong anyways.
-				// If allowed to return an int, then can check return code.
-				REQUIRE(m.sanity_check() == 2014);
-			}
-		}
-
-		WHEN("the size is reset with old data") {
-			// Set cell 6,7 to the value 2
-			m.Set_Elem(2, 6, 7);
-
-			m.Set_Size(12);
-
-			THEN("the data should be lost") {
-				REQUIRE(m.Get_Elem(6, 7) == 0);
 			}
 		}
 	}
@@ -468,14 +348,6 @@ SCENARIO("Modfying and accessing cells of the Sodoku puzzle") {
 			}
 		}
 
-		WHEN("writing to an out of bounds cell") {
-			bool successful_write = puzzle.set_cell(98, 99, 5);
-
-			THEN("the return value should be false") {
-				REQUIRE(!successful_write);
-			}
-		}
-
 		WHEN("writing to an in bounds cell") {
 			bool successful_write = puzzle.set_cell(0, 1, 5);
 
@@ -493,14 +365,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 0, 5);
 
-		WHEN("checking if there is a bad row") {
-			bool validity = puzzle.check_row_validity(0);
-
-			THEN("the return value should be false") {
-				REQUIRE(!validity);
-			}
-		}
-
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
 
@@ -514,14 +378,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
-
-		WHEN("checking if there is a bad row") {
-			bool validity = puzzle.check_row_validity(0);
-
-			THEN("the return value should be true") {
-				REQUIRE(validity);
-			}
-		}
 
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
@@ -537,14 +393,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(0, 1, 5);
 
-		WHEN("checking if there is a bad column") {
-			bool validity = puzzle.check_column_validity(0);
-
-			THEN("the return value should be false") {
-				REQUIRE(!validity);
-			}
-		}
-
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
 
@@ -558,14 +406,6 @@ SCENARIO("Checking an incorrect sodoku") {
 		Sodoku puzzle;
 		puzzle.set_cell(0, 0, 5);
 		puzzle.set_cell(1, 1, 5);
-
-		WHEN("checking if there is a bad column") {
-			bool validity = puzzle.check_column_validity(0);
-
-			THEN("the return value should be true") {
-				REQUIRE(validity);
-			}
-		}
 
 		WHEN("checking the entire sodoku puzzle") {
 			bool validity = puzzle.check_sodoku_validity();
@@ -862,15 +702,87 @@ SCENARIO("Trying to solve an unsolvable sodoku will fail"){
 	}
 }
 
+SCENARIO("Solve a few small matrices from scratch.") {
+	GIVEN("A sodoku of size 1") {
+		Sodoku puzzle(1);
 
-// This is an example of a sodoku puzzle which I can't even check if I
-// can solve solely based on how large it is, using my algo.
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+
+	GIVEN("A sodoku of size 2") {
+		Sodoku puzzle(2);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+
+	GIVEN("A sodoku of size 3") {
+		Sodoku puzzle(3);
+
+		WHEN("trying to auto solve it.") {
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+
+		WHEN("trying to auto solve it with prefil"){
+			puzzle.solve_puzzle_partially(0.25);
+			bool solved = puzzle.solve_puzzle();
+
+			THEN("it should be solved.") {
+				REQUIRE(solved);
+				REQUIRE(puzzle.is_complete());
+			}
+		}
+	}
+}
+
+// This is an example of a sodoku puzzle which is very hard to
+// solve, taking a very long time if running on a single core
+// but taking under a minute assuming using all 4 cores of an
+// I5-3570k running at stock speeds.
 //
 // Kept here if I will ever try to speed this up using any of the better
 // methods.
 //
 // Manually disabled. Uncomment to enable.
-SCENARIO("A manually partially filled puzzle which is too large for my algo to sovle.") {
+SCENARIO("A manually partially filled puzzle which is too hard to solve for now.") {
 	GIVEN("a sodoku with manually set consts that usually took forever") {
 		Sodoku puzzle(9);
 

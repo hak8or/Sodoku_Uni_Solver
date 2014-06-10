@@ -9,70 +9,141 @@
 
 #include <vector>
 
-// The Square_Matrix class as per the assignment.
-// Object of this class stores integer matrix of size NxN. This matrix is 
-// represented as dynamically allocated two-dimentional array of integers.
-class Square_Matrix
-{
-	public:
-		// Constructor
-		Square_Matrix(void);
+/**
+ * @brief A square matrix of int's
+ * 
+ * @details Object of this class stores integer matrix of size NxN. This matrix
+ * is represented as dynamically allocated two-dimentional array of integers
+ */
+class Square_Matrix {
+public:
+	/**
+	 * @brief Allocates a matrix of size 0.
+	 */
+	Square_Matrix(void);
 
-		// Destructor
-		~Square_Matrix(void);
+	/**
+	 * @brief Properly de allocates all of memory set asside for the matrix.
+	 */
+	~Square_Matrix(void);
 
-		// Allocates memory for the square matrix of given size (new_size) and 
-		// sets the size of matrix to it. If the object already stored matrix 
-		// all the values in it are lost.
-		// Avoid memory leaks! If memory for the matrix was allocated before, 
-		// make sure your properly release it before allocating more memory for 
-		// new matrix size! 
-		void Set_Size (const int &new_size);
+	/**
+	 * @brief Sets the size of the square matrix, resize will reset contents.
+	 * 
+	 * @details Description taken from assignment requirments.
+	 * Allocates memory for the square matrix of given size (new_size) and 
+	 * sets the size of matrix to it. If the object already stored matrix 
+	 * all the values in it are lost.
+	 * 
+	 * Avoid memory leaks! If memory for the matrix was allocated before, 
+	 * make sure your properly release it before allocating more memory for
+	 * new matrix size! 
+	 * 
+	 * @param new_size [size of an edge.]
+	 */
+	void Set_Size (const int &new_size);
 
-		// Method returns current size of the matrix.
-		int Get_Size(void);
+	/**
+	 * @brief Gets the size of the matrix.
+	 * 
+	 * @return The size of an edge of the matrix.
+	 */
+	int Get_Size(void) const;
 
-		// Sets element on the intersection of given row (num_row) and given 
-		// column (num_column) to new value (new_value).
-		void Set_Elem (const int &new_value, const int &num_column, const int &num_row);
+	/**
+	 * @brief Sets an element of the matrix to the given value.
+	 * 
+	 * @param new_value Value we change the element to.
+	 * @param x X position of the cell.
+	 * @param y Y position of the cell.
+	 */
+	void Set_Elem (const int &new_value, const int &x, const int &y);
 
-		// Returns the value of the element on the intersection of given 
-		// row (num_row) and given column (num_column).
-		int Get_Elem (const int &num_column, const int &num_row);
+	/**
+	 * @brief Returns the contents of a cell at the specified row and column.
+	 * 
+	 * @param x X position of the cell.
+	 * @param y Y position of the cell.
+	 * 
+	 * @return Contents of the cell.
+	 */
+	int Get_Elem (const int &x, const int &y) const;
 
-		// Returns the selected Row in the form of a vector.
-		std::vector<int> Get_Row(const int &num_row);
+	/**
+	 * @brief Returns the contents of a row.
+	 * 
+	 * @details If out of bounds, return a correctly sized vector of 0's.
+	 * 
+	 * @param num_row row we want.
+	 * 
+	 * @return Contents of row as a vector of int's.
+	 */
+	std::vector<int> Get_Row(const int &num_row) const;
 
-		// Returns the selected column in the form of a vector.
-		std::vector<int> Get_Column(const int &num_column);
+	/**
+	 * @brief Returns the contents of a column.
+	 * 
+	 * @details If out of bounds, return a correctly sized vector of 0's.
+	 * 
+	 * @param num_column Column we want.
+	 * 
+	 * @return Contents of column as a vector of int's.
+	 */
+	std::vector<int> Get_Column(const int &num_column) const;
 
-		// Fills the entire matrix with this int.
-		void fill(const int &value);
+	/**
+	 * @brief Fills an entire matrix with a value.
+	 * 
+	 * @param value The value to fill the matrix with.
+	 */
+	void fill(const int &value);
 
-		// I am here just to see if all is working.
-		// Should return 2014.
-		int sanity_check(void);
+	/**
+	 * @brief Sanity test (For unit testing mostly).
+	 * 
+	 * @return 2014 as an int
+	 */
+	int inline sanity_check(void) const {return 2014;}
 
-		// Equality overloader, checks if size and contents are the same.
-		bool operator==(const Square_Matrix &other_matrix);
+	/**
+	 * @brief Comparison of size and contents of the other matrix.
+	 * 
+	 * @param other_matrix The matrix we are comparing to.
+	 * 
+	 * @return True if the same, false if otherwise.
+	 */
+	bool operator==(const Square_Matrix &other_matrix) const;
 
-		// Addition overloader
-		Square_Matrix &operator+(const Square_Matrix &other_matrix);
+	/**
+	 * @brief Adds the contents of a same sized matrix to *this. 
+	 * 
+	 * @details You are guaranteed that "+" operator will always receive correct input 
+	 * (two non-empty matrices of the same size).
+	 * 
+	 * @param other_matrix Matrix we are adding to this one.
+	 */
+	Square_Matrix &operator+(const Square_Matrix &other_matrix);
 
-		// Assignment operator, assume I don't need to worry about self assignment.
-		// A class usually sets this up automatically, but it is a good
-		// idea to impliment it yourself to make sure all is well since
-		// when default it might break.
-		Square_Matrix &operator=(const Square_Matrix &other_matrix);
+	/**
+	 * @brief Overwrites *this matrix with the other matrix.
+	 * 
+	 * @details A class usually sets this up automatically, but it is a good idea to
+	 * impliment it yourself to make sure all is well since when default it might break.
+	 * 
+	 * @param other_matrix Matrix we are getting data from.
+	 */
+	Square_Matrix &operator=(const Square_Matrix &other_matrix);
 
-		// Copy Constructor
-		Square_Matrix(const Square_Matrix &other_matrix);
+	/**
+	 * @brief Constructs *this matrix using another matrix as reference.
+	 */
+	Square_Matrix(const Square_Matrix &other_matrix);
 
-	private:
-		// Size of the matrix, assuming matrix is a square.
-		int size;
+private:
+	// Size of the matrix, assuming matrix is a square.
+	int size;
 
-		// Pointer to pointer for matrix contents (rows, columns).
-		int **matrix;
+	// Pointer to pointer for matrix contents (rows, columns).
+	int **matrix;
 };
 #endif
