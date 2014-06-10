@@ -204,7 +204,7 @@ void Sodoku::display(void) const{
 		}
 
 		// Shows that the row is done.
-		cout << " |" << endl;
+		cout << "|" << endl;
 	}
 
 	// Add in a line to make things look nicer.
@@ -913,7 +913,7 @@ void Sodoku::display_heatmap(void) const {
 		}
 
 		// Shows that the row is done.
-		cout << " |" << endl;
+		cout << "|" << endl;
 	}
 
 	// Add in a line to make things look nicer.
