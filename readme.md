@@ -100,6 +100,8 @@ which did not work out too well. The branching and merging is not miraculous.
 There is a todo I keep which I find more satsfying to mark off completed 
 goals than Githubs issue's section, which you can find in [todo.md](todo.md).
 
+The original home of this project was at [bitbucket](https://bitbucket.org/hak8or/soduku).
+
 
 ### Example output
 ```
