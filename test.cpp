@@ -773,14 +773,16 @@ SCENARIO("Solve a few small matrices from scratch.") {
 	}
 }
 
-// This is an example of a sodoku puzzle which I can't even check if I
-// can solve solely based on how large it is, using my algo.
+// This is an example of a sodoku puzzle which is very hard to
+// solve, taking a very long time if running on a single core
+// but taking under a minute assuming using all 4 cores of an
+// I5-3570k running at stock speeds.
 //
 // Kept here if I will ever try to speed this up using any of the better
 // methods.
 //
 // Manually disabled. Uncomment to enable.
-SCENARIO("A manually partially filled puzzle which is too large for my algo to sovle.") {
+SCENARIO("A manually partially filled puzzle which is too hard to solve for now.") {
 	GIVEN("a sodoku with manually set consts that usually took forever") {
 		Sodoku puzzle(9);
 
