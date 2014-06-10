@@ -61,10 +61,10 @@ int main(int argc, char *argv[]) {
 
 	// Tell the user about the future loop.
 	cout << "\n\t NOTE:\n"
-		 << "Partial fill does not guarantee to supply a valid puzzle. This loop "
-		 << "will try to\n find a solvable partially filled puzzle by trying to "
-		 << "actually solve it and if it\n can't solve it, then it partially "
-		 << "fills it again.\n \n";
+		"Partial fill does not guarantee to supply a valid puzzle. This loop "
+		"will try to find a solvable partially filled puzzle by trying to "
+		"actually solve it and if it can't solve it, then it partially "
+		"fills it again.\n \n";
 	puzzle.solve_puzzle_partially(0.25);
 
 	// This will hold what the puzzle looked like before it was solved.
