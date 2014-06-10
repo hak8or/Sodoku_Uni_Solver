@@ -804,7 +804,7 @@ int Sodoku::count_filled_cells(void) const {
  * 
  * @return True if writable, false if otherwise.
  */
-bool inline Sodoku::can_set(const int &x, const int &y){
+bool inline Sodoku::can_set(const int &x, const int &y) const {
 	return this->writable.Get_Elem(x, y);
 }
 
@@ -814,7 +814,7 @@ bool inline Sodoku::can_set(const int &x, const int &y){
  * 
  * @return Amount of steps taken to solve.
  */
-int Sodoku::get_amount_of_steps(void){
+int Sodoku::get_amount_of_steps(void) const {
 	int steps = 0;
 
 	// Increments counter for every filled cell.
@@ -874,7 +874,7 @@ void Sodoku::set_const_cell(const int &x, const int &y, const int &value){
  * @brief Displays how many steps were taken to solve the puzzle for each cell
  * using cout.
  */
-void Sodoku::display_heatmap(void){
+void Sodoku::display_heatmap(void) const {
 	// Will hold the current row.
 	vector<int> row_contents;
 

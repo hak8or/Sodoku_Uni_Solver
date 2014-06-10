@@ -170,12 +170,12 @@ public:
 	 * 
 	 * @return Amount of steps taken to solve.
 	 */
-	int get_amount_of_steps(void);
+	int get_amount_of_steps(void) const;
 
 	/**
 	 * @brief Displays how many steps were taken to solve the puzzle for each cell.
 	 */
-	void display_heatmap(void);
+	void display_heatmap(void) const ;
 
 	/**
 	 * @brief Copies the sodoku puzzle into *this one.
@@ -243,7 +243,7 @@ private:
 	 * 
 	 * @return True if writable, false if otherwise.
 	 */
-	bool inline can_set(const int &x, const int &y);
+	bool inline can_set(const int &x, const int &y) const;
 
 	/**
 	 * @brief Tries to fill the cell with a value that follows sodoku rules.
