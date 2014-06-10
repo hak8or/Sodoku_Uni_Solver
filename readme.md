@@ -98,7 +98,7 @@ just putting everything into a develop branch but later wanted to use gitflow
 which did not work out too well. The branching and merging is not miraculous.
 
 There is a todo I keep which I find more satsfying to mark off completed 
-goals than Githubs issue's section, which you can find in [todo.txt](todo.txt).
+goals than Githubs issue's section, which you can find in [todo.md](todo.md).
 
 
 ### Example output
